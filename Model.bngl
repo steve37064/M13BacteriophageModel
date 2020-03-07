@@ -1,23 +1,42 @@
 begin parameters
-  C1  0.1         #Units: [(Molecules*Second)^{-1}]
+  C1  0.1         #Units: [(Molecules*Second)^{-1}] ---- DNA Polymerase III Binding Rate to ssDNA and dsDNA
+  C2  0.117       #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
 end parameters
 
 begin molecule types
   ssDNA()    #M13 single-stranded DNA 
   DP3()      #Host Resource DNA Polymerase 3 
   ssPDNA()   #ssDNA/DP3 binding complex 
+  RF1()      #Viral doubld stranded DNA in replicative form 1  
+  DA()       #Transcriptional Promoter site A on dsDNA
+  DB()       #Transcriptional Promoter site B on dsDNA
+  DH()       #Transcriptional Promoter site H on dsDNA  
+  DZ()       #Transcriptional Promoter site Z on dsDNA  
+  DW()       #Transcriptional Promoter site W on dsDNA  
 end molecule types
 
 begin species
   ssDNA()    1.0 #Units: [Molecules]
   DP3()      3.0 #Units: [Molecules]
   ssPDNA()     0 #Units: [Molecules]
+  RF1()        0 #Units: [Molecules]
+  DA()         0 #Units: [Molecules]
+  DB()         0 #Units: [Molecules]
+  DH()         0 #Units: [Molecules]
+  DZ()         0 #Units: [Molecules]
+  DW()         0 #Units: [Molecules]
 end species
 
 begin observables
   Species ssDNA    ssDNA()
   Species DP3      DP3()
   Species ssPDNA   ssPDNA()
+  Species RF1      RF1()
+  Species DA       DA()
+  Species DB       DB()
+  Species DH       DH()
+  Species DZ       DZ()
+  Species DW       DW()
 end observables
 
 begin reaction rules
@@ -28,6 +47,10 @@ begin reaction rules
   #a complex of ssDNA and DNA Polymerase 
   ssDNA() + DP3() -> ssPDNA() C1
 
+  #The ssPDNA (ssDNA/DP3 complex) will create a double-stranded 
+  #form of viral DNA called RF1, and contains transcriptional promoter
+  #sites DA, DB, DH, DZ, and DW (Please see paper for more information)
+  ssPDNA() -> RF1() + DP3() + DA() + DB() + DH() + DZ() + DW() C2 
 
 end reaction rules
 
