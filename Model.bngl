@@ -4,8 +4,8 @@ begin parameters
 end parameters
 
 begin molecule types
+  DP3()      #Host Resource: DNA Polymerase 3 
   ssDNA()    #M13 single-stranded DNA 
-  DP3()      #Host Resource DNA Polymerase 3 
   ssPDNA()   #ssDNA/DP3 binding complex 
   RF1()      #Viral doubld stranded DNA in replicative form 1  
   DA()       #Transcriptional Promoter site A on dsDNA
@@ -16,8 +16,8 @@ begin molecule types
 end molecule types
 
 begin species
-  ssDNA()    1.0 #Units: [Molecules]
   DP3()      3.0 #Units: [Molecules]
+  ssDNA()    1.0 #Units: [Molecules]
   ssPDNA()     0 #Units: [Molecules]
   RF1()        0 #Units: [Molecules]
   DA()         0 #Units: [Molecules]
@@ -28,8 +28,8 @@ begin species
 end species
 
 begin observables
-  Species ssDNA    ssDNA()
   Species DP3      DP3()
+  Species ssDNA    ssDNA()
   Species ssPDNA   ssPDNA()
   Species RF1      RF1()
   Species DA       DA()

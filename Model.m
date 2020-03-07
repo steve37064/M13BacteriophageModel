@@ -149,7 +149,7 @@ end
 if ( ~suppress_plot )
     
     % define plot labels
-    observable_labels = { 'ssDNA', 'DP3', 'ssPDNA', 'RF1', 'DA', 'DB', 'DH', 'DZ', 'DW' };
+    observable_labels = { 'DP3', 'ssDNA', 'ssPDNA', 'RF1', 'DA', 'DB', 'DH', 'DZ', 'DW' };
 
     % construct figure
     plot(timepoints,observables_out);
@@ -181,8 +181,8 @@ end
 function [species_init] = initialize_species( params )
 
     species_init = zeros(1,9);
-    species_init(1) = 1.0;
-    species_init(2) = 3.0;
+    species_init(1) = 3.0;
+    species_init(2) = 1.0;
     species_init(3) = 0;
     species_init(4) = 0;
     species_init(5) = 0;
@@ -230,7 +230,7 @@ end
 function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
 
     ratelaws = zeros(1,9);
-    ratelaws(1) = expressions(1)*species(1)*species(2);
+    ratelaws(1) = expressions(1)*species(2)*species(1);
     ratelaws(2) = expressions(2)*species(3);
 
 end
@@ -248,8 +248,8 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     [ ratelaws ] = calc_ratelaws( species, expressions, observables );
                         
     % calculate derivatives
-    Dspecies(1) = -ratelaws(1);
-    Dspecies(2) = -ratelaws(1) +ratelaws(2);
+    Dspecies(1) = -ratelaws(1) +ratelaws(2);
+    Dspecies(2) = -ratelaws(1);
     Dspecies(3) = ratelaws(1) -ratelaws(2);
     Dspecies(4) = ratelaws(2);
     Dspecies(5) = ratelaws(2);
