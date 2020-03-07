@@ -1,10 +1,14 @@
 begin parameters
-  C1  0.1         #Units: [(Molecules*Second)^{-1}] ---- DNA Polymerase III Binding Rate to ssDNA and dsDNA
-  C2  0.117       #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
+  C1    0.1         #Units: [(Molecules*Second)^{-1}] ---- DNA Polymerase III Binding Rate to ssDNA and dsDNA
+  C2    0.117       #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
+  C8_A  6E-3        #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site A
+  C9    1.34        #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
+  C10_A 3.6E-2      #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
 end parameters
 
 begin molecule types
   DP3()      #Host Resource: DNA Polymerase 3 
+  RNAP()     #Host Resource: RNA Polymerase 
   ssDNA()    #M13 single-stranded DNA 
   ssPDNA()   #ssDNA/DP3 binding complex 
   RF1()      #Viral doubld stranded DNA in replicative form 1  
@@ -13,10 +17,19 @@ begin molecule types
   DH()       #Transcriptional Promoter site H on dsDNA  
   DZ()       #Transcriptional Promoter site Z on dsDNA  
   DW()       #Transcriptional Promoter site W on dsDNA  
+  EA()       #Transcriptional Promoter site A occupied by RNAP
+  ELA()      #RNAP actively transcribing mRNA A but not occupying the promoter site
+  A()        #mRNA transcript labeled A. Contains information for P2, P5, P7, P9, P8
+  RBS2()     #Free ribsome binding site to make viral protein P2
+  RBS5()     #Free ribsome binding site to make viral protein P5
+  RBS7()     #Free ribsome binding site to make viral protein P7
+  RBS9()     #Free ribsome binding site to make viral protein P9
+  RBS8()      #Free ribsome binding site to make viral protein P8
 end molecule types
 
 begin species
   DP3()      3.0 #Units: [Molecules]
+  RNAP()  1280.0 #Units: [Molecules]
   ssDNA()    1.0 #Units: [Molecules]
   ssPDNA()     0 #Units: [Molecules]
   RF1()        0 #Units: [Molecules]
@@ -25,10 +38,19 @@ begin species
   DH()         0 #Units: [Molecules]
   DZ()         0 #Units: [Molecules]
   DW()         0 #Units: [Molecules]
+  EA()         0 #Units: [Molecules]
+  ELA()        0 #Units: [Molecules]
+  A()          0 #Units: [Molecules]
+  RBS2()       0 #Units: [Molecules]
+  RBS5()       0 #Units: [Molecules]
+  RBS7()       0 #Units: [Molecules]
+  RBS9()       0 #Units: [Molecules]
+  RBS8()       0 #Units: [Molecules]
 end species
 
 begin observables
   Species DP3      DP3()
+  Species RNAP     RNAP()
   Species ssDNA    ssDNA()
   Species ssPDNA   ssPDNA()
   Species RF1      RF1()
@@ -37,6 +59,14 @@ begin observables
   Species DH       DH()
   Species DZ       DZ()
   Species DW       DW()
+  Species EA       EA()
+  Species ELA      ELA()
+  Species A        A()
+  Species RBS2     RBS2()
+  Species RBS5     RBS5()
+  Species RBS7     RBS7()
+  Species RBS9     RBS9()
+  Species RBS8     RBS8()
 end observables
 
 begin reaction rules
@@ -51,6 +81,21 @@ begin reaction rules
   #form of viral DNA called RF1, and contains transcriptional promoter
   #sites DA, DB, DH, DZ, and DW (Please see paper for more information)
   ssPDNA() -> RF1() + DP3() + DA() + DB() + DH() + DZ() + DW() C2 
+
+  #====================================================
+  #            Transcription Equations
+  #====================================================
+  #Rate of RNA polymerase binding to the promoter site DA 
+  #on viral dsDNA 
+  DA() + RNAP() -> EA C8_A
+
+  #Rate of RNAP clearing the DA promoter site to regenerate the 
+  #site but not the mRNA 
+  EA() -> DA() + ELA() C9
+
+  #The actively transcribing RNAP will produce transcript A and all of the 
+  #ribosome binding sites needed for translation 
+  ELA() -> RNAP() + A() + RBS2() + RBS5() + RBS7() + RBS9() + RBS8() C10_A
 
 end reaction rules
 

@@ -13,9 +13,9 @@ function [err, timepoints, species_out, observables_out] = Model( timepoints, sp
 %
 %   INPUTS:
 %   -------
-%   species_init    : row vector of 9 initial species populations.
+%   species_init    : row vector of 18 initial species populations.
 %   timepoints      : column vector of time points returned by integrator.
-%   parameters      : row vector of 2 model parameters.
+%   parameters      : row vector of 5 model parameters.
 %   suppress_plot   : 0 if a plot is desired (default), 1 if plot is suppressed.
 %
 %   Note: to specify default value for an input argument, pass the empty array.
@@ -61,11 +61,11 @@ observables_out = [];
 
 % setup default parameters, if necessary
 if ( isempty(parameters) )
-   parameters = [ 0.1, 0.117 ];
+   parameters = [ 0.1, 0.117, 6E-3, 1.34, 3.6E-2 ];
 end
 % check that parameters has proper dimensions
-if (  size(parameters,1) ~= 1  ||  size(parameters,2) ~= 2  )
-    fprintf( 1, 'Error: size of parameter argument is invalid! Correct size = [1 2].\n' );
+if (  size(parameters,1) ~= 1  ||  size(parameters,2) ~= 5  )
+    fprintf( 1, 'Error: size of parameter argument is invalid! Correct size = [1 5].\n' );
     err = 1;
     return;
 end
@@ -75,8 +75,8 @@ if ( isempty(species_init) )
    species_init = initialize_species( parameters );
 end
 % check that species_init has proper dimensions
-if (  size(species_init,1) ~= 1  ||  size(species_init,2) ~= 9  )
-    fprintf( 1, 'Error: size of species_init argument is invalid! Correct size = [1 9].\n' );
+if (  size(species_init,1) ~= 1  ||  size(species_init,2) ~= 18  )
+    fprintf( 1, 'Error: size of species_init argument is invalid! Correct size = [1 18].\n' );
     err = 1;
     return;
 end
@@ -104,7 +104,7 @@ if ( size(suppress_plot,1) ~= 1  ||  size(suppress_plot,2) ~= 1 )
 end
 
 % define parameter labels (this is for the user's reference!)
-param_labels = { 'C1', 'C2' };
+param_labels = { 'C1', 'C2', 'C8_A', 'C9', 'C10_A' };
 
 
 
@@ -138,7 +138,7 @@ catch
 end
 
 % calculate observables
-observables_out = zeros( length(timepoints), 9 );
+observables_out = zeros( length(timepoints), 18 );
 for t = 1 : length(timepoints)
     observables_out(t,:) = calc_observables( species_out(t,:), expressions );
 end
@@ -149,7 +149,7 @@ end
 if ( ~suppress_plot )
     
     % define plot labels
-    observable_labels = { 'DP3', 'ssDNA', 'ssPDNA', 'RF1', 'DA', 'DB', 'DH', 'DZ', 'DW' };
+    observable_labels = { 'DP3', 'RNAP', 'ssDNA', 'ssPDNA', 'RF1', 'DA', 'DB', 'DH', 'DZ', 'DW', 'EA', 'ELA', 'A', 'RBS2', 'RBS5', 'RBS7', 'RBS9', 'RBS8' };
 
     % construct figure
     plot(timepoints,observables_out);
@@ -180,16 +180,25 @@ end
 % initialize species function
 function [species_init] = initialize_species( params )
 
-    species_init = zeros(1,9);
+    species_init = zeros(1,18);
     species_init(1) = 3.0;
-    species_init(2) = 1.0;
-    species_init(3) = 0;
+    species_init(2) = 1280.0;
+    species_init(3) = 1.0;
     species_init(4) = 0;
     species_init(5) = 0;
     species_init(6) = 0;
     species_init(7) = 0;
     species_init(8) = 0;
     species_init(9) = 0;
+    species_init(10) = 0;
+    species_init(11) = 0;
+    species_init(12) = 0;
+    species_init(13) = 0;
+    species_init(14) = 0;
+    species_init(15) = 0;
+    species_init(16) = 0;
+    species_init(17) = 0;
+    species_init(18) = 0;
 
 end
 
@@ -201,9 +210,12 @@ end
 % Calculate expressions
 function [ expressions ] = calc_expressions ( parameters )
 
-    expressions = zeros(1,2);
+    expressions = zeros(1,5);
     expressions(1) = parameters(1);
     expressions(2) = parameters(2);
+    expressions(3) = parameters(3);
+    expressions(4) = parameters(4);
+    expressions(5) = parameters(5);
    
 end
 
@@ -212,7 +224,7 @@ end
 % Calculate observables
 function [ observables ] = calc_observables ( species, expressions )
 
-    observables = zeros(1,9);
+    observables = zeros(1,18);
     observables(1) = species(1);
     observables(2) = species(2);
     observables(3) = species(3);
@@ -222,6 +234,15 @@ function [ observables ] = calc_observables ( species, expressions )
     observables(7) = species(7);
     observables(8) = species(8);
     observables(9) = species(9);
+    observables(10) = species(10);
+    observables(11) = species(11);
+    observables(12) = species(12);
+    observables(13) = species(13);
+    observables(14) = species(14);
+    observables(15) = species(15);
+    observables(16) = species(16);
+    observables(17) = species(17);
+    observables(18) = species(18);
 
 end
 
@@ -229,9 +250,12 @@ end
 % Calculate ratelaws
 function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
 
-    ratelaws = zeros(1,9);
-    ratelaws(1) = expressions(1)*species(2)*species(1);
-    ratelaws(2) = expressions(2)*species(3);
+    ratelaws = zeros(1,18);
+    ratelaws(1) = expressions(1)*species(3)*species(1);
+    ratelaws(2) = expressions(2)*species(4);
+    ratelaws(3) = expressions(3)*species(6)*species(2);
+    ratelaws(4) = expressions(4)*species(11);
+    ratelaws(5) = expressions(5)*species(12);
 
 end
 
@@ -239,7 +263,7 @@ end
 function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     
     % initialize derivative vector
-    Dspecies = zeros(9,1);
+    Dspecies = zeros(18,1);
     
     % update observables
     [ observables ] = calc_observables( species, expressions );
@@ -249,14 +273,23 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
                         
     % calculate derivatives
     Dspecies(1) = -ratelaws(1) +ratelaws(2);
-    Dspecies(2) = -ratelaws(1);
-    Dspecies(3) = ratelaws(1) -ratelaws(2);
-    Dspecies(4) = ratelaws(2);
+    Dspecies(2) = -ratelaws(3) +ratelaws(5);
+    Dspecies(3) = -ratelaws(1);
+    Dspecies(4) = ratelaws(1) -ratelaws(2);
     Dspecies(5) = ratelaws(2);
-    Dspecies(6) = ratelaws(2);
+    Dspecies(6) = ratelaws(2) -ratelaws(3) +ratelaws(4);
     Dspecies(7) = ratelaws(2);
     Dspecies(8) = ratelaws(2);
     Dspecies(9) = ratelaws(2);
+    Dspecies(10) = ratelaws(2);
+    Dspecies(11) = ratelaws(3) -ratelaws(4);
+    Dspecies(12) = ratelaws(4) -ratelaws(5);
+    Dspecies(13) = ratelaws(5);
+    Dspecies(14) = ratelaws(5);
+    Dspecies(15) = ratelaws(5);
+    Dspecies(16) = ratelaws(5);
+    Dspecies(17) = ratelaws(5);
+    Dspecies(18) = ratelaws(5);
 
 end
 

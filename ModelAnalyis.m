@@ -11,7 +11,10 @@ close all;
 PlotHostResources = 1; 
 PlotPromoterSites = 1; 
 PlotViralDNA = 1; 
-
+PlotOccupiedPromoterSites = 1;
+PlotActivelyTranscribed = 1; 
+PlotFreeRBSSites = 1 ;
+PlotmRNA = 1;
 %==========================================================================
 %        Running the Model and Plotting [Using Default Parameters]
 %==========================================================================
@@ -19,7 +22,7 @@ PlotViralDNA = 1;
 global param_labels observable_labels
 [param_labels,observable_labels] = GetParamNameAndLabels("Model.m");
 
-LengthToSimulation = 1*60; %In Seconds 
+LengthToSimulation = 1*60*5; %In Seconds 
 timepoints = linspace(0,LengthToSimulation,1000)';
 [err, timepoints, species_out, observables_out] = Model(timepoints); 
 
@@ -29,8 +32,21 @@ PlotGroup("Viral DNA",ViralDNA,timepoints,observables_out,PlotViralDNA)
 HostResource = ["DP3"];
 PlotGroup("Host Resources",HostResource,timepoints,observables_out,PlotHostResources)
 
-PromoterSites = ["DA","DB","DH","DZ","DW"];
-PlotGroup("Transciption of Promoter Sites",PromoterSites,timepoints,observables_out,PlotPromoterSites)
+FreePromoterSites = ["DA","DB","DH","DZ","DW"];
+PlotGroup("Free Promoter Sites",FreePromoterSites,timepoints,observables_out,PlotPromoterSites)
+
+OccupiedPromoterSites = ["EA"];
+PlotGroup("Occupied Promoter Sites",OccupiedPromoterSites,timepoints,observables_out,PlotOccupiedPromoterSites)
+
+ActivelyTranscribedPromoter = ["ELA"];
+PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,timepoints,observables_out,PlotActivelyTranscribed)
+
+FreeRBSSites = ["RBS2","RBS5","RBS7","RBS9","RBS8"];
+PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,timepoints,observables_out,PlotFreeRBSSites)
+
+mRNA = ["A"];
+PlotGroup("mRNA Strands",mRNA,timepoints,observables_out,PlotmRNA)
+
 
 %==========================================================================
 %Plotting function that accepts a list of species names and plots the list
