@@ -1,23 +1,69 @@
 begin parameters
-  C1    0.1         #Units: [(Molecules*Second)^{-1}] ---- DNA Polymerase III Binding Rate to ssDNA and dsDNA
-  C2    0.117       #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
-  C3    0.117       #Units: [(Molecules*Second)^{-1}] ---- P2 Nicking RF1 DNA to Form RF2 DNA
-  C4    0.117       #Units: (Second)^{-1}] --------------  P2 Dissociation to RF2 DNA
-  C8_A  6E-3        #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site A
-  C9    1.34        #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
-  C10_A 3.6E-2      #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
-  C12_A 2.0E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
-  C12_D 5.8E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
-  C12_E 4.6E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
-  C12_F 1.9E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA F
-  C12_G 1.4E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA G
-  C12_H 1.2E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA H
-  C14   0.25        #Units: [(Second)^{-1}] -------------- Rate of ribosome clearing the promoter site
-  C15_2 4.8E-2      #Units: [(Second)^{-1}] -------------- Rate of P2 formation once Ribosme is bound to mRNA 
-  P5    0           #Units: [Molecules] -------------------Temporary Paramter 
-  EF2   1.5E-4      #Units: [Unitless] --------------------Efficiency of P5 inhibiting P2 Translation
-  n     1.0         #Units: [Unitless] --------------------Hill coefficient for P5 inhibiting translation
-  EPS   1E-6
+  C1     0.1          #Units: [(Molecules*Second)^{-1}] ---- DNA Polymerase III Binding Rate to ssDNA and dsDNA
+  C2     0.117        #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
+  C3     1.0          #Units: [(Molecules*Second)^{-1}] ---- P2 Nicking RF1 DNA to Form RF2 DNA
+  C4     1.0E2        #Units: (Second)^{-1}] --------------  P2 Dissociation to RF2 DNA
+  C5     1            #Units: [(Molecules*Second)^{-1}] ---- P2/P10 Association Constant
+  C6     1E-15        #Units: (Second)^{-1}] --------------  P2/P10 Dissociation Constant
+  C7     1E-3         #Units: [(Molecules*Second)^{-1}] ---- Rate of P5 Sequestering ssDNA       
+  Km1    1100         #Units: [Molecules] ------------------ Threshold for P5 seqestering ssDNA
+  n1     1.0          #Units: [Unitless] ------------------- Hill Coefficent for P5DNA formation 
+  C8_A   6E-3         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site A
+  C8_B   1E-2         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site B
+  C8_H   6.5E-2       #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site H
+  C8_Z   2E-3         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site Z
+  C8_W   2E-4         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site W
+  C9     1.34         #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
+  C10_A  3.6E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
+  C10_B  7.2E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA B
+  C10_H  2.5E-1       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA H
+  C10_Z  5.5E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA W
+  C10_W  4.3E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA Z
+  C11    0.60         #Units: [Unitless] ------------------- Efficiency of Rho-Dependent Terminator Distal to P3
+  C12_A  2.0E-2       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
+  C12_D  5.8E-2       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
+  C12_E  4.6E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
+  C12_F  1.9E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA F
+  C12_G  1.4E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA G
+  C12_H  1.2E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA H
+  C12_W  1.9E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA W
+  C12_Y  1.9E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Y
+  C12_Z  1.9E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Z
+  C13_1  1.60         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P1 start codon
+  C13_2  10.8         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P2 start codon
+  C13_3  8.00         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P3 start codon
+  C13_4  4.60         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P4 start codon
+  C13_5  20.0         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P5 start codon
+  C13_6  0.80         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P6 start codon
+  C13_8  4.40         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P8 start codon
+  C13_9  1.60         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P9 start codon
+  C13_10 1.08         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P10 start codon
+  C13_11 4.00         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P11 start codon
+  C14    0.25         #Units: [(Second)^{-1}] -------------- Rate of ribosome clearing the promoter site
+  C15_1  4.8E-2       #Units: [(Second)^{-1}] -------------- Rate of P1 formation once Ribosme is bound to mRNA 
+  C15_2  4.1E-2       #Units: [(Second)^{-1}] -------------- Rate of P2 formation once Ribosme is bound to mRNA 
+  C15_3  3.7E-2       #Units: [(Second)^{-1}] -------------- Rate of P3 formation once Ribosme is bound to mRNA 
+  C15_4  3.8E-2       #Units: [(Second)^{-1}] -------------- Rate of P4 formation once Ribosme is bound to mRNA 
+  C15_5  4.3E-1       #Units: [(Second)^{-1}] -------------- Rate of P5 formation once Ribosme is bound to mRNA 
+  C15_6  2.5E-1       #Units: [(Second)^{-1}] -------------- Rate of P6 formation once Ribosme is bound to mRNA 
+  C15_8  8.9E-1       #Units: [(Second)^{-1}] -------------- Rate of P8 formation once Ribosme is bound to mRNA 
+  C15_10 2.4E-1       #Units: [(Second)^{-1}] -------------- Rate of P10 formation once Ribosme is bound to mRNA 
+  C15_11 3.1E-1       #Units: [(Second)^{-1}] -------------- Rate of P11 formation once Ribosme is bound to mRNA 
+  EF1    80           #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P1 Translation
+  EF2    1.5E-4       #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P2 Translation
+  EF3    4            #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P3 Translation
+  EF5    1.0E-2       #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P5 Translation
+  EF10   2.6E-5       #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P10 Translation
+  n2     1.0          #Units: [Unitless] ------------------- Hill coefficient for P5 inhibiting translation
+  C16    0.1          #Units: [(Molecules^{2}*Second)^{-1}]- Assembly Site Formation
+  C17    0.1          #Units: [(Molecules*Second)^{-1}] ---- PI Formation
+  C18    0.1          #Units: [(Molecules*Second)^{-1}] ---- PE Formation
+  C19    1.2E-3       #Units: [(Second)^{-1}] -------------- Phage Elongation/P8 Addition
+  C20    0.1          #Units: [(Molecules*Second)^{-1}] ---- Phage Detaching from Cell Membrane
+  Km2    3000         #Units: [Molecules] ------------------ Number of P8 Molecules Needed for Elongation to Occur
+  n3     40           #Units: [Unitless] ------------------- Hill Coefficient
+  EPS    1E-6
+  P5     0            #Units: [Molecules] -------------------Temporary Paramter 
 end parameters
 
 begin molecule types
@@ -114,7 +160,7 @@ begin observables
 end observables
 
 begin functions
-	P5InhibitionP2() = 1/(1 + (P5/(EF2*(RBS2()+1)))^n) 
+	P5InhibitionP2() = 1/(1 + (P5/(EF2*(RBS2()+1)))^n2) 
   RBS2Removal() = 1/(RBS2()+EPS)
   RBS5Removal() = 1/(RBS5()+EPS)
   RBS9Removal() = 1/(RBS9()+EPS)
@@ -179,7 +225,7 @@ begin reaction rules
   #====================================================
   #              Translation Equations
   #====================================================
-  RBS2() + R() -> RBS2R() P5InhibitionP2()
+  RBS2() + R() -> RBS2R() C13_2*P5InhibitionP2()
   RBS2R() -> RBS2() + PD2() C14 
   PD2() -> R() + P2() C15_2
 
