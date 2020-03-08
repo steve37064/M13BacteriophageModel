@@ -296,6 +296,31 @@ function [val] = RBS10Removal(expressions, observables)
     val = (1/(observables(36)+expressions(65)));
 end
 
+% function RBS3Removal
+function [val] = RBS3Removal(expressions, observables)
+    val = (1/(observables(41)+expressions(65)));
+end
+
+% function RBS6Removal
+function [val] = RBS6Removal(expressions, observables)
+    val = (1/(observables(43)+expressions(65)));
+end
+
+% function RBS1Removal
+function [val] = RBS1Removal(expressions, observables)
+    val = (1/(observables(40)+expressions(65)));
+end
+
+% function RBS11Removal
+function [val] = RBS11Removal(expressions, observables)
+    val = (1/(observables(44)+expressions(65)));
+end
+
+% function RBS4Removal
+function [val] = RBS4Removal(expressions, observables)
+    val = (1/(observables(42)+expressions(65)));
+end
+
 % function DARemoval
 function [val] = DARemoval(expressions, observables)
     val = (1/(observables(10)+expressions(65)));
@@ -328,46 +353,71 @@ end
 
 % function rateLaw__2
 function [val] = rateLaw__2(expressions, observables)
-    val = (expressions(22)*RBS2Removal(expressions,observables));
+    val = ((expressions(21)*expressions(19))*observables(23));
 end
 
 % function rateLaw__3
 function [val] = rateLaw__3(expressions, observables)
-    val = (expressions(23)*RBS10Removal(expressions,observables));
+    val = (((1-expressions(21))*expressions(19))*observables(23));
+end
+
+% function rateLaw__4
+function [val] = rateLaw__4(expressions, observables)
+    val = (expressions(22)*RBS2Removal(expressions,observables));
 end
 
 % function rateLaw__5
 function [val] = rateLaw__5(expressions, observables)
-    val = ((((0.3*expressions(24))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+    val = (expressions(23)*RBS10Removal(expressions,observables));
 end
 
 % function rateLaw__7
 function [val] = rateLaw__7(expressions, observables)
-    val = ((((0.3*expressions(25))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
-end
-
-% function rateLaw__8
-function [val] = rateLaw__8(expressions, observables)
-    val = ((0.7*expressions(26))*RBS5Removal(expressions,observables));
+    val = ((((0.3*expressions(24))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
 end
 
 % function rateLaw__9
 function [val] = rateLaw__9(expressions, observables)
-    val = ((((0.3*expressions(26))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+    val = ((((0.3*expressions(25))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+end
+
+% function rateLaw__10
+function [val] = rateLaw__10(expressions, observables)
+    val = ((0.7*expressions(26))*RBS5Removal(expressions,observables));
 end
 
 % function rateLaw__11
 function [val] = rateLaw__11(expressions, observables)
-    val = (((0.3*expressions(27))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
-end
-
-% function rateLaw__12
-function [val] = rateLaw__12(expressions, observables)
-    val = ((expressions(28)*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+    val = ((((0.3*expressions(26))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
 end
 
 % function rateLaw__13
 function [val] = rateLaw__13(expressions, observables)
+    val = (((0.3*expressions(27))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+end
+
+% function rateLaw__14
+function [val] = rateLaw__14(expressions, observables)
+    val = ((expressions(28)*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+end
+
+% function rateLaw__15
+function [val] = rateLaw__15(expressions, observables)
+    val = (expressions(29)*RBS4Removal(expressions,observables));
+end
+
+% function rateLaw__16
+function [val] = rateLaw__16(expressions, observables)
+    val = ((((expressions(30)*RBS3Removal(expressions,observables))*RBS6Removal(expressions,observables))*RBS1Removal(expressions,observables))*RBS11Removal(expressions,observables));
+end
+
+% function rateLaw__17
+function [val] = rateLaw__17(expressions, observables)
+    val = ((expressions(31)*RBS3Removal(expressions,observables))*RBS6Removal(expressions,observables));
+end
+
+% function rateLaw__18
+function [val] = rateLaw__18(expressions, observables)
     val = (expressions(33)*P5InhibitionP2(expressions,observables));
 end
 
@@ -563,21 +613,26 @@ function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
     ratelaws(18) = expressions(17)*species(21);
     ratelaws(19) = expressions(18)*species(22);
     ratelaws(20) = expressions(19)*species(23);
-    ratelaws(21) = expressions(20)*species(24);
-    ratelaws(22) = rateLaw__2(expressions,observables)*species(25)*species(35);
-    ratelaws(23) = rateLaw__3(expressions,observables)*species(26)*species(36);
-    ratelaws(24) = (0.7*expressions(24))*species(27);
-    ratelaws(25) = rateLaw__5(expressions,observables)*species(27)*species(37)*species(38)*species(39);
-    ratelaws(26) = (0.7*expressions(25))*species(28);
-    ratelaws(27) = rateLaw__7(expressions,observables)*species(28)*species(37)*species(38)*species(39);
-    ratelaws(28) = rateLaw__8(expressions,observables)*species(29)*species(37);
-    ratelaws(29) = rateLaw__9(expressions,observables)*species(29)*species(37)*species(38)*species(39);
-    ratelaws(30) = (0.7*expressions(27))*species(30);
-    ratelaws(31) = rateLaw__11(expressions,observables)*species(30)*species(38)*species(39);
-    ratelaws(32) = rateLaw__12(expressions,observables)*species(31)*species(38)*species(39);
-    ratelaws(33) = rateLaw__13(expressions,observables)*species(35)*species(3);
-    ratelaws(34) = expressions(42)*species(46);
-    ratelaws(35) = expressions(44)*species(56);
+    ratelaws(21) = rateLaw__2(expressions,observables);
+    ratelaws(22) = rateLaw__3(expressions,observables);
+    ratelaws(23) = expressions(20)*species(24);
+    ratelaws(24) = rateLaw__4(expressions,observables)*species(25)*species(35);
+    ratelaws(25) = rateLaw__5(expressions,observables)*species(26)*species(36);
+    ratelaws(26) = (0.7*expressions(24))*species(27);
+    ratelaws(27) = rateLaw__7(expressions,observables)*species(27)*species(37)*species(38)*species(39);
+    ratelaws(28) = (0.7*expressions(25))*species(28);
+    ratelaws(29) = rateLaw__9(expressions,observables)*species(28)*species(37)*species(38)*species(39);
+    ratelaws(30) = rateLaw__10(expressions,observables)*species(29)*species(37);
+    ratelaws(31) = rateLaw__11(expressions,observables)*species(29)*species(37)*species(38)*species(39);
+    ratelaws(32) = (0.7*expressions(27))*species(30);
+    ratelaws(33) = rateLaw__13(expressions,observables)*species(30)*species(38)*species(39);
+    ratelaws(34) = rateLaw__14(expressions,observables)*species(31)*species(38)*species(39);
+    ratelaws(35) = rateLaw__15(expressions,observables)*species(32)*species(42);
+    ratelaws(36) = rateLaw__16(expressions,observables)*species(33)*species(43)*species(41)*species(44)*species(40);
+    ratelaws(37) = rateLaw__17(expressions,observables)*species(34)*species(43)*species(41);
+    ratelaws(38) = rateLaw__18(expressions,observables)*species(35)*species(3);
+    ratelaws(39) = expressions(42)*species(46);
+    ratelaws(40) = expressions(44)*species(56);
 
 end
 
@@ -595,8 +650,8 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
                         
     % calculate derivatives
     Dspecies(1) = -ratelaws(1) +ratelaws(2) -ratelaws(5) +ratelaws(6);
-    Dspecies(2) = -ratelaws(7) -ratelaws(8) -ratelaws(9) -ratelaws(10) -ratelaws(11) +ratelaws(17) +ratelaws(18) +ratelaws(19) +ratelaws(20) +ratelaws(21);
-    Dspecies(3) = -ratelaws(33) +ratelaws(35);
+    Dspecies(2) = -ratelaws(7) -ratelaws(8) -ratelaws(9) -ratelaws(10) -ratelaws(11) +ratelaws(17) +ratelaws(18) +ratelaws(19) +ratelaws(20) +ratelaws(23);
+    Dspecies(3) = -ratelaws(38) +ratelaws(40);
     Dspecies(4) = -ratelaws(1) +ratelaws(6);
     Dspecies(5) = ratelaws(1) -ratelaws(2);
     Dspecies(6) = 0.0;
@@ -617,29 +672,29 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(21) = ratelaws(13) -ratelaws(18);
     Dspecies(22) = ratelaws(14) -ratelaws(19);
     Dspecies(23) = ratelaws(15) -ratelaws(20);
-    Dspecies(24) = ratelaws(16) -ratelaws(21);
-    Dspecies(25) = ratelaws(17) -ratelaws(22);
-    Dspecies(26) = ratelaws(18) -ratelaws(23);
-    Dspecies(27) = ratelaws(22) +ratelaws(23) -ratelaws(24) -ratelaws(25);
-    Dspecies(28) = ratelaws(24) -ratelaws(26) -ratelaws(27);
-    Dspecies(29) = ratelaws(26) -ratelaws(28) -ratelaws(29);
-    Dspecies(30) = ratelaws(28) -ratelaws(30) -ratelaws(31);
-    Dspecies(31) = ratelaws(19) +ratelaws(30) -ratelaws(32);
-    Dspecies(32) = ratelaws(21);
-    Dspecies(33) = 0.0;
-    Dspecies(34) = ratelaws(20);
-    Dspecies(35) = ratelaws(17) -ratelaws(22) -ratelaws(33) +ratelaws(34);
-    Dspecies(36) = ratelaws(18) -ratelaws(23);
-    Dspecies(37) = ratelaws(17) +ratelaws(18) -ratelaws(25) -ratelaws(27) -ratelaws(28) -ratelaws(29);
-    Dspecies(38) = ratelaws(17) +ratelaws(18) +ratelaws(19) -ratelaws(25) -ratelaws(27) -ratelaws(29) -ratelaws(31) -ratelaws(32);
-    Dspecies(39) = ratelaws(17) +ratelaws(18) +ratelaws(19) -ratelaws(25) -ratelaws(27) -ratelaws(29) -ratelaws(31) -ratelaws(32);
-    Dspecies(40) = 0.0;
-    Dspecies(41) = ratelaws(20);
-    Dspecies(42) = ratelaws(21);
-    Dspecies(43) = ratelaws(20);
-    Dspecies(44) = 0.0;
+    Dspecies(24) = ratelaws(16) -ratelaws(23);
+    Dspecies(25) = ratelaws(17) -ratelaws(24);
+    Dspecies(26) = ratelaws(18) -ratelaws(25);
+    Dspecies(27) = ratelaws(24) +ratelaws(25) -ratelaws(26) -ratelaws(27);
+    Dspecies(28) = ratelaws(26) -ratelaws(28) -ratelaws(29);
+    Dspecies(29) = ratelaws(28) -ratelaws(30) -ratelaws(31);
+    Dspecies(30) = ratelaws(30) -ratelaws(32) -ratelaws(33);
+    Dspecies(31) = ratelaws(19) +ratelaws(32) -ratelaws(34);
+    Dspecies(32) = ratelaws(23) -ratelaws(35);
+    Dspecies(33) = ratelaws(22) -ratelaws(36);
+    Dspecies(34) = ratelaws(21) -ratelaws(37);
+    Dspecies(35) = ratelaws(17) -ratelaws(24) -ratelaws(38) +ratelaws(39);
+    Dspecies(36) = ratelaws(18) -ratelaws(25);
+    Dspecies(37) = ratelaws(17) +ratelaws(18) -ratelaws(27) -ratelaws(29) -ratelaws(30) -ratelaws(31);
+    Dspecies(38) = ratelaws(17) +ratelaws(18) +ratelaws(19) -ratelaws(27) -ratelaws(29) -ratelaws(31) -ratelaws(33) -ratelaws(34);
+    Dspecies(39) = ratelaws(17) +ratelaws(18) +ratelaws(19) -ratelaws(27) -ratelaws(29) -ratelaws(31) -ratelaws(33) -ratelaws(34);
+    Dspecies(40) = ratelaws(22) -ratelaws(36);
+    Dspecies(41) = ratelaws(20) -ratelaws(36) -ratelaws(37);
+    Dspecies(42) = ratelaws(23) -ratelaws(35);
+    Dspecies(43) = ratelaws(20) -ratelaws(36) -ratelaws(37);
+    Dspecies(44) = ratelaws(22) -ratelaws(36);
     Dspecies(45) = 0.0;
-    Dspecies(46) = ratelaws(33) -ratelaws(34);
+    Dspecies(46) = ratelaws(38) -ratelaws(39);
     Dspecies(47) = 0.0;
     Dspecies(48) = 0.0;
     Dspecies(49) = 0.0;
@@ -649,7 +704,7 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(53) = 0.0;
     Dspecies(54) = 0.0;
     Dspecies(55) = 0.0;
-    Dspecies(56) = ratelaws(34) -ratelaws(35);
+    Dspecies(56) = ratelaws(39) -ratelaws(40);
     Dspecies(57) = 0.0;
     Dspecies(58) = 0.0;
     Dspecies(59) = 0.0;
@@ -659,7 +714,7 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(63) = 0.0;
     Dspecies(64) = 0.0;
     Dspecies(65) = 0.0;
-    Dspecies(66) = -ratelaws(3) +ratelaws(4) +ratelaws(6) +ratelaws(35);
+    Dspecies(66) = -ratelaws(3) +ratelaws(4) +ratelaws(6) +ratelaws(40);
     Dspecies(67) = 0.0;
     Dspecies(68) = 0.0;
     Dspecies(69) = 0.0;

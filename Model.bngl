@@ -323,6 +323,11 @@ begin functions
   RBS9Removal() = 1/(RBS9()+EPS)
   RBS8Removal() = 1/(RBS8()+EPS)
   RBS10Removal() = 1/(RBS10()+EPS)
+  RBS3Removal() = 1/(RBS3()+EPS)
+  RBS6Removal() = 1/(RBS6()+EPS)
+  RBS1Removal() = 1/(RBS1()+EPS)
+  RBS11Removal() = 1/(RBS11()+EPS)
+  RBS4Removal() = 1/(RBS4()+EPS)
   DARemoval() = 1/(DA()+EPS)
   DBRemoval() = 1/(DB()+EPS)
   DHRemoval() = 1/(DH()+EPS)
@@ -376,7 +381,9 @@ begin reaction rules
   ELA() -> RNAP() + A() + RBS2() + RBS5() + RBS9() + RBS8() C10_A
   ELB() -> RNAP() + B() + RBS10() + RBS5() + RBS9() + RBS8() C10_B
   ELH() -> RNAP() + H() + RBS9() + RBS8() C10_H
-  ELZ() -> RNAP() + Z() + RBS3() + RBS6()  C10_Z
+  ELZ() -> RNAP() + RBS3() + RBS6()  C10_Z
+  0     -> Z() C11*C10_Z*ELZ() 
+  0     -> Y() + RBS1() + RBS11() (1-C11)*C10_Z*ELZ() 
   ELW() -> RNAP() + W() + RBS4() C10_W
 
 
@@ -394,6 +401,10 @@ begin reaction rules
   G() -> H() 0.7*C12_G
   G() + RBS9() + RBS8() -> 0 0.3*C12_G*RBS9Removal()*RBS8Removal()
   H() + RBS9() + RBS8() -> 0 C12_H*RBS9Removal()*RBS8Removal()
+
+  W() + RBS4() -> 0 C12_W*RBS4Removal()
+  Y() + RBS6() + RBS3() + RBS11() + RBS1() -> 0 C12_Y*RBS3Removal()*RBS6Removal()*RBS1Removal()*RBS11Removal()
+  Z() + RBS6() + RBS3() -> 0 C12_Z*RBS3Removal()*RBS6Removal()
   #====================================================
   #              Translation Equations
   #====================================================
