@@ -1,6 +1,8 @@
 begin parameters
   C1    0.1         #Units: [(Molecules*Second)^{-1}] ---- DNA Polymerase III Binding Rate to ssDNA and dsDNA
   C2    0.117       #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
+  C3    0.117       #Units: [(Molecules*Second)^{-1}] ---- P2 Nicking RF1 DNA to Form RF2 DNA
+  C4    0.117       #Units: (Second)^{-1}] --------------  P2 Dissociation to RF2 DNA
   C8_A  6E-3        #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site A
   C9    1.34        #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
   C10_A 3.6E-2      #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
@@ -25,6 +27,8 @@ begin molecule types
   ssDNA()    #M13 single-stranded DNA 
   ssPDNA()   #ssDNA/DP3 binding complex 
   RF1()      #Viral doubld stranded DNA in replicative form 1  
+  RF2()      #Viral doubld stranded DNA in replicative form 2
+  RF2DP3()   #Viral doubld stranded DNA bound to DNA polymerase
   DA()       #Transcriptional Promoter site A on dsDNA
   DB()       #Transcriptional Promoter site B on dsDNA
   DH()       #Transcriptional Promoter site H on dsDNA  
@@ -54,6 +58,8 @@ begin species
   ssDNA()    1.0 #Units: [Molecules]
   ssPDNA()     0 #Units: [Molecules]
   RF1()        0 #Units: [Molecules]
+  RF2()        0 #Units: [Molecules]
+  RF2DP3()     0 #Units: [Molecules]
   DA()         0 #Units: [Molecules]
   DB()         0 #Units: [Molecules]
   DH()         0 #Units: [Molecules]
@@ -83,6 +89,8 @@ begin observables
   Species ssDNA    ssDNA()
   Species ssPDNA   ssPDNA()
   Species RF1      RF1()
+  Species RF2      RF2()
+  Species RF2DP3   RF2DP3()
   Species DA       DA()
   Species DB       DB()
   Species DH       DH()
@@ -111,6 +119,11 @@ begin functions
   RBS5Removal() = 1/(RBS5()+EPS)
   RBS9Removal() = 1/(RBS9()+EPS)
   RBS8Removal() = 1/(RBS8()+EPS)
+  DARemoval() = 1/(DA()+EPS)
+  DBRemoval() = 1/(DB()+EPS)
+  DHRemoval() = 1/(DH()+EPS)
+  DZRemoval() = 1/(DZ()+EPS)
+  DWRemoval() = 1/(DW()+EPS)
 end functions
 
 begin reaction rules
@@ -125,6 +138,15 @@ begin reaction rules
   #form of viral DNA called RF1, and contains transcriptional promoter
   #sites DA, DB, DH, DZ, and DW (Please see paper for more information)
   ssPDNA() -> RF1() + DP3() + DA() + DB() + DH() + DZ() + DW() C2 
+
+  #P2 can "nick" the RF1 DNA to form a relaxed form called RF2 
+  RF1() + P2() <-> RF2() C3, C4 
+
+  #DNA Polymerase can bind to RF2 to intiate the rolling circle mechanism 
+  RF2() + DP3() + DA() + DB() + DH() + DZ() + DW() -> RF2DP3() C1*DARemoval()*DBRemoval()*DHRemoval()*DZRemoval()*DWRemoval()
+
+  #DNA polymerase that is bound to RF2 and replicating the DNA 
+  RF2DP3() -> P2() + DP3() + RF1() + ssDNA() + DA() + DB() + DH() + DZ() + DW() C2
 
   #====================================================
   #            Transcription Equations
