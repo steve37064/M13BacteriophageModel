@@ -7,11 +7,15 @@ begin parameters
   C12_A 2.0E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
   C12_D 5.8E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
   C12_E 4.6E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
+  P5    0           #Units: [Molecules] -------------------Temporary Paramter 
+  EF2   1.5E-4      #Units: [Unitless] --------------------Efficiency of P5 inhibiting P2 Translation
+  n     1.0         #Units: [Unitless] --------------------Hill coefficient for P5 inhibiting translation
 end parameters
 
 begin molecule types
   DP3()      #Host Resource: DNA Polymerase 3 
   RNAP()     #Host Resource: RNA Polymerase 
+  R()        #Host Resource: Ribosomes
   ssDNA()    #M13 single-stranded DNA 
   ssPDNA()   #ssDNA/DP3 binding complex 
   RF1()      #Viral doubld stranded DNA in replicative form 1  
@@ -30,12 +34,14 @@ begin molecule types
   RBS5()     #Free ribsome binding site to make viral protein P5
   RBS7()     #Free ribsome binding site to make viral protein P7
   RBS9()     #Free ribsome binding site to make viral protein P9
-  RBS8()      #Free ribsome binding site to make viral protein P8
+  RBS8()     #Free ribsome binding site to make viral protein P8
+  RBS2R()    #Ribosome binding site 2 occupied by a ribosome
 end molecule types
 
 begin species
   DP3()      3.0 #Units: [Molecules]
   RNAP()  1280.0 #Units: [Molecules]
+  R()     7880.0 #Units: [Molecules]
   ssDNA()    1.0 #Units: [Molecules]
   ssPDNA()     0 #Units: [Molecules]
   RF1()        0 #Units: [Molecules]
@@ -55,11 +61,13 @@ begin species
   RBS7()       0 #Units: [Molecules]
   RBS9()       0 #Units: [Molecules]
   RBS8()       0 #Units: [Molecules]
+  RBS2R()      0 #Units: [Molecules]
 end species
 
 begin observables
   Species DP3      DP3()
   Species RNAP     RNAP()
+  Species R        R()
   Species ssDNA    ssDNA()
   Species ssPDNA   ssPDNA()
   Species RF1      RF1()
@@ -79,7 +87,12 @@ begin observables
   Species RBS7     RBS7()
   Species RBS9     RBS9()
   Species RBS8     RBS8()
+  Species RBS2R    RBS2R()
 end observables
+
+begin functions
+	P5InhibitionP2() = 1/(1 + (P5/(EF2*(RBS2()+1)))^n) 
+end functions
 
 begin reaction rules
   #====================================================
@@ -116,6 +129,12 @@ begin reaction rules
   RBS2() -> 0     C12_A 
   D()    -> E()   0.7*C12_D 
   E()    -> F()   0.7*C12_E
+
+  #====================================================
+  #              Translation Equations
+  #====================================================
+  RBS2() + R() -> RBS2R() P5InhibitionP2()
+
 
 end reaction rules
 

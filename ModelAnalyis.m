@@ -32,6 +32,9 @@ PlotGroup("Viral DNA",ViralDNA,timepoints,observables_out,PlotViralDNA)
 HostResource = ["DP3"];
 PlotGroup("Host Resources",HostResource,timepoints,observables_out,PlotHostResources)
 
+HostResource2 = ["RNAP"];
+PlotGroup("Host Resources",HostResource2,timepoints,observables_out,PlotHostResources)
+
 FreePromoterSites = ["DA","DB","DH","DZ","DW"];
 PlotGroup("Free Promoter Sites",FreePromoterSites,timepoints,observables_out,PlotPromoterSites)
 
