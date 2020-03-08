@@ -43,7 +43,7 @@ PlotGroup("Occupied Promoter Sites",OccupiedPromoterSites,PlotOccupiedPromoterSi
 ActivelyTranscribedPromoter = ["ELA"];
 PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,PlotActivelyTranscribed)
 
-FreeRBSSites = ["RBS2","RBS5","RBS7","RBS9","RBS8"];
+FreeRBSSites = ["RBS2","RBS5","RBS9","RBS8"];
 PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,PlotFreeRBSSites)
 
 mRNA = ["A","D","E","F","G"];

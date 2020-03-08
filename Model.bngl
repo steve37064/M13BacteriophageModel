@@ -37,7 +37,6 @@ begin molecule types
   G()        #mRNA transcript labeled E. Contains information for P7, P9, P8
   RBS2()     #Free ribsome binding site to make viral protein P2
   RBS5()     #Free ribsome binding site to make viral protein P5
-  RBS7()     #Free ribsome binding site to make viral protein P7
   RBS9()     #Free ribsome binding site to make viral protein P9
   RBS8()     #Free ribsome binding site to make viral protein P8
   RBS2R()    #Ribosome binding site 2 occupied by a ribosome
@@ -66,7 +65,6 @@ begin species
   G()          0 #Units: [Molecules]
   RBS2()       0 #Units: [Molecules]
   RBS5()       0 #Units: [Molecules]
-  RBS7()       0 #Units: [Molecules]
   RBS9()       0 #Units: [Molecules]
   RBS8()       0 #Units: [Molecules]
   RBS2R()      0 #Units: [Molecules]
@@ -95,7 +93,6 @@ begin observables
   Species G        G()
   Species RBS2     RBS2()
   Species RBS5     RBS5()
-  Species RBS7     RBS7()
   Species RBS9     RBS9()
   Species RBS8     RBS8()
   Species RBS2R    RBS2R()
@@ -107,7 +104,6 @@ begin functions
 	P5InhibitionP2() = 1/(1 + (P5/(EF2*(RBS2()+1)))^n) 
   RBS2Removal() = 1/(RBS2()+EPS)
   RBS5Removal() = 1/(RBS5()+EPS)
-  RBS7Removal() = 1/(RBS7()+EPS)
   RBS9Removal() = 1/(RBS9()+EPS)
   RBS8Removal() = 1/(RBS8()+EPS)
 end functions
@@ -138,18 +134,18 @@ begin reaction rules
 
   #The actively transcribing RNAP will produce transcript A and all of the 
   #ribosome binding sites needed for translation 
-  ELA() -> RNAP() + A() + RBS2() + RBS5() + RBS7() + RBS9() + RBS8() C10_A
+  ELA() -> RNAP() + A() + RBS2() + RBS5() + RBS9() + RBS8() C10_A
 
   #====================================================
   #            mRNA Degragation Equations
   #====================================================
   A() +RBS2()   -> D() C12_A*RBS2Removal()
   D()    -> E()   0.7*C12_D 
-  D() + RBS5() + RBS7() + RBS9() + RBS8() -> 0 0.3*C12_D*RBS5Removal()*RBS7Removal()*RBS9Removal()*RBS8Removal()
+  D() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_D*RBS5Removal()*RBS9Removal()*RBS8Removal()
   E()    -> F()   0.7*C12_E
-  E() + RBS5() + RBS7() + RBS9() + RBS8()  -> 0   0.3*C12_E*RBS5Removal()*RBS7Removal()*RBS9Removal()*RBS8Removal()
+  E() + RBS5() + RBS9() + RBS8()  -> 0   0.3*C12_E*RBS5Removal()*RBS9Removal()*RBS8Removal()
   F() + RBS5() -> G() 0.7*C12_F*RBS5Removal()
-  F() + RBS5() + RBS7() + RBS9() + RBS8()  -> 0 0.3*C12_F*RBS5Removal()*RBS7Removal()*RBS9Removal()*RBS8Removal()
+  F() + RBS5() + RBS9() + RBS8()  -> 0 0.3*C12_F*RBS5Removal()*RBS9Removal()*RBS8Removal()
   #====================================================
   #              Translation Equations
   #====================================================

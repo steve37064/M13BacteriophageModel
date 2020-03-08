@@ -13,7 +13,7 @@ function [err, timepoints, species_out, observables_out] = Model( timepoints, sp
 %
 %   INPUTS:
 %   -------
-%   species_init    : row vector of 26 initial species populations.
+%   species_init    : row vector of 25 initial species populations.
 %   timepoints      : column vector of time points returned by integrator.
 %   parameters      : row vector of 15 model parameters.
 %   suppress_plot   : 0 if a plot is desired (default), 1 if plot is suppressed.
@@ -75,8 +75,8 @@ if ( isempty(species_init) )
    species_init = initialize_species( parameters );
 end
 % check that species_init has proper dimensions
-if (  size(species_init,1) ~= 1  ||  size(species_init,2) ~= 26  )
-    fprintf( 1, 'Error: size of species_init argument is invalid! Correct size = [1 26].\n' );
+if (  size(species_init,1) ~= 1  ||  size(species_init,2) ~= 25  )
+    fprintf( 1, 'Error: size of species_init argument is invalid! Correct size = [1 25].\n' );
     err = 1;
     return;
 end
@@ -138,7 +138,7 @@ catch
 end
 
 % calculate observables
-observables_out = zeros( length(timepoints), 26 );
+observables_out = zeros( length(timepoints), 25 );
 for t = 1 : length(timepoints)
     observables_out(t,:) = calc_observables( species_out(t,:), expressions );
 end
@@ -149,7 +149,7 @@ end
 if ( ~suppress_plot )
     
     % define plot labels
-    observable_labels = { 'DP3', 'RNAP', 'R', 'ssDNA', 'ssPDNA', 'RF1', 'DA', 'DB', 'DH', 'DZ', 'DW', 'EA', 'ELA', 'A', 'D', 'E', 'F', 'G', 'RBS2', 'RBS5', 'RBS7', 'RBS9', 'RBS8', 'RBS2R', 'PD2', 'P2' };
+    observable_labels = { 'DP3', 'RNAP', 'R', 'ssDNA', 'ssPDNA', 'RF1', 'DA', 'DB', 'DH', 'DZ', 'DW', 'EA', 'ELA', 'A', 'D', 'E', 'F', 'G', 'RBS2', 'RBS5', 'RBS9', 'RBS8', 'RBS2R', 'PD2', 'P2' };
 
     % construct figure
     plot(timepoints,observables_out);
@@ -180,7 +180,7 @@ end
 % initialize species function
 function [species_init] = initialize_species( params )
 
-    species_init = zeros(1,26);
+    species_init = zeros(1,25);
     species_init(1) = 3.0;
     species_init(2) = 1280.0;
     species_init(3) = 7880.0;
@@ -206,7 +206,6 @@ function [species_init] = initialize_species( params )
     species_init(23) = 0;
     species_init(24) = 0;
     species_init(25) = 0;
-    species_init(26) = 0;
 
 end
 
@@ -227,19 +226,14 @@ function [val] = RBS5Removal(expressions, observables)
     val = (1/(observables(20)+expressions(15)));
 end
 
-% function RBS7Removal
-function [val] = RBS7Removal(expressions, observables)
-    val = (1/(observables(21)+expressions(15)));
-end
-
 % function RBS9Removal
 function [val] = RBS9Removal(expressions, observables)
-    val = (1/(observables(22)+expressions(15)));
+    val = (1/(observables(21)+expressions(15)));
 end
 
 % function RBS8Removal
 function [val] = RBS8Removal(expressions, observables)
-    val = (1/(observables(23)+expressions(15)));
+    val = (1/(observables(22)+expressions(15)));
 end
 
 % function rateLaw__1
@@ -249,12 +243,12 @@ end
 
 % function rateLaw__3
 function [val] = rateLaw__3(expressions, observables)
-    val = (((((0.3*expressions(7))*RBS5Removal(expressions,observables))*RBS7Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+    val = ((((0.3*expressions(7))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
 end
 
 % function rateLaw__5
 function [val] = rateLaw__5(expressions, observables)
-    val = (((((0.3*expressions(8))*RBS5Removal(expressions,observables))*RBS7Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+    val = ((((0.3*expressions(8))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
 end
 
 % function rateLaw__6
@@ -264,7 +258,7 @@ end
 
 % function rateLaw__7
 function [val] = rateLaw__7(expressions, observables)
-    val = (((((0.3*expressions(9))*RBS5Removal(expressions,observables))*RBS7Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
+    val = ((((0.3*expressions(9))*RBS5Removal(expressions,observables))*RBS9Removal(expressions,observables))*RBS8Removal(expressions,observables));
 end
 
 
@@ -299,7 +293,7 @@ end
 % Calculate observables
 function [ observables ] = calc_observables ( species, expressions )
 
-    observables = zeros(1,26);
+    observables = zeros(1,25);
     observables(1) = species(1);
     observables(2) = species(2);
     observables(3) = species(3);
@@ -325,7 +319,6 @@ function [ observables ] = calc_observables ( species, expressions )
     observables(23) = species(23);
     observables(24) = species(24);
     observables(25) = species(25);
-    observables(26) = species(26);
 
 end
 
@@ -333,7 +326,7 @@ end
 % Calculate ratelaws
 function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
 
-    ratelaws = zeros(1,26);
+    ratelaws = zeros(1,25);
     ratelaws(1) = expressions(1)*species(4)*species(1);
     ratelaws(2) = expressions(2)*species(5);
     ratelaws(3) = expressions(3)*species(7)*species(2);
@@ -341,14 +334,14 @@ function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
     ratelaws(5) = expressions(5)*species(13);
     ratelaws(6) = rateLaw__1(expressions,observables)*species(14)*species(19);
     ratelaws(7) = (0.7*expressions(7))*species(15);
-    ratelaws(8) = rateLaw__3(expressions,observables)*species(15)*species(20)*species(21)*species(22)*species(23);
+    ratelaws(8) = rateLaw__3(expressions,observables)*species(15)*species(20)*species(21)*species(22);
     ratelaws(9) = (0.7*expressions(8))*species(16);
-    ratelaws(10) = rateLaw__5(expressions,observables)*species(16)*species(20)*species(21)*species(22)*species(23);
+    ratelaws(10) = rateLaw__5(expressions,observables)*species(16)*species(20)*species(21)*species(22);
     ratelaws(11) = rateLaw__6(expressions,observables)*species(17)*species(20);
-    ratelaws(12) = rateLaw__7(expressions,observables)*species(17)*species(20)*species(21)*species(22)*species(23);
+    ratelaws(12) = rateLaw__7(expressions,observables)*species(17)*species(20)*species(21)*species(22);
     ratelaws(13) = P5InhibitionP2(expressions,observables)*species(19)*species(3);
-    ratelaws(14) = expressions(10)*species(24);
-    ratelaws(15) = expressions(11)*species(25);
+    ratelaws(14) = expressions(10)*species(23);
+    ratelaws(15) = expressions(11)*species(24);
 
 end
 
@@ -356,7 +349,7 @@ end
 function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     
     % initialize derivative vector
-    Dspecies = zeros(26,1);
+    Dspecies = zeros(25,1);
     
     % update observables
     [ observables ] = calc_observables( species, expressions );
@@ -387,10 +380,9 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(20) = ratelaws(5) -ratelaws(8) -ratelaws(10) -ratelaws(11) -ratelaws(12);
     Dspecies(21) = ratelaws(5) -ratelaws(8) -ratelaws(10) -ratelaws(12);
     Dspecies(22) = ratelaws(5) -ratelaws(8) -ratelaws(10) -ratelaws(12);
-    Dspecies(23) = ratelaws(5) -ratelaws(8) -ratelaws(10) -ratelaws(12);
-    Dspecies(24) = ratelaws(13) -ratelaws(14);
-    Dspecies(25) = ratelaws(14) -ratelaws(15);
-    Dspecies(26) = ratelaws(15);
+    Dspecies(23) = ratelaws(13) -ratelaws(14);
+    Dspecies(24) = ratelaws(14) -ratelaws(15);
+    Dspecies(25) = ratelaws(15);
 
 end
 
