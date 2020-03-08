@@ -4,6 +4,8 @@ begin parameters
   C8_A  6E-3        #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site A
   C9    1.34        #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
   C10_A 3.6E-2      #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
+  C12_A 2.0E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
+  C12_D 5.8E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
 end parameters
 
 begin molecule types
@@ -20,6 +22,7 @@ begin molecule types
   EA()       #Transcriptional Promoter site A occupied by RNAP
   ELA()      #RNAP actively transcribing mRNA A but not occupying the promoter site
   A()        #mRNA transcript labeled A. Contains information for P2, P5, P7, P9, P8
+  D()        #mRNA transcript labeled D. Contains information for P5, P7, P9, P8
   RBS2()     #Free ribsome binding site to make viral protein P2
   RBS5()     #Free ribsome binding site to make viral protein P5
   RBS7()     #Free ribsome binding site to make viral protein P7
@@ -41,6 +44,7 @@ begin species
   EA()         0 #Units: [Molecules]
   ELA()        0 #Units: [Molecules]
   A()          0 #Units: [Molecules]
+  D()          0 #Units: [Molecules]
   RBS2()       0 #Units: [Molecules]
   RBS5()       0 #Units: [Molecules]
   RBS7()       0 #Units: [Molecules]
@@ -62,6 +66,7 @@ begin observables
   Species EA       EA()
   Species ELA      ELA()
   Species A        A()
+  Species D        D()
   Species RBS2     RBS2()
   Species RBS5     RBS5()
   Species RBS7     RBS7()
@@ -96,6 +101,15 @@ begin reaction rules
   #The actively transcribing RNAP will produce transcript A and all of the 
   #ribosome binding sites needed for translation 
   ELA() -> RNAP() + A() + RBS2() + RBS5() + RBS7() + RBS9() + RBS8() C10_A
+
+  #====================================================
+  #            mRNA Degragation Equations
+  #====================================================
+  A()    -> D()   C12_A
+  RBS2() -> 0     C12_A 
+  #D()    -> E()   0.7*C12_D 
+
+  #D() RBS5() + RBS7() + RBS9() + RBS8() -> 0 C12_D
 
 end reaction rules
 

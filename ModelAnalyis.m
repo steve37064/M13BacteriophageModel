@@ -44,7 +44,7 @@ PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,timepoints,obs
 FreeRBSSites = ["RBS2","RBS5","RBS7","RBS9","RBS8"];
 PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,timepoints,observables_out,PlotFreeRBSSites)
 
-mRNA = ["A"];
+mRNA = ["A","D"];
 PlotGroup("mRNA Strands",mRNA,timepoints,observables_out,PlotmRNA)
 
 
