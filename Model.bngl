@@ -8,6 +8,8 @@ begin parameters
   C12_D 5.8E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
   C12_E 4.6E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
   C12_F 1.9E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA F
+  C12_G 1.4E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA G
+  C12_H 1.2E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA H
   C14   0.25        #Units: [(Second)^{-1}] -------------- Rate of ribosome clearing the promoter site
   C15_2 4.8E-2      #Units: [(Second)^{-1}] -------------- Rate of P2 formation once Ribosme is bound to mRNA 
   P5    0           #Units: [Molecules] -------------------Temporary Paramter 
@@ -34,7 +36,8 @@ begin molecule types
   D()        #mRNA transcript labeled D. Contains information for P5, P7, P9, P8
   E()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
   F()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
-  G()        #mRNA transcript labeled E. Contains information for P7, P9, P8
+  G()        #mRNA transcript labeled E. Contains information for P9, P8
+  H()        #mRNA transcript labeled E. Contains information for P9, P8
   RBS2()     #Free ribsome binding site to make viral protein P2
   RBS5()     #Free ribsome binding site to make viral protein P5
   RBS9()     #Free ribsome binding site to make viral protein P9
@@ -63,6 +66,7 @@ begin species
   E()          0 #Units: [Molecules]
   F()          0 #Units: [Molecules]
   G()          0 #Units: [Molecules]
+  H()          0 #Units: [Molecules]
   RBS2()       0 #Units: [Molecules]
   RBS5()       0 #Units: [Molecules]
   RBS9()       0 #Units: [Molecules]
@@ -91,6 +95,7 @@ begin observables
   Species E        E()
   Species F        F()
   Species G        G()
+  Species H        H()
   Species RBS2     RBS2()
   Species RBS5     RBS5()
   Species RBS9     RBS9()
@@ -146,6 +151,9 @@ begin reaction rules
   E() + RBS5() + RBS9() + RBS8()  -> 0   0.3*C12_E*RBS5Removal()*RBS9Removal()*RBS8Removal()
   F() + RBS5() -> G() 0.7*C12_F*RBS5Removal()
   F() + RBS5() + RBS9() + RBS8()  -> 0 0.3*C12_F*RBS5Removal()*RBS9Removal()*RBS8Removal()
+  G() -> H() 0.7*C12_G
+  G() + RBS9() + RBS8() -> 0 0.3*C12_G*RBS9Removal()*RBS8Removal()
+  H() + RBS9() + RBS8() -> 0 C12_H*RBS9Removal()*RBS8Removal()
   #====================================================
   #              Translation Equations
   #====================================================
