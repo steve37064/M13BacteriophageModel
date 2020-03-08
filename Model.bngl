@@ -63,7 +63,6 @@ begin parameters
   Km2    3000         #Units: [Molecules] ------------------ Number of P8 Molecules Needed for Elongation to Occur
   n3     40           #Units: [Unitless] ------------------- Hill Coefficient
   EPS    1E-6
-  P5     0            #Units: [Molecules] -------------------Temporary Paramter 
 end parameters
 
 begin molecule types
@@ -81,7 +80,15 @@ begin molecule types
   DZ()       #Transcriptional Promoter site Z on dsDNA  
   DW()       #Transcriptional Promoter site W on dsDNA  
   EA()       #Transcriptional Promoter site A occupied by RNAP
+  EB()       #Transcriptional Promoter site B occupied by RNAP
+  EH()       #Transcriptional Promoter site H occupied by RNAP
+  EZ()       #Transcriptional Promoter site Z occupied by RNAP
+  EW()       #Transcriptional Promoter site W occupied by RNAP
   ELA()      #RNAP actively transcribing mRNA A but not occupying the promoter site
+  ELB()      #RNAP actively transcribing mRNA B but not occupying the promoter site
+  ELH()      #RNAP actively transcribing mRNA H but not occupying the promoter site
+  ELZ()      #RNAP actively transcribing mRNA Z but not occupying the promoter site
+  ELW()      #RNAP actively transcribing mRNA W but not occupying the promoter site
   A()        #mRNA transcript labeled A. Contains information for P2, P5, P7, P9, P8
   D()        #mRNA transcript labeled D. Contains information for P5, P7, P9, P8
   E()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
@@ -94,7 +101,17 @@ begin molecule types
   RBS8()     #Free ribsome binding site to make viral protein P8
   RBS2R()    #Ribosome binding site 2 occupied by a ribosome
   PD2()      #Ribsome actively creating P2 but not occupying the promoter site 
+  P1()       #Viral protein P1
   P2()       #Viral protein P2 
+  P3()       #Viral protein P3 
+  P4()       #Viral protein P4 
+  P5()       #Viral protein P5 
+  P6()       #Viral protein P6 
+  P7()       #Viral protein P7 
+  P8()       #Viral protein P8 
+  P9()       #Viral protein P9 
+  P10()      #Viral protein P10
+  P11()      #Viral protein P11
 end molecule types
 
 begin species
@@ -112,7 +129,15 @@ begin species
   DZ()         0 #Units: [Molecules]
   DW()         0 #Units: [Molecules]
   EA()         0 #Units: [Molecules]
+  EB()         0 #Units: [Molecules]
+  EH()         0 #Units: [Molecules]
+  EZ()         0 #Units: [Molecules]
+  EW()         0 #Units: [Molecules]
   ELA()        0 #Units: [Molecules]
+  ELB()        0 #Units: [Molecules]
+  ELH()        0 #Units: [Molecules]
+  ELZ()        0 #Units: [Molecules]
+  ELW()        0 #Units: [Molecules]
   A()          0 #Units: [Molecules]
   D()          0 #Units: [Molecules]
   E()          0 #Units: [Molecules]
@@ -125,7 +150,17 @@ begin species
   RBS8()       0 #Units: [Molecules]
   RBS2R()      0 #Units: [Molecules]
   PD2()        0 #Units: [Molecules]
+  P1()         0 #Units: [Molecules]
   P2()         0 #Units: [Molecules]
+  P3()         0 #Units: [Molecules]
+  P4()         0 #Units: [Molecules]
+  P5()         0 #Units: [Molecules]
+  P6()         0 #Units: [Molecules]
+  P7()         0 #Units: [Molecules]
+  P8()         0 #Units: [Molecules]
+  P9()         0 #Units: [Molecules]
+  P10()        0 #Units: [Molecules]
+  P11()        0 #Units: [Molecules]
 end species
 
 begin observables
@@ -143,7 +178,15 @@ begin observables
   Species DZ       DZ()
   Species DW       DW()
   Species EA       EA()
+  Species EB       EB()
+  Species EH       EH()
+  Species EZ       EZ()
+  Species EW       EW()
   Species ELA      ELA()
+  Species ELB      ELB()
+  Species ELH      ELH()
+  Species ELZ      ELZ()
+  Species ELW      ELW()
   Species A        A()
   Species D        D()
   Species E        E()
@@ -156,7 +199,18 @@ begin observables
   Species RBS8     RBS8()
   Species RBS2R    RBS2R()
   Species PD2      PD2() 
+  Species P1       P1()
   Species P2       P2()
+  Species P3       P3()
+  Species P4       P4()
+  Species P5       P5()
+  Species P6       P6()
+  Species P7       P7()
+  Species P8       P8()
+  Species P9       P9()
+  Species P10      P10()
+  Species P11      P11()
+
 end observables
 
 begin functions
