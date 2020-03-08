@@ -7,6 +7,7 @@ begin parameters
   C12_A 2.0E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
   C12_D 5.8E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
   C12_E 4.6E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
+  C12_F 1.9E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA F
   C14   0.25        #Units: [(Second)^{-1}] -------------- Rate of ribosome clearing the promoter site
   C15_2 4.8E-2      #Units: [(Second)^{-1}] -------------- Rate of P2 formation once Ribosme is bound to mRNA 
   P5    0           #Units: [Molecules] -------------------Temporary Paramter 
@@ -33,6 +34,7 @@ begin molecule types
   D()        #mRNA transcript labeled D. Contains information for P5, P7, P9, P8
   E()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
   F()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
+  G()        #mRNA transcript labeled E. Contains information for P7, P9, P8
   RBS2()     #Free ribsome binding site to make viral protein P2
   RBS5()     #Free ribsome binding site to make viral protein P5
   RBS7()     #Free ribsome binding site to make viral protein P7
@@ -61,6 +63,7 @@ begin species
   D()          0 #Units: [Molecules]
   E()          0 #Units: [Molecules]
   F()          0 #Units: [Molecules]
+  G()          0 #Units: [Molecules]
   RBS2()       0 #Units: [Molecules]
   RBS5()       0 #Units: [Molecules]
   RBS7()       0 #Units: [Molecules]
@@ -89,6 +92,7 @@ begin observables
   Species D        D()
   Species E        E()
   Species F        F()
+  Species G        G()
   Species RBS2     RBS2()
   Species RBS5     RBS5()
   Species RBS7     RBS7()
@@ -102,6 +106,10 @@ end observables
 begin functions
 	P5InhibitionP2() = 1/(1 + (P5/(EF2*(RBS2()+1)))^n) 
   RBS2Removal() = 1/(RBS2()+EPS)
+  RBS5Removal() = 1/(RBS5()+EPS)
+  RBS7Removal() = 1/(RBS7()+EPS)
+  RBS9Removal() = 1/(RBS9()+EPS)
+  RBS8Removal() = 1/(RBS8()+EPS)
 end functions
 
 begin reaction rules
@@ -137,8 +145,11 @@ begin reaction rules
   #====================================================
   A() +RBS2()   -> D() C12_A*RBS2Removal()
   D()    -> E()   0.7*C12_D 
+  D() + RBS5() + RBS7() + RBS9() + RBS8() -> 0 0.3*C12_D*RBS5Removal()*RBS7Removal()*RBS9Removal()*RBS8Removal()
   E()    -> F()   0.7*C12_E
-
+  E() + RBS5() + RBS7() + RBS9() + RBS8()  -> 0   0.3*C12_E*RBS5Removal()*RBS7Removal()*RBS9Removal()*RBS8Removal()
+  F() + RBS5() -> G() 0.7*C12_F*RBS5Removal()
+  F() + RBS5() + RBS7() + RBS9() + RBS8()  -> 0 0.3*C12_F*RBS5Removal()*RBS7Removal()*RBS9Removal()*RBS8Removal()
   #====================================================
   #              Translation Equations
   #====================================================

@@ -23,7 +23,7 @@ PlotViralRegulatoryProteins = 1;
 global param_labels observable_labels observables_out timepoints
 [param_labels,observable_labels] = GetParamNameAndLabels("Model.m");
 
-LengthToSimulation = 1*60*1; %In Seconds 
+LengthToSimulation = 1*60*60; %In Seconds 
 timepoints = linspace(0,LengthToSimulation,1000)';
 [err, timepoints, species_out, observables_out] = Model(timepoints); 
 close all 
@@ -46,7 +46,7 @@ PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,PlotActivelyTr
 FreeRBSSites = ["RBS2","RBS5","RBS7","RBS9","RBS8"];
 PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,PlotFreeRBSSites)
 
-mRNA = ["A","D","E","F"];
+mRNA = ["A","D","E","F","G"];
 PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 
 regulatoryProteins = ["P2"];
