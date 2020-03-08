@@ -22,7 +22,7 @@ PlotmRNA = 1;
 global param_labels observable_labels
 [param_labels,observable_labels] = GetParamNameAndLabels("Model.m");
 
-LengthToSimulation = 1*60*5; %In Seconds 
+LengthToSimulation = 1*60*1; %In Seconds 
 timepoints = linspace(0,LengthToSimulation,1000)';
 [err, timepoints, species_out, observables_out] = Model(timepoints); 
 
@@ -44,7 +44,7 @@ PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,timepoints,obs
 FreeRBSSites = ["RBS2","RBS5","RBS7","RBS9","RBS8"];
 PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,timepoints,observables_out,PlotFreeRBSSites)
 
-mRNA = ["A","D"];
+mRNA = ["A","D","E","F"];
 PlotGroup("mRNA Strands",mRNA,timepoints,observables_out,PlotmRNA)
 
 

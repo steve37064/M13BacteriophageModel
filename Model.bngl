@@ -6,6 +6,7 @@ begin parameters
   C10_A 3.6E-2      #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
   C12_A 2.0E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
   C12_D 5.8E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
+  C12_E 4.6E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
 end parameters
 
 begin molecule types
@@ -23,6 +24,8 @@ begin molecule types
   ELA()      #RNAP actively transcribing mRNA A but not occupying the promoter site
   A()        #mRNA transcript labeled A. Contains information for P2, P5, P7, P9, P8
   D()        #mRNA transcript labeled D. Contains information for P5, P7, P9, P8
+  E()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
+  F()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
   RBS2()     #Free ribsome binding site to make viral protein P2
   RBS5()     #Free ribsome binding site to make viral protein P5
   RBS7()     #Free ribsome binding site to make viral protein P7
@@ -45,6 +48,8 @@ begin species
   ELA()        0 #Units: [Molecules]
   A()          0 #Units: [Molecules]
   D()          0 #Units: [Molecules]
+  E()          0 #Units: [Molecules]
+  F()          0 #Units: [Molecules]
   RBS2()       0 #Units: [Molecules]
   RBS5()       0 #Units: [Molecules]
   RBS7()       0 #Units: [Molecules]
@@ -67,6 +72,8 @@ begin observables
   Species ELA      ELA()
   Species A        A()
   Species D        D()
+  Species E        E()
+  Species F        F()
   Species RBS2     RBS2()
   Species RBS5     RBS5()
   Species RBS7     RBS7()
@@ -107,9 +114,8 @@ begin reaction rules
   #====================================================
   A()    -> D()   C12_A
   RBS2() -> 0     C12_A 
-  #D()    -> E()   0.7*C12_D 
-
-  #D() RBS5() + RBS7() + RBS9() + RBS8() -> 0 C12_D
+  D()    -> E()   0.7*C12_D 
+  E()    -> F()   0.7*C12_E
 
 end reaction rules
 
