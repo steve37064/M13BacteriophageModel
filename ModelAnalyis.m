@@ -26,7 +26,7 @@ global param_labels observable_labels observables_out timepoints
 LengthToSimulation = 1*60*1; %In Seconds 
 timepoints = linspace(0,LengthToSimulation,1000)';
 [err, timepoints, species_out, observables_out] = Model(timepoints); 
-
+close all 
 ViralDNA = ["ssDNA","ssPDNA","RF1"];
 PlotGroup("Viral DNA",ViralDNA,PlotViralDNA)
 

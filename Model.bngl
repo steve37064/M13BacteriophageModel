@@ -12,6 +12,7 @@ begin parameters
   P5    0           #Units: [Molecules] -------------------Temporary Paramter 
   EF2   1.5E-4      #Units: [Unitless] --------------------Efficiency of P5 inhibiting P2 Translation
   n     1.0         #Units: [Unitless] --------------------Hill coefficient for P5 inhibiting translation
+  EPS   1E-6
 end parameters
 
 begin molecule types
@@ -100,6 +101,7 @@ end observables
 
 begin functions
 	P5InhibitionP2() = 1/(1 + (P5/(EF2*(RBS2()+1)))^n) 
+  RBS2Removal() = 1/(RBS2()+EPS)
 end functions
 
 begin reaction rules
@@ -133,8 +135,7 @@ begin reaction rules
   #====================================================
   #            mRNA Degragation Equations
   #====================================================
-  A()    -> D()   C12_A
-  RBS2() -> 0     C12_A 
+  A() +RBS2()   -> D() C12_A*RBS2Removal()
   D()    -> E()   0.7*C12_D 
   E()    -> F()   0.7*C12_E
 

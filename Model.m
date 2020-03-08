@@ -15,7 +15,7 @@ function [err, timepoints, species_out, observables_out] = Model( timepoints, sp
 %   -------
 %   species_init    : row vector of 25 initial species populations.
 %   timepoints      : column vector of time points returned by integrator.
-%   parameters      : row vector of 13 model parameters.
+%   parameters      : row vector of 14 model parameters.
 %   suppress_plot   : 0 if a plot is desired (default), 1 if plot is suppressed.
 %
 %   Note: to specify default value for an input argument, pass the empty array.
@@ -61,11 +61,11 @@ observables_out = [];
 
 % setup default parameters, if necessary
 if ( isempty(parameters) )
-   parameters = [ 0.1, 0.117, 6E-3, 1.34, 3.6E-2, 2.0E-2, 5.8E-2, 4.6E-3, 0.25, 4.8E-2, 0, 1.5E-4, 1.0 ];
+   parameters = [ 0.1, 0.117, 6E-3, 1.34, 3.6E-2, 2.0E-2, 5.8E-2, 4.6E-3, 0.25, 4.8E-2, 0, 1.5E-4, 1.0, 1E-6 ];
 end
 % check that parameters has proper dimensions
-if (  size(parameters,1) ~= 1  ||  size(parameters,2) ~= 13  )
-    fprintf( 1, 'Error: size of parameter argument is invalid! Correct size = [1 13].\n' );
+if (  size(parameters,1) ~= 1  ||  size(parameters,2) ~= 14  )
+    fprintf( 1, 'Error: size of parameter argument is invalid! Correct size = [1 14].\n' );
     err = 1;
     return;
 end
@@ -104,7 +104,7 @@ if ( size(suppress_plot,1) ~= 1  ||  size(suppress_plot,2) ~= 1 )
 end
 
 % define parameter labels (this is for the user's reference!)
-param_labels = { 'C1', 'C2', 'C8_A', 'C9', 'C10_A', 'C12_A', 'C12_D', 'C12_E', 'C14', 'C15_2', 'P5', 'EF2', 'n' };
+param_labels = { 'C1', 'C2', 'C8_A', 'C9', 'C10_A', 'C12_A', 'C12_D', 'C12_E', 'C14', 'C15_2', 'P5', 'EF2', 'n', 'EPS' };
 
 
 
@@ -216,13 +216,23 @@ function [val] = P5InhibitionP2(expressions, observables)
     val = (1/(1+((expressions(11)/(expressions(12)*(observables(18)+1)))^expressions(13))));
 end
 
+% function RBS2Removal
+function [val] = RBS2Removal(expressions, observables)
+    val = (1/(observables(18)+expressions(14)));
+end
+
+% function rateLaw__1
+function [val] = rateLaw__1(expressions, observables)
+    val = (expressions(6)*RBS2Removal(expressions,observables));
+end
+
 
 
 
 % Calculate expressions
 function [ expressions ] = calc_expressions ( parameters )
 
-    expressions = zeros(1,15);
+    expressions = zeros(1,16);
     expressions(1) = parameters(1);
     expressions(2) = parameters(2);
     expressions(3) = parameters(3);
@@ -236,8 +246,9 @@ function [ expressions ] = calc_expressions ( parameters )
     expressions(11) = parameters(11);
     expressions(12) = parameters(12);
     expressions(13) = parameters(13);
-    expressions(14) = (0.7*expressions(7));
-    expressions(15) = (0.7*expressions(8));
+    expressions(14) = parameters(14);
+    expressions(15) = (0.7*expressions(7));
+    expressions(16) = (0.7*expressions(8));
    
 end
 
@@ -285,13 +296,12 @@ function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
     ratelaws(3) = expressions(3)*species(7)*species(2);
     ratelaws(4) = expressions(4)*species(12);
     ratelaws(5) = expressions(5)*species(13);
-    ratelaws(6) = expressions(6)*species(14);
-    ratelaws(7) = expressions(6)*species(18);
-    ratelaws(8) = (0.7*expressions(7))*species(15);
-    ratelaws(9) = (0.7*expressions(8))*species(16);
-    ratelaws(10) = P5InhibitionP2(expressions,observables)*species(18)*species(3);
-    ratelaws(11) = expressions(9)*species(23);
-    ratelaws(12) = expressions(10)*species(24);
+    ratelaws(6) = rateLaw__1(expressions,observables)*species(14)*species(18);
+    ratelaws(7) = (0.7*expressions(7))*species(15);
+    ratelaws(8) = (0.7*expressions(8))*species(16);
+    ratelaws(9) = P5InhibitionP2(expressions,observables)*species(18)*species(3);
+    ratelaws(10) = expressions(9)*species(23);
+    ratelaws(11) = expressions(10)*species(24);
 
 end
 
@@ -310,7 +320,7 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     % calculate derivatives
     Dspecies(1) = -ratelaws(1) +ratelaws(2);
     Dspecies(2) = -ratelaws(3) +ratelaws(5);
-    Dspecies(3) = -ratelaws(10) +ratelaws(12);
+    Dspecies(3) = -ratelaws(9) +ratelaws(11);
     Dspecies(4) = -ratelaws(1);
     Dspecies(5) = ratelaws(1) -ratelaws(2);
     Dspecies(6) = ratelaws(2);
@@ -322,17 +332,17 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(12) = ratelaws(3) -ratelaws(4);
     Dspecies(13) = ratelaws(4) -ratelaws(5);
     Dspecies(14) = ratelaws(5) -ratelaws(6);
-    Dspecies(15) = ratelaws(6) -ratelaws(8);
-    Dspecies(16) = ratelaws(8) -ratelaws(9);
-    Dspecies(17) = ratelaws(9);
-    Dspecies(18) = ratelaws(5) -ratelaws(7) -ratelaws(10) +ratelaws(11);
+    Dspecies(15) = ratelaws(6) -ratelaws(7);
+    Dspecies(16) = ratelaws(7) -ratelaws(8);
+    Dspecies(17) = ratelaws(8);
+    Dspecies(18) = ratelaws(5) -ratelaws(6) -ratelaws(9) +ratelaws(10);
     Dspecies(19) = ratelaws(5);
     Dspecies(20) = ratelaws(5);
     Dspecies(21) = ratelaws(5);
     Dspecies(22) = ratelaws(5);
-    Dspecies(23) = ratelaws(10) -ratelaws(11);
-    Dspecies(24) = ratelaws(11) -ratelaws(12);
-    Dspecies(25) = ratelaws(12);
+    Dspecies(23) = ratelaws(9) -ratelaws(10);
+    Dspecies(24) = ratelaws(10) -ratelaws(11);
+    Dspecies(25) = ratelaws(11);
 
 end
 
