@@ -102,8 +102,31 @@ begin molecule types
   RBS5()     #Free ribsome binding site to make viral protein P5
   RBS9()     #Free ribsome binding site to make viral protein P9
   RBS8()     #Free ribsome binding site to make viral protein P8
+  RBS1()     #Free ribsome binding site to make viral protein P1
+  RBS3()     #Free ribsome binding site to make viral protein P3
+  RBS4()     #Free ribsome binding site to make viral protein P4
+  RBS6()     #Free ribsome binding site to make viral protein P6
+  RBS11()    #Free ribsome binding site to make viral protein P11
+  RBS1R()    #Ribosome binding site 1 occupied by a ribosome
   RBS2R()    #Ribosome binding site 2 occupied by a ribosome
+  RBS3R()    #Ribosome binding site 3 occupied by a ribosome
+  RBS4R()    #Ribosome binding site 4 occupied by a ribosome
+  RBS5R()    #Ribosome binding site 5 occupied by a ribosome
+  RBS6R()    #Ribosome binding site 6 occupied by a ribosome
+  RBS8R()    #Ribosome binding site 8 occupied by a ribosome
+  RBS9R()    #Ribosome binding site 9 occupied by a ribosome
+  RBS10R()   #Ribosome binding site 10 occupied by a ribosome
+  RBS11R()   #Ribosome binding site 11 occupied by a ribosome
+  PD1()      #Ribsome actively creating P1 but not occupying the promoter site 
   PD2()      #Ribsome actively creating P2 but not occupying the promoter site 
+  PD3()      #Ribsome actively creating P3 but not occupying the promoter site 
+  PD4()      #Ribsome actively creating P4 but not occupying the promoter site 
+  PD5()      #Ribsome actively creating P5 but not occupying the promoter site 
+  PD6()      #Ribsome actively creating P6 but not occupying the promoter site 
+  PD8()      #Ribsome actively creating P8 but not occupying the promoter site 
+  PD9()      #Ribsome actively creating P9 but not occupying the promoter site 
+  PD10()     #Ribsome actively creating P10 but not occupying the promoter site 
+  PD11()     #Ribsome actively creating P11 but not occupying the promoter site 
   P1()       #Viral protein P1
   P2()       #Viral protein P2 
   P3()       #Viral protein P3 
@@ -154,8 +177,31 @@ begin species
   RBS5()       0 #Units: [Molecules]
   RBS9()       0 #Units: [Molecules]
   RBS8()       0 #Units: [Molecules]
+  RBS1()       0 #Units: [Molecules]
+  RBS3()       0 #Units: [Molecules]
+  RBS4()       0 #Units: [Molecules]
+  RBS6()       0 #Units: [Molecules]
+  RBS11()      0 #Units: [Molecules]
+  RBS1R()      0 #Units: [Molecules]
   RBS2R()      0 #Units: [Molecules]
+  RBS3R()      0 #Units: [Molecules]
+  RBS4R()      0 #Units: [Molecules]
+  RBS5R()      0 #Units: [Molecules]
+  RBS6R()      0 #Units: [Molecules]
+  RBS8R()      0 #Units: [Molecules]
+  RBS9R()      0 #Units: [Molecules]
+  RBS10R()     0 #Units: [Molecules]
+  RBS11R()     0 #Units: [Molecules]
+  PD1()        0 #Units: [Molecules]
   PD2()        0 #Units: [Molecules]
+  PD3()        0 #Units: [Molecules]
+  PD4()        0 #Units: [Molecules]
+  PD5()        0 #Units: [Molecules]
+  PD6()        0 #Units: [Molecules]
+  PD8()        0 #Units: [Molecules]
+  PD9()        0 #Units: [Molecules]
+  PD10()       0 #Units: [Molecules]
+  PD11()       0 #Units: [Molecules]
   P1()         0 #Units: [Molecules]
   P2()         0 #Units: [Molecules]
   P3()         0 #Units: [Molecules]
@@ -206,8 +252,31 @@ begin observables
   Species RBS5     RBS5()
   Species RBS9     RBS9()
   Species RBS8     RBS8()
+  Species RBS1     RBS1()      
+  Species RBS3     RBS3()       
+  Species RBS4     RBS4()       
+  Species RBS6     RBS6()       
+  Species RBS11    RBS11()     
+  Species RBS1R    RBS1R()
   Species RBS2R    RBS2R()
+  Species RBS3R    RBS3R()
+  Species RBS4R    RBS4R()
+  Species RBS5R    RBS5R()
+  Species RBS6R    RBS6R()
+  Species RBS8R    RBS8R()
+  Species RBS9R    RBS9R()
+  Species RBS10R   RBS10R()
+  Species RBS11R   RBS11R()      
+  Species PD1      PD1() 
   Species PD2      PD2() 
+  Species PD3      PD3() 
+  Species PD4      PD4() 
+  Species PD5      PD5() 
+  Species PD6      PD6() 
+  Species PD8      PD8() 
+  Species PD9      PD9() 
+  Species PD10     PD10() 
+  Species PD11     PD11() 
   Species P1       P1()
   Species P2       P2()
   Species P3       P3()
