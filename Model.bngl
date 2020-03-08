@@ -73,6 +73,7 @@ begin molecule types
   ssPDNA()   #ssDNA/DP3 binding complex 
   RF1()      #Viral doubld stranded DNA in replicative form 1  
   RF2()      #Viral doubld stranded DNA in replicative form 2
+  P5DNA()    #ssDNA sequestered by 1600 P5 molecules 
   RF2DP3()   #Viral doubld stranded DNA bound to DNA polymerase
   DA()       #Transcriptional Promoter site A on dsDNA
   DB()       #Transcriptional Promoter site B on dsDNA
@@ -138,6 +139,11 @@ begin molecule types
   P9()       #Viral protein P9 
   P10()      #Viral protein P10
   P11()      #Viral protein P11
+  As()
+  PI()
+  PE()
+  PF()
+  Phage()
 end molecule types
 
 begin species
@@ -146,6 +152,7 @@ begin species
   R()     7880.0 #Units: [Molecules]
   ssDNA()    1.0 #Units: [Molecules]
   ssPDNA()     0 #Units: [Molecules]
+  P5DNA()      0 
   RF1()        0 #Units: [Molecules]
   RF2()        0 #Units: [Molecules]
   RF2DP3()     0 #Units: [Molecules]
@@ -213,6 +220,11 @@ begin species
   P9()         0 #Units: [Molecules]
   P10()        0 #Units: [Molecules]
   P11()        0 #Units: [Molecules]
+  As()         0
+  PI()         0
+  PE()         0
+  PF()         0
+  Phage()      0
 end species
 
 begin observables
@@ -224,6 +236,7 @@ begin observables
   Species RF1      RF1()
   Species RF2      RF2()
   Species RF2DP3   RF2DP3()
+  Species P5DNA    P5DNA()
   Species DA       DA()
   Species DB       DB()
   Species DH       DH()
@@ -288,6 +301,11 @@ begin observables
   Species P9       P9()
   Species P10      P10()
   Species P11      P11()
+  Species As       As()
+  Species PI       PI()
+  Species PE       PE()
+  Species PF       PF()
+  Species Phage    Phage()
 
 end observables
 
