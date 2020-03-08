@@ -20,7 +20,7 @@ PlotViralRegulatoryProteins = 1;
 %        Running the Model and Plotting [Using Default Parameters]
 %==========================================================================
 %Get parameter and obserable label list and names
-global param_labels observable_labels
+global param_labels observable_labels observables_out timepoints
 [param_labels,observable_labels] = GetParamNameAndLabels("Model.m");
 
 LengthToSimulation = 1*60*1; %In Seconds 
@@ -28,36 +28,36 @@ timepoints = linspace(0,LengthToSimulation,1000)';
 [err, timepoints, species_out, observables_out] = Model(timepoints); 
 
 ViralDNA = ["ssDNA","ssPDNA","RF1"];
-PlotGroup("Viral DNA",ViralDNA,timepoints,observables_out,PlotViralDNA)
+PlotGroup("Viral DNA",ViralDNA,PlotViralDNA)
 
-PlotGroup("Host Resources","DP3",timepoints,observables_out,PlotHostResources)
-PlotGroup("Host Resources","RNAP",timepoints,observables_out,PlotHostResources)
-PlotGroup("Host Resources","R",timepoints,observables_out,PlotHostResources)
+PlotGroup("Host Resources","DP3",PlotHostResources)
+PlotGroup("Host Resources","RNAP",PlotHostResources)
+PlotGroup("Host Resources","R",PlotHostResources)
 
 FreePromoterSites = ["DA","DB","DH","DZ","DW"];
-PlotGroup("Free Promoter Sites",FreePromoterSites,timepoints,observables_out,PlotPromoterSites)
+PlotGroup("Free Promoter Sites",FreePromoterSites,PlotPromoterSites)
 
 OccupiedPromoterSites = ["EA"];
-PlotGroup("Occupied Promoter Sites",OccupiedPromoterSites,timepoints,observables_out,PlotOccupiedPromoterSites)
+PlotGroup("Occupied Promoter Sites",OccupiedPromoterSites,PlotOccupiedPromoterSites)
 
 ActivelyTranscribedPromoter = ["ELA"];
-PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,timepoints,observables_out,PlotActivelyTranscribed)
+PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,PlotActivelyTranscribed)
 
 FreeRBSSites = ["RBS2","RBS5","RBS7","RBS9","RBS8"];
-PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,timepoints,observables_out,PlotFreeRBSSites)
+PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,PlotFreeRBSSites)
 
 mRNA = ["A","D","E","F"];
-PlotGroup("mRNA Strands",mRNA,timepoints,observables_out,PlotmRNA)
+PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 
 regulatoryProteins = ["P2"];
-PlotGroup("mRNA Strands",regulatoryProteins,timepoints,observables_out,PlotViralRegulatoryProteins)
+PlotGroup("mRNA Strands",regulatoryProteins,PlotViralRegulatoryProteins)
 
 %==========================================================================
 %Plotting function that accepts a list of species names and plots the list
 %on a single graph. 
 %==========================================================================
-function PlotGroup(GroupType,SpeciesList,Timepoints,ObservablesOut,ShowPlot)
-    global observable_labels
+function PlotGroup(GroupType,SpeciesList,ShowPlot)
+    global observable_labels observables_out timepoints
     if ShowPlot
         %plottingIndex = FindIndexToPlot(SpeciesList)
         [tf,idx] = ismember(SpeciesList,observable_labels);
@@ -66,7 +66,7 @@ function PlotGroup(GroupType,SpeciesList,Timepoints,ObservablesOut,ShowPlot)
             hold on 
             for i = 1:length(idx)
                 IndexToPlot = idx(i);
-                plot(Timepoints,ObservablesOut(:,IndexToPlot),'DisplayName',observable_labels{IndexToPlot},"linewidth",4);
+                plot(timepoints,observables_out(:,IndexToPlot),'DisplayName',observable_labels{IndexToPlot},"linewidth",4);
             end
             legend
             xlabel("Time [Seconds]",'FontSize',20)
