@@ -92,9 +92,12 @@ begin molecule types
   A()        #mRNA transcript labeled A. Contains information for P2, P5, P7, P9, P8
   D()        #mRNA transcript labeled D. Contains information for P5, P7, P9, P8
   E()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
-  F()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
-  G()        #mRNA transcript labeled E. Contains information for P9, P8
-  H()        #mRNA transcript labeled E. Contains information for P9, P8
+  F()        #mRNA transcript labeled F. Contains information for P5, P7, P9, P8
+  G()        #mRNA transcript labeled G. Contains information for P9, P8
+  H()        #mRNA transcript labeled H. Contains information for P9, P8
+  W()        #mRNA transcript labeled W. Contains information for P4
+  Y()        #mRNA transcript labeled Y. Contains information for P3,P6,P1,P11
+  Z()        #mRNA transcript labeled Z. Contains information for P3,P6
   RBS2()     #Free ribsome binding site to make viral protein P2
   RBS5()     #Free ribsome binding site to make viral protein P5
   RBS9()     #Free ribsome binding site to make viral protein P9
@@ -144,6 +147,9 @@ begin species
   F()          0 #Units: [Molecules]
   G()          0 #Units: [Molecules]
   H()          0 #Units: [Molecules]
+  W()          0 #Units: [Molecules]
+  Y()          0 #Units: [Molecules]
+  Z()          0 #Units: [Molecules]
   RBS2()       0 #Units: [Molecules]
   RBS5()       0 #Units: [Molecules]
   RBS9()       0 #Units: [Molecules]
@@ -193,6 +199,9 @@ begin observables
   Species F        F()
   Species G        G()
   Species H        H()
+  Species W        W()
+  Species Y        Y()
+  Species Z        Z()
   Species RBS2     RBS2()
   Species RBS5     RBS5()
   Species RBS9     RBS9()
