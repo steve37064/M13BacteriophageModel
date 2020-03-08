@@ -46,7 +46,10 @@ PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,PlotActivelyTr
 FreeRBSSites = ["RBS2","RBS5","RBS9","RBS8"];
 PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,PlotFreeRBSSites)
 
-mRNA = ["A","D","E","F","G","H"];
+mRNA = ["A","B","D","E","F","G","H"];
+PlotGroup("mRNA Strands",mRNA,PlotmRNA)
+
+mRNA = ["Z","Y","W"];
 PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 
 regulatoryProteins = ["P2"];

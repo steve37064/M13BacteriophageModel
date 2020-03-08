@@ -21,6 +21,7 @@ begin parameters
   C10_W  4.3E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA Z
   C11    0.60         #Units: [Unitless] ------------------- Efficiency of Rho-Dependent Terminator Distal to P3
   C12_A  2.0E-2       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
+  C12_B  5.8E-2       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA B
   C12_D  5.8E-2       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
   C12_E  4.6E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
   C12_F  1.9E-3       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA F
@@ -91,6 +92,7 @@ begin molecule types
   ELZ()      #RNAP actively transcribing mRNA Z but not occupying the promoter site
   ELW()      #RNAP actively transcribing mRNA W but not occupying the promoter site
   A()        #mRNA transcript labeled A. Contains information for P2, P5, P7, P9, P8
+  B()        #mRNA transcript labeled B. Contains information for P10, P5, P7, P9, P8
   D()        #mRNA transcript labeled D. Contains information for P5, P7, P9, P8
   E()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
   F()        #mRNA transcript labeled F. Contains information for P5, P7, P9, P8
@@ -100,6 +102,7 @@ begin molecule types
   Y()        #mRNA transcript labeled Y. Contains information for P3,P6,P1,P11
   Z()        #mRNA transcript labeled Z. Contains information for P3,P6
   RBS2()     #Free ribsome binding site to make viral protein P2
+  RBS10()     #Free ribsome binding site to make viral protein P10
   RBS5()     #Free ribsome binding site to make viral protein P5
   RBS9()     #Free ribsome binding site to make viral protein P9
   RBS8()     #Free ribsome binding site to make viral protein P8
@@ -172,6 +175,7 @@ begin species
   ELZ()        0 #Units: [Molecules]
   ELW()        0 #Units: [Molecules]
   A()          0 #Units: [Molecules]
+  B()          0 #Units: [Molecules]
   D()          0 #Units: [Molecules]
   E()          0 #Units: [Molecules]
   F()          0 #Units: [Molecules]
@@ -181,6 +185,7 @@ begin species
   Y()          0 #Units: [Molecules]
   Z()          0 #Units: [Molecules]
   RBS2()       0 #Units: [Molecules]
+  RBS10()      0 #Units: [Molecules]
   RBS5()       0 #Units: [Molecules]
   RBS9()       0 #Units: [Molecules]
   RBS8()       0 #Units: [Molecules]
@@ -253,6 +258,7 @@ begin observables
   Species ELZ      ELZ()
   Species ELW      ELW()
   Species A        A()
+  Species B        A()
   Species D        D()
   Species E        E()
   Species F        F()
@@ -262,6 +268,7 @@ begin observables
   Species Y        Y()
   Species Z        Z()
   Species RBS2     RBS2()
+  Species RBS10    RBS10()
   Species RBS5     RBS5()
   Species RBS9     RBS9()
   Species RBS8     RBS8()
@@ -315,6 +322,7 @@ begin functions
   RBS5Removal() = 1/(RBS5()+EPS)
   RBS9Removal() = 1/(RBS9()+EPS)
   RBS8Removal() = 1/(RBS8()+EPS)
+  RBS10Removal() = 1/(RBS10()+EPS)
   DARemoval() = 1/(DA()+EPS)
   DBRemoval() = 1/(DB()+EPS)
   DHRemoval() = 1/(DH()+EPS)
@@ -350,19 +358,33 @@ begin reaction rules
   #Rate of RNA polymerase binding to the promoter site DA 
   #on viral dsDNA 
   DA() + RNAP() -> EA C8_A
+  DB() + RNAP() -> EB C8_B
+  DH() + RNAP() -> EH C8_H
+  DZ() + RNAP() -> EZ C8_Z
+  DW() + RNAP() -> EW C8_W
 
   #Rate of RNAP clearing the DA promoter site to regenerate the 
   #site but not the mRNA 
   EA() -> DA() + ELA() C9
+  EB() -> DA() + ELB() C9
+  EH() -> DA() + ELH() C9
+  EZ() -> DA() + ELZ() C9
+  EW() -> DA() + ELW() C9
 
   #The actively transcribing RNAP will produce transcript A and all of the 
   #ribosome binding sites needed for translation 
   ELA() -> RNAP() + A() + RBS2() + RBS5() + RBS9() + RBS8() C10_A
+  ELB() -> RNAP() + B() + RBS10() + RBS5() + RBS9() + RBS8() C10_B
+  ELH() -> RNAP() + H() + RBS9() + RBS8() C10_H
+  ELZ() -> RNAP() + Z() + RBS3() + RBS6()  C10_Z
+  ELW() -> RNAP() + W() + RBS4() C10_W
+
 
   #====================================================
   #            mRNA Degragation Equations
   #====================================================
   A() +RBS2()   -> D() C12_A*RBS2Removal()
+  B() + RBS10() -> D() C12_B*RBS10Removal()
   D()    -> E()   0.7*C12_D 
   D() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_D*RBS5Removal()*RBS9Removal()*RBS8Removal()
   E()    -> F()   0.7*C12_E
