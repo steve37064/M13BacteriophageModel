@@ -15,6 +15,7 @@ PlotOccupiedPromoterSites = 1;
 PlotActivelyTranscribed = 1; 
 PlotFreeRBSSites = 1 ;
 PlotmRNA = 1;
+PlotViralRegulatoryProteins = 1; 
 %==========================================================================
 %        Running the Model and Plotting [Using Default Parameters]
 %==========================================================================
@@ -29,11 +30,9 @@ timepoints = linspace(0,LengthToSimulation,1000)';
 ViralDNA = ["ssDNA","ssPDNA","RF1"];
 PlotGroup("Viral DNA",ViralDNA,timepoints,observables_out,PlotViralDNA)
 
-HostResource = ["DP3"];
-PlotGroup("Host Resources",HostResource,timepoints,observables_out,PlotHostResources)
-
-HostResource2 = ["RNAP"];
-PlotGroup("Host Resources",HostResource2,timepoints,observables_out,PlotHostResources)
+PlotGroup("Host Resources","DP3",timepoints,observables_out,PlotHostResources)
+PlotGroup("Host Resources","RNAP",timepoints,observables_out,PlotHostResources)
+PlotGroup("Host Resources","R",timepoints,observables_out,PlotHostResources)
 
 FreePromoterSites = ["DA","DB","DH","DZ","DW"];
 PlotGroup("Free Promoter Sites",FreePromoterSites,timepoints,observables_out,PlotPromoterSites)
@@ -50,6 +49,8 @@ PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,timepoints,observables_out,
 mRNA = ["A","D","E","F"];
 PlotGroup("mRNA Strands",mRNA,timepoints,observables_out,PlotmRNA)
 
+regulatoryProteins = ["P2"];
+PlotGroup("mRNA Strands",regulatoryProteins,timepoints,observables_out,PlotViralRegulatoryProteins)
 
 %==========================================================================
 %Plotting function that accepts a list of species names and plots the list

@@ -7,6 +7,8 @@ begin parameters
   C12_A 2.0E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
   C12_D 5.8E-2      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
   C12_E 4.6E-3      #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
+  C14   0.25        #Units: [(Second)^{-1}] -------------- Rate of ribosome clearing the promoter site
+  C15_2 4.8E-2      #Units: [(Second)^{-1}] -------------- Rate of P2 formation once Ribosme is bound to mRNA 
   P5    0           #Units: [Molecules] -------------------Temporary Paramter 
   EF2   1.5E-4      #Units: [Unitless] --------------------Efficiency of P5 inhibiting P2 Translation
   n     1.0         #Units: [Unitless] --------------------Hill coefficient for P5 inhibiting translation
@@ -36,6 +38,8 @@ begin molecule types
   RBS9()     #Free ribsome binding site to make viral protein P9
   RBS8()     #Free ribsome binding site to make viral protein P8
   RBS2R()    #Ribosome binding site 2 occupied by a ribosome
+  PD2()      #Ribsome actively creating P2 but not occupying the promoter site 
+  P2()       #Viral protein P2 
 end molecule types
 
 begin species
@@ -62,6 +66,8 @@ begin species
   RBS9()       0 #Units: [Molecules]
   RBS8()       0 #Units: [Molecules]
   RBS2R()      0 #Units: [Molecules]
+  PD2()        0 #Units: [Molecules]
+  P2()         0 #Units: [Molecules]
 end species
 
 begin observables
@@ -88,6 +94,8 @@ begin observables
   Species RBS9     RBS9()
   Species RBS8     RBS8()
   Species RBS2R    RBS2R()
+  Species PD2      PD2() 
+  Species P2       P2()
 end observables
 
 begin functions
@@ -134,6 +142,8 @@ begin reaction rules
   #              Translation Equations
   #====================================================
   RBS2() + R() -> RBS2R() P5InhibitionP2()
+  RBS2R() -> RBS2() + PD2() C14 
+  PD2() -> R() + P2() C15_2
 
 
 end reaction rules
