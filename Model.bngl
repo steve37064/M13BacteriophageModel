@@ -10,7 +10,7 @@ begin parameters
   n1     1.0          #Units: [Unitless] ------------------- Hill Coefficent for P5DNA formation 
   C8_A   6E-3         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site A
   C8_B   1E-2         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site B
-  C8_H   6.5E-2       #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site H
+  C8_H   6.5E-3       #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site H
   C8_Z   2E-4         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site Z
   C8_W   2.25E-3      #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site W
   C9     1.34         #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
