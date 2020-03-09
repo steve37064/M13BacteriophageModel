@@ -429,10 +429,10 @@ begin reaction rules
   RBS10R() -> RBS10() + PD10() C14 
   PD10() -> R() + P10() C15_10
 
-  RBS5() + R() -> RBS5R() 0.1*C13_5*P5InhibitionP5()
+  RBS5() + R() -> RBS5R() C13_5*P5InhibitionP5()
   RBS2R() -> RBS2() + PD5() C14 
   PD5() -> R() + P5() C15_5
-  0 -> P7() C15_5*PD5()
+  0 -> P7() 0.10*C15_5*PD5()
 
   RBS9() + R() -> RBS9R() C13_9
   RBS9R() -> RBS9() + R() + P9() C14 

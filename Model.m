@@ -474,12 +474,12 @@ end
 
 % function rateLaw__22
 function [val] = rateLaw__22(expressions, observables)
-    val = ((0.1*expressions(36))*P5InhibitionP5(expressions,observables));
+    val = (expressions(36)*P5InhibitionP5(expressions,observables));
 end
 
 % function rateLaw__23
 function [val] = rateLaw__23(expressions, observables)
-    val = (expressions(47)*observables(59));
+    val = ((0.10*expressions(47))*observables(59));
 end
 
 % function rateLaw__24
