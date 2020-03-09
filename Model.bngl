@@ -142,6 +142,7 @@ begin molecule types
   P9()       #Viral protein P9 
   P10()      #Viral protein P10
   P11()      #Viral protein P11
+  P2P10()    #Viral Protein P2/P10 Binding 
   As()
   PI()
   PE()
@@ -225,6 +226,7 @@ begin species
   P9()         0 #Units: [Molecules]
   P10()        0 #Units: [Molecules]
   P11()        0 #Units: [Molecules]
+  P2P10()      0 #Units: [Molecules]
   As()         0
   PI()         0
   PE()         0
@@ -308,6 +310,7 @@ begin observables
   Species P9       P9()
   Species P10      P10()
   Species P11      P11()
+  Species P2P10    P2P10()
   Species As       As()
   Species PI       PI()
   Species PE       PE()
@@ -361,6 +364,7 @@ begin reaction rules
   #DNA polymerase that is bound to RF2 and replicating the DNA 
   RF2DP3() -> P2() + DP3() + RF1() + ssDNA() + DA() + DB() + DH() + DZ() + DW() C2
 
+  P2() + P10() <-> P2P10() C5,C6
   #====================================================
   #            Transcription Equations
   #====================================================

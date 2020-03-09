@@ -13,7 +13,7 @@ function [err, timepoints, species_out, observables_out] = Model( timepoints, sp
 %
 %   INPUTS:
 %   -------
-%   species_init    : row vector of 80 initial species populations.
+%   species_init    : row vector of 81 initial species populations.
 %   timepoints      : column vector of time points returned by integrator.
 %   parameters      : row vector of 65 model parameters.
 %   suppress_plot   : 0 if a plot is desired (default), 1 if plot is suppressed.
@@ -75,8 +75,8 @@ if ( isempty(species_init) )
    species_init = initialize_species( parameters );
 end
 % check that species_init has proper dimensions
-if (  size(species_init,1) ~= 1  ||  size(species_init,2) ~= 80  )
-    fprintf( 1, 'Error: size of species_init argument is invalid! Correct size = [1 80].\n' );
+if (  size(species_init,1) ~= 1  ||  size(species_init,2) ~= 81  )
+    fprintf( 1, 'Error: size of species_init argument is invalid! Correct size = [1 81].\n' );
     err = 1;
     return;
 end
@@ -138,7 +138,7 @@ catch
 end
 
 % calculate observables
-observables_out = zeros( length(timepoints), 80 );
+observables_out = zeros( length(timepoints), 81 );
 for t = 1 : length(timepoints)
     observables_out(t,:) = calc_observables( species_out(t,:), expressions );
 end
@@ -149,7 +149,7 @@ end
 if ( ~suppress_plot )
     
     % define plot labels
-    observable_labels = { 'DP3', 'RNAP', 'R', 'ssDNA', 'ssPDNA', 'RF1', 'RF2', 'RF2DP3', 'P5DNA', 'DA', 'DB', 'DH', 'DZ', 'DW', 'EA', 'EB', 'EH', 'EZ', 'EW', 'ELA', 'ELB', 'ELH', 'ELZ', 'ELW', 'A', 'B', 'D', 'E', 'F', 'G', 'H', 'W', 'Y', 'Z', 'RBS2', 'RBS10', 'RBS5', 'RBS9', 'RBS8', 'RBS1', 'RBS3', 'RBS4', 'RBS6', 'RBS11', 'RBS1R', 'RBS2R', 'RBS3R', 'RBS4R', 'RBS5R', 'RBS6R', 'RBS8R', 'RBS9R', 'RBS10R', 'RBS11R', 'PD1', 'PD2', 'PD3', 'PD4', 'PD5', 'PD6', 'PD8', 'PD9', 'PD10', 'PD11', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', 'P11', 'As', 'PI', 'PE', 'PF', 'Phage' };
+    observable_labels = { 'DP3', 'RNAP', 'R', 'ssDNA', 'ssPDNA', 'RF1', 'RF2', 'RF2DP3', 'P5DNA', 'DA', 'DB', 'DH', 'DZ', 'DW', 'EA', 'EB', 'EH', 'EZ', 'EW', 'ELA', 'ELB', 'ELH', 'ELZ', 'ELW', 'A', 'B', 'D', 'E', 'F', 'G', 'H', 'W', 'Y', 'Z', 'RBS2', 'RBS10', 'RBS5', 'RBS9', 'RBS8', 'RBS1', 'RBS3', 'RBS4', 'RBS6', 'RBS11', 'RBS1R', 'RBS2R', 'RBS3R', 'RBS4R', 'RBS5R', 'RBS6R', 'RBS8R', 'RBS9R', 'RBS10R', 'RBS11R', 'PD1', 'PD2', 'PD3', 'PD4', 'PD5', 'PD6', 'PD8', 'PD9', 'PD10', 'PD11', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', 'P11', 'P2P10', 'As', 'PI', 'PE', 'PF', 'Phage' };
 
     % construct figure
     plot(timepoints,observables_out);
@@ -180,7 +180,7 @@ end
 % initialize species function
 function [species_init] = initialize_species( params )
 
-    species_init = zeros(1,80);
+    species_init = zeros(1,81);
     species_init(1) = 3.0;
     species_init(2) = 1280.0;
     species_init(3) = 7880.0;
@@ -261,6 +261,7 @@ function [species_init] = initialize_species( params )
     species_init(78) = 0;
     species_init(79) = 0;
     species_init(80) = 0;
+    species_init(81) = 0;
 
 end
 
@@ -549,7 +550,7 @@ end
 % Calculate observables
 function [ observables ] = calc_observables ( species, expressions )
 
-    observables = zeros(1,80);
+    observables = zeros(1,81);
     observables(1) = species(1);
     observables(2) = species(2);
     observables(3) = species(3);
@@ -630,6 +631,7 @@ function [ observables ] = calc_observables ( species, expressions )
     observables(78) = species(78);
     observables(79) = species(79);
     observables(80) = species(80);
+    observables(81) = species(81);
 
 end
 
@@ -637,74 +639,76 @@ end
 % Calculate ratelaws
 function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
 
-    ratelaws = zeros(1,80);
+    ratelaws = zeros(1,81);
     ratelaws(1) = expressions(1)*species(4)*species(1);
     ratelaws(2) = expressions(2)*species(5);
     ratelaws(3) = expressions(3)*species(7)*species(66);
     ratelaws(4) = expressions(4)*species(8);
     ratelaws(5) = rateLaw__1(expressions,observables)*species(8)*species(1)*species(10)*species(11)*species(12)*species(13)*species(14);
     ratelaws(6) = expressions(2)*species(9);
-    ratelaws(7) = expressions(10)*species(10)*species(2);
-    ratelaws(8) = expressions(11)*species(11)*species(2);
-    ratelaws(9) = expressions(12)*species(12)*species(2);
-    ratelaws(10) = expressions(13)*species(13)*species(2);
-    ratelaws(11) = expressions(14)*species(14)*species(2);
-    ratelaws(12) = expressions(15)*species(15);
-    ratelaws(13) = expressions(15)*species(16);
-    ratelaws(14) = expressions(15)*species(17);
-    ratelaws(15) = expressions(15)*species(18);
-    ratelaws(16) = expressions(15)*species(19);
-    ratelaws(17) = expressions(16)*species(20);
-    ratelaws(18) = expressions(17)*species(21);
-    ratelaws(19) = expressions(18)*species(22);
-    ratelaws(20) = expressions(19)*species(23);
-    ratelaws(21) = rateLaw__2(expressions,observables);
-    ratelaws(22) = rateLaw__3(expressions,observables);
-    ratelaws(23) = expressions(20)*species(24);
-    ratelaws(24) = rateLaw__4(expressions,observables)*species(25)*species(35);
-    ratelaws(25) = rateLaw__5(expressions,observables)*species(26)*species(36);
-    ratelaws(26) = (0.7*expressions(24))*species(27);
-    ratelaws(27) = rateLaw__7(expressions,observables)*species(27)*species(37)*species(38)*species(39);
-    ratelaws(28) = (0.7*expressions(25))*species(28);
-    ratelaws(29) = rateLaw__9(expressions,observables)*species(28)*species(37)*species(38)*species(39);
-    ratelaws(30) = rateLaw__10(expressions,observables)*species(29)*species(37);
-    ratelaws(31) = rateLaw__11(expressions,observables)*species(29)*species(37)*species(38)*species(39);
-    ratelaws(32) = (0.7*expressions(27))*species(30);
-    ratelaws(33) = rateLaw__13(expressions,observables)*species(30)*species(38)*species(39);
-    ratelaws(34) = rateLaw__14(expressions,observables)*species(31)*species(38)*species(39);
-    ratelaws(35) = rateLaw__15(expressions,observables)*species(32)*species(42);
-    ratelaws(36) = rateLaw__16(expressions,observables)*species(33)*species(43)*species(41)*species(44)*species(40);
-    ratelaws(37) = rateLaw__17(expressions,observables)*species(34)*species(43)*species(41);
-    ratelaws(38) = rateLaw__18(expressions,observables)*species(35)*species(3);
-    ratelaws(39) = expressions(42)*species(46);
-    ratelaws(40) = expressions(44)*species(56);
-    ratelaws(41) = rateLaw__19(expressions,observables)*species(36)*species(3);
-    ratelaws(42) = expressions(42)*species(53);
-    ratelaws(43) = expressions(50)*species(63);
-    ratelaws(44) = rateLaw__20(expressions,observables)*species(37)*species(3);
-    ratelaws(45) = expressions(42)*species(46);
-    ratelaws(46) = expressions(47)*species(59);
-    ratelaws(47) = rateLaw__21(expressions,observables);
-    ratelaws(48) = expressions(39)*species(38)*species(3);
-    ratelaws(49) = expressions(42)*species(52);
-    ratelaws(50) = expressions(38)*species(39)*species(3);
-    ratelaws(51) = expressions(42)*species(51);
-    ratelaws(52) = expressions(49)*species(61);
-    ratelaws(53) = rateLaw__22(expressions,observables)*species(41)*species(3);
-    ratelaws(54) = expressions(42)*species(47);
-    ratelaws(55) = expressions(45)*species(57);
-    ratelaws(56) = expressions(37)*species(43)*species(3);
-    ratelaws(57) = expressions(42)*species(50);
-    ratelaws(58) = expressions(48)*species(60);
-    ratelaws(59) = rateLaw__23(expressions,observables)*species(40)*species(3);
-    ratelaws(60) = expressions(42)*species(45);
-    ratelaws(61) = expressions(43)*species(55);
-    ratelaws(62) = expressions(41)*species(44)*species(3);
-    ratelaws(63) = expressions(42)*species(54);
-    ratelaws(64) = expressions(51)*species(64);
-    ratelaws(65) = expressions(35)*species(42)*species(3);
-    ratelaws(66) = expressions(42)*species(48);
-    ratelaws(67) = expressions(46)*species(58);
+    ratelaws(7) = expressions(5)*species(66)*species(74);
+    ratelaws(8) = expressions(6)*species(76);
+    ratelaws(9) = expressions(10)*species(10)*species(2);
+    ratelaws(10) = expressions(11)*species(11)*species(2);
+    ratelaws(11) = expressions(12)*species(12)*species(2);
+    ratelaws(12) = expressions(13)*species(13)*species(2);
+    ratelaws(13) = expressions(14)*species(14)*species(2);
+    ratelaws(14) = expressions(15)*species(15);
+    ratelaws(15) = expressions(15)*species(16);
+    ratelaws(16) = expressions(15)*species(17);
+    ratelaws(17) = expressions(15)*species(18);
+    ratelaws(18) = expressions(15)*species(19);
+    ratelaws(19) = expressions(16)*species(20);
+    ratelaws(20) = expressions(17)*species(21);
+    ratelaws(21) = expressions(18)*species(22);
+    ratelaws(22) = expressions(19)*species(23);
+    ratelaws(23) = rateLaw__2(expressions,observables);
+    ratelaws(24) = rateLaw__3(expressions,observables);
+    ratelaws(25) = expressions(20)*species(24);
+    ratelaws(26) = rateLaw__4(expressions,observables)*species(25)*species(35);
+    ratelaws(27) = rateLaw__5(expressions,observables)*species(26)*species(36);
+    ratelaws(28) = (0.7*expressions(24))*species(27);
+    ratelaws(29) = rateLaw__7(expressions,observables)*species(27)*species(37)*species(38)*species(39);
+    ratelaws(30) = (0.7*expressions(25))*species(28);
+    ratelaws(31) = rateLaw__9(expressions,observables)*species(28)*species(37)*species(38)*species(39);
+    ratelaws(32) = rateLaw__10(expressions,observables)*species(29)*species(37);
+    ratelaws(33) = rateLaw__11(expressions,observables)*species(29)*species(37)*species(38)*species(39);
+    ratelaws(34) = (0.7*expressions(27))*species(30);
+    ratelaws(35) = rateLaw__13(expressions,observables)*species(30)*species(38)*species(39);
+    ratelaws(36) = rateLaw__14(expressions,observables)*species(31)*species(38)*species(39);
+    ratelaws(37) = rateLaw__15(expressions,observables)*species(32)*species(42);
+    ratelaws(38) = rateLaw__16(expressions,observables)*species(33)*species(43)*species(41)*species(44)*species(40);
+    ratelaws(39) = rateLaw__17(expressions,observables)*species(34)*species(43)*species(41);
+    ratelaws(40) = rateLaw__18(expressions,observables)*species(35)*species(3);
+    ratelaws(41) = expressions(42)*species(46);
+    ratelaws(42) = expressions(44)*species(56);
+    ratelaws(43) = rateLaw__19(expressions,observables)*species(36)*species(3);
+    ratelaws(44) = expressions(42)*species(53);
+    ratelaws(45) = expressions(50)*species(63);
+    ratelaws(46) = rateLaw__20(expressions,observables)*species(37)*species(3);
+    ratelaws(47) = expressions(42)*species(46);
+    ratelaws(48) = expressions(47)*species(59);
+    ratelaws(49) = rateLaw__21(expressions,observables);
+    ratelaws(50) = expressions(39)*species(38)*species(3);
+    ratelaws(51) = expressions(42)*species(52);
+    ratelaws(52) = expressions(38)*species(39)*species(3);
+    ratelaws(53) = expressions(42)*species(51);
+    ratelaws(54) = expressions(49)*species(61);
+    ratelaws(55) = rateLaw__22(expressions,observables)*species(41)*species(3);
+    ratelaws(56) = expressions(42)*species(47);
+    ratelaws(57) = expressions(45)*species(57);
+    ratelaws(58) = expressions(37)*species(43)*species(3);
+    ratelaws(59) = expressions(42)*species(50);
+    ratelaws(60) = expressions(48)*species(60);
+    ratelaws(61) = rateLaw__23(expressions,observables)*species(40)*species(3);
+    ratelaws(62) = expressions(42)*species(45);
+    ratelaws(63) = expressions(43)*species(55);
+    ratelaws(64) = expressions(41)*species(44)*species(3);
+    ratelaws(65) = expressions(42)*species(54);
+    ratelaws(66) = expressions(51)*species(64);
+    ratelaws(67) = expressions(35)*species(42)*species(3);
+    ratelaws(68) = expressions(42)*species(48);
+    ratelaws(69) = expressions(46)*species(58);
 
 end
 
@@ -712,7 +716,7 @@ end
 function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     
     % initialize derivative vector
-    Dspecies = zeros(80,1);
+    Dspecies = zeros(81,1);
     
     % update observables
     [ observables ] = calc_observables( species, expressions );
@@ -722,85 +726,86 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
                         
     % calculate derivatives
     Dspecies(1) = -ratelaws(1) +ratelaws(2) -ratelaws(5) +ratelaws(6);
-    Dspecies(2) = -ratelaws(7) -ratelaws(8) -ratelaws(9) -ratelaws(10) -ratelaws(11) +ratelaws(17) +ratelaws(18) +ratelaws(19) +ratelaws(20) +ratelaws(23);
-    Dspecies(3) = -ratelaws(38) +ratelaws(40) -ratelaws(41) +ratelaws(43) -ratelaws(44) +ratelaws(46) -ratelaws(48) +ratelaws(49) -ratelaws(50) +ratelaws(52) -ratelaws(53) +ratelaws(55) -ratelaws(56) +ratelaws(58) -ratelaws(59) +ratelaws(61) -ratelaws(62) +ratelaws(64) -ratelaws(65) +ratelaws(67);
+    Dspecies(2) = -ratelaws(9) -ratelaws(10) -ratelaws(11) -ratelaws(12) -ratelaws(13) +ratelaws(19) +ratelaws(20) +ratelaws(21) +ratelaws(22) +ratelaws(25);
+    Dspecies(3) = -ratelaws(40) +ratelaws(42) -ratelaws(43) +ratelaws(45) -ratelaws(46) +ratelaws(48) -ratelaws(50) +ratelaws(51) -ratelaws(52) +ratelaws(54) -ratelaws(55) +ratelaws(57) -ratelaws(58) +ratelaws(60) -ratelaws(61) +ratelaws(63) -ratelaws(64) +ratelaws(66) -ratelaws(67) +ratelaws(69);
     Dspecies(4) = -ratelaws(1) +ratelaws(6);
     Dspecies(5) = ratelaws(1) -ratelaws(2);
     Dspecies(6) = 0.0;
     Dspecies(7) = ratelaws(2) -ratelaws(3) +ratelaws(4) +ratelaws(6);
     Dspecies(8) = ratelaws(3) -ratelaws(4) -ratelaws(5);
     Dspecies(9) = ratelaws(5) -ratelaws(6);
-    Dspecies(10) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(7) +ratelaws(12);
-    Dspecies(11) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(8) +ratelaws(13);
-    Dspecies(12) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(9) +ratelaws(14);
-    Dspecies(13) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(10) +ratelaws(15);
-    Dspecies(14) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(11) +ratelaws(16);
-    Dspecies(15) = ratelaws(7) -ratelaws(12);
-    Dspecies(16) = ratelaws(8) -ratelaws(13);
-    Dspecies(17) = ratelaws(9) -ratelaws(14);
-    Dspecies(18) = ratelaws(10) -ratelaws(15);
-    Dspecies(19) = ratelaws(11) -ratelaws(16);
-    Dspecies(20) = ratelaws(12) -ratelaws(17);
-    Dspecies(21) = ratelaws(13) -ratelaws(18);
-    Dspecies(22) = ratelaws(14) -ratelaws(19);
-    Dspecies(23) = ratelaws(15) -ratelaws(20);
-    Dspecies(24) = ratelaws(16) -ratelaws(23);
-    Dspecies(25) = ratelaws(17) -ratelaws(24);
-    Dspecies(26) = ratelaws(18) -ratelaws(25);
-    Dspecies(27) = ratelaws(24) +ratelaws(25) -ratelaws(26) -ratelaws(27);
-    Dspecies(28) = ratelaws(26) -ratelaws(28) -ratelaws(29);
-    Dspecies(29) = ratelaws(28) -ratelaws(30) -ratelaws(31);
-    Dspecies(30) = ratelaws(30) -ratelaws(32) -ratelaws(33);
-    Dspecies(31) = ratelaws(19) +ratelaws(32) -ratelaws(34);
-    Dspecies(32) = ratelaws(23) -ratelaws(35);
-    Dspecies(33) = ratelaws(22) -ratelaws(36);
-    Dspecies(34) = ratelaws(21) -ratelaws(37);
-    Dspecies(35) = ratelaws(17) -ratelaws(24) -ratelaws(38) +ratelaws(39) +ratelaws(45);
-    Dspecies(36) = ratelaws(18) -ratelaws(25) -ratelaws(41) +ratelaws(42);
-    Dspecies(37) = ratelaws(17) +ratelaws(18) -ratelaws(27) -ratelaws(29) -ratelaws(30) -ratelaws(31) -ratelaws(44);
-    Dspecies(38) = ratelaws(17) +ratelaws(18) +ratelaws(19) -ratelaws(27) -ratelaws(29) -ratelaws(31) -ratelaws(33) -ratelaws(34) -ratelaws(48) +ratelaws(49);
-    Dspecies(39) = ratelaws(17) +ratelaws(18) +ratelaws(19) -ratelaws(27) -ratelaws(29) -ratelaws(31) -ratelaws(33) -ratelaws(34) -ratelaws(50) +ratelaws(51);
-    Dspecies(40) = ratelaws(22) -ratelaws(36) -ratelaws(59) +ratelaws(60);
-    Dspecies(41) = ratelaws(20) -ratelaws(36) -ratelaws(37) -ratelaws(53) +ratelaws(54);
-    Dspecies(42) = ratelaws(23) -ratelaws(35) -ratelaws(65) +ratelaws(66);
-    Dspecies(43) = ratelaws(20) -ratelaws(36) -ratelaws(37) -ratelaws(56) +ratelaws(57);
-    Dspecies(44) = ratelaws(22) -ratelaws(36) -ratelaws(62) +ratelaws(63);
-    Dspecies(45) = ratelaws(59) -ratelaws(60);
-    Dspecies(46) = ratelaws(38) -ratelaws(39) -ratelaws(45);
-    Dspecies(47) = ratelaws(53) -ratelaws(54);
-    Dspecies(48) = ratelaws(65) -ratelaws(66);
-    Dspecies(49) = ratelaws(44);
-    Dspecies(50) = ratelaws(56) -ratelaws(57);
-    Dspecies(51) = ratelaws(50) -ratelaws(51);
-    Dspecies(52) = ratelaws(48) -ratelaws(49);
-    Dspecies(53) = ratelaws(41) -ratelaws(42);
-    Dspecies(54) = ratelaws(62) -ratelaws(63);
-    Dspecies(55) = ratelaws(60) -ratelaws(61);
-    Dspecies(56) = ratelaws(39) -ratelaws(40);
-    Dspecies(57) = ratelaws(54) -ratelaws(55);
-    Dspecies(58) = ratelaws(66) -ratelaws(67);
-    Dspecies(59) = ratelaws(45) -ratelaws(46);
-    Dspecies(60) = ratelaws(57) -ratelaws(58);
-    Dspecies(61) = ratelaws(51) -ratelaws(52);
+    Dspecies(10) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(9) +ratelaws(14);
+    Dspecies(11) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(10) +ratelaws(15);
+    Dspecies(12) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(11) +ratelaws(16);
+    Dspecies(13) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(12) +ratelaws(17);
+    Dspecies(14) = ratelaws(2) -ratelaws(5) +ratelaws(6) -ratelaws(13) +ratelaws(18);
+    Dspecies(15) = ratelaws(9) -ratelaws(14);
+    Dspecies(16) = ratelaws(10) -ratelaws(15);
+    Dspecies(17) = ratelaws(11) -ratelaws(16);
+    Dspecies(18) = ratelaws(12) -ratelaws(17);
+    Dspecies(19) = ratelaws(13) -ratelaws(18);
+    Dspecies(20) = ratelaws(14) -ratelaws(19);
+    Dspecies(21) = ratelaws(15) -ratelaws(20);
+    Dspecies(22) = ratelaws(16) -ratelaws(21);
+    Dspecies(23) = ratelaws(17) -ratelaws(22);
+    Dspecies(24) = ratelaws(18) -ratelaws(25);
+    Dspecies(25) = ratelaws(19) -ratelaws(26);
+    Dspecies(26) = ratelaws(20) -ratelaws(27);
+    Dspecies(27) = ratelaws(26) +ratelaws(27) -ratelaws(28) -ratelaws(29);
+    Dspecies(28) = ratelaws(28) -ratelaws(30) -ratelaws(31);
+    Dspecies(29) = ratelaws(30) -ratelaws(32) -ratelaws(33);
+    Dspecies(30) = ratelaws(32) -ratelaws(34) -ratelaws(35);
+    Dspecies(31) = ratelaws(21) +ratelaws(34) -ratelaws(36);
+    Dspecies(32) = ratelaws(25) -ratelaws(37);
+    Dspecies(33) = ratelaws(24) -ratelaws(38);
+    Dspecies(34) = ratelaws(23) -ratelaws(39);
+    Dspecies(35) = ratelaws(19) -ratelaws(26) -ratelaws(40) +ratelaws(41) +ratelaws(47);
+    Dspecies(36) = ratelaws(20) -ratelaws(27) -ratelaws(43) +ratelaws(44);
+    Dspecies(37) = ratelaws(19) +ratelaws(20) -ratelaws(29) -ratelaws(31) -ratelaws(32) -ratelaws(33) -ratelaws(46);
+    Dspecies(38) = ratelaws(19) +ratelaws(20) +ratelaws(21) -ratelaws(29) -ratelaws(31) -ratelaws(33) -ratelaws(35) -ratelaws(36) -ratelaws(50) +ratelaws(51);
+    Dspecies(39) = ratelaws(19) +ratelaws(20) +ratelaws(21) -ratelaws(29) -ratelaws(31) -ratelaws(33) -ratelaws(35) -ratelaws(36) -ratelaws(52) +ratelaws(53);
+    Dspecies(40) = ratelaws(24) -ratelaws(38) -ratelaws(61) +ratelaws(62);
+    Dspecies(41) = ratelaws(22) -ratelaws(38) -ratelaws(39) -ratelaws(55) +ratelaws(56);
+    Dspecies(42) = ratelaws(25) -ratelaws(37) -ratelaws(67) +ratelaws(68);
+    Dspecies(43) = ratelaws(22) -ratelaws(38) -ratelaws(39) -ratelaws(58) +ratelaws(59);
+    Dspecies(44) = ratelaws(24) -ratelaws(38) -ratelaws(64) +ratelaws(65);
+    Dspecies(45) = ratelaws(61) -ratelaws(62);
+    Dspecies(46) = ratelaws(40) -ratelaws(41) -ratelaws(47);
+    Dspecies(47) = ratelaws(55) -ratelaws(56);
+    Dspecies(48) = ratelaws(67) -ratelaws(68);
+    Dspecies(49) = ratelaws(46);
+    Dspecies(50) = ratelaws(58) -ratelaws(59);
+    Dspecies(51) = ratelaws(52) -ratelaws(53);
+    Dspecies(52) = ratelaws(50) -ratelaws(51);
+    Dspecies(53) = ratelaws(43) -ratelaws(44);
+    Dspecies(54) = ratelaws(64) -ratelaws(65);
+    Dspecies(55) = ratelaws(62) -ratelaws(63);
+    Dspecies(56) = ratelaws(41) -ratelaws(42);
+    Dspecies(57) = ratelaws(56) -ratelaws(57);
+    Dspecies(58) = ratelaws(68) -ratelaws(69);
+    Dspecies(59) = ratelaws(47) -ratelaws(48);
+    Dspecies(60) = ratelaws(59) -ratelaws(60);
+    Dspecies(61) = ratelaws(53) -ratelaws(54);
     Dspecies(62) = 0.0;
-    Dspecies(63) = ratelaws(42) -ratelaws(43);
-    Dspecies(64) = ratelaws(63) -ratelaws(64);
-    Dspecies(65) = ratelaws(61);
-    Dspecies(66) = -ratelaws(3) +ratelaws(4) +ratelaws(6) +ratelaws(40);
-    Dspecies(67) = ratelaws(55);
-    Dspecies(68) = ratelaws(67);
-    Dspecies(69) = ratelaws(46);
-    Dspecies(70) = ratelaws(58);
-    Dspecies(71) = ratelaws(47);
-    Dspecies(72) = ratelaws(52);
-    Dspecies(73) = ratelaws(49);
-    Dspecies(74) = ratelaws(43);
-    Dspecies(75) = ratelaws(64);
-    Dspecies(76) = 0.0;
+    Dspecies(63) = ratelaws(44) -ratelaws(45);
+    Dspecies(64) = ratelaws(65) -ratelaws(66);
+    Dspecies(65) = ratelaws(63);
+    Dspecies(66) = -ratelaws(3) +ratelaws(4) +ratelaws(6) -ratelaws(7) +ratelaws(8) +ratelaws(42);
+    Dspecies(67) = ratelaws(57);
+    Dspecies(68) = ratelaws(69);
+    Dspecies(69) = ratelaws(48);
+    Dspecies(70) = ratelaws(60);
+    Dspecies(71) = ratelaws(49);
+    Dspecies(72) = ratelaws(54);
+    Dspecies(73) = ratelaws(51);
+    Dspecies(74) = -ratelaws(7) +ratelaws(8) +ratelaws(45);
+    Dspecies(75) = ratelaws(66);
+    Dspecies(76) = ratelaws(7) -ratelaws(8);
     Dspecies(77) = 0.0;
     Dspecies(78) = 0.0;
     Dspecies(79) = 0.0;
     Dspecies(80) = 0.0;
+    Dspecies(81) = 0.0;
 
 end
 
