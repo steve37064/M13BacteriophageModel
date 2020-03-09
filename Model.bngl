@@ -258,7 +258,7 @@ begin observables
   Species ELZ      ELZ()
   Species ELW      ELW()
   Species A        A()
-  Species B        A()
+  Species B        B()
   Species D        D()
   Species E        E()
   Species F        F()
@@ -318,6 +318,10 @@ end observables
 
 begin functions
 	P5InhibitionP2() = 1/(1 + (P5/(EF2*(RBS2()+1)))^n2) 
+  P5InhibitionP10() = 1/(1 + (P5/(EF10*(RBS10()+1)))^n2) 
+  P5InhibitionP5() = 1/(1 + (P5/(EF5*(RBS5()+1)))^n2) 
+  P5InhibitionP3() = 1/(1 + (P5/(EF3*(RBS3()+1)))^n2) 
+  P5InhibitionP1() = 1/(1 + (P5/(EF1*(RBS1()+1)))^n2) 
   RBS2Removal() = 1/(RBS2()+EPS)
   RBS5Removal() = 1/(RBS5()+EPS)
   RBS9Removal() = 1/(RBS9()+EPS)
@@ -371,10 +375,10 @@ begin reaction rules
   #Rate of RNAP clearing the DA promoter site to regenerate the 
   #site but not the mRNA 
   EA() -> DA() + ELA() C9
-  EB() -> DA() + ELB() C9
-  EH() -> DA() + ELH() C9
-  EZ() -> DA() + ELZ() C9
-  EW() -> DA() + ELW() C9
+  EB() -> DB() + ELB() C9
+  EH() -> DH() + ELH() C9
+  EZ() -> DZ() + ELZ() C9
+  EW() -> DW() + ELW() C9
 
   #The actively transcribing RNAP will produce transcript A and all of the 
   #ribosome binding sites needed for translation 
@@ -411,6 +415,14 @@ begin reaction rules
   RBS2() + R() -> RBS2R() C13_2*P5InhibitionP2()
   RBS2R() -> RBS2() + PD2() C14 
   PD2() -> R() + P2() C15_2
+
+  RBS10() + R() -> RBS10R() C13_10*P5InhibitionP10()
+  RBS10R() -> RBS10() + PD10() C14 
+  PD10() -> R() + P10() C15_10
+
+  RBS5() + R() -> RBS5R() C13_5*P5InhibitionP5()
+  RBS2R() -> RBS2() + PD5() C14 
+  PD5() -> R() + P5() C15_5
 
 
 end reaction rules

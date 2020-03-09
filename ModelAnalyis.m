@@ -52,7 +52,7 @@ PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 mRNA = ["Z","Y","W"];
 PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 
-regulatoryProteins = ["P2"];
+regulatoryProteins = ["P2","P10","P5"];
 PlotGroup("mRNA Strands",regulatoryProteins,PlotViralRegulatoryProteins)
 
 %==========================================================================
