@@ -27,7 +27,7 @@ LengthToSimulation = 1*60*60; %In Seconds
 timepoints = linspace(0,LengthToSimulation,1000)';
 [err, timepoints, species_out, observables_out] = Model(timepoints); 
 close all 
-ViralDNA = ["ssDNA","ssPDNA","RF1","RF2"];
+ViralDNA = ["ssDNA","ssPDNA","RF1","RF2","P5DNA"];
 PlotGroup("Viral DNA",ViralDNA,PlotViralDNA)
 
 PlotGroup("Host Resources","DP3",PlotHostResources)

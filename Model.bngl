@@ -325,6 +325,7 @@ begin functions
   P5InhibitionP5() = 1/(1 + (P5/(EF5*(RBS5()+1)))^n2) 
   P5InhibitionP3() = 1/(1 + (P5/(EF3*(RBS3()+1)))^n2) 
   P5InhibitionP1() = 1/(1 + (P5/(EF1*(RBS1()+1)))^n2) 
+  P5Sequestering() = P5()^n1/(Km1^n1+P5^n1)
   RBS2Removal() = 1/(RBS2()+EPS)
   RBS5Removal() = 1/(RBS5()+EPS)
   RBS9Removal() = 1/(RBS9()+EPS)
@@ -365,6 +366,8 @@ begin reaction rules
   RF2DP3() -> P2() + DP3() + RF1() + ssDNA() + DA() + DB() + DH() + DZ() + DW() C2
 
   P2() + P10() <-> P2P10() C5,C6
+  ssDNA() -> P5DNA() C7*P5()*P5Sequestering()
+  P5()-> 0 C7*ssDNA()*P5Sequestering()
   #====================================================
   #            Transcription Equations
   #====================================================
