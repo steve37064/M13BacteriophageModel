@@ -320,12 +320,13 @@ begin observables
 end observables
 
 begin functions
-	P5InhibitionP2() = 1/(1 + (P5/(EF2*(RBS2()+1)))^n2) 
-  P5InhibitionP10() = 1/(1 + (P5/(EF10*(RBS10()+1)))^n2) 
-  P5InhibitionP5() = 1/(1 + (P5/(EF5*(RBS5()+1)))^n2) 
-  P5InhibitionP3() = 1/(1 + (P5/(EF3*(RBS3()+1)))^n2) 
-  P5InhibitionP1() = 1/(1 + (P5/(EF1*(RBS1()+1)))^n2) 
-  P5Sequestering() = P5()^n1/(Km1^n1+P5^n1)
+	P5InhibitionP2() = 1/(1 + (P5()/(EF2*(RBS2()+1)))^n2) 
+  P5InhibitionP10() = 1/(1 + (P5()/(EF10*(RBS10()+1)))^n2) 
+  P5InhibitionP5() = 1/(1 + (P5()/(EF5*(RBS5()+1)))^n2) 
+  P5InhibitionP3() = 1/(1 + (P5()/(EF3*(RBS3()+1)))^n2) 
+  P5InhibitionP1() = 1/(1 + (P5()/(EF1*(RBS1()+1)))^n2) 
+  P5Sequestering() = P5()^n1/(Km1^n1+P5()^n1)
+  PhageAssembly() = P8()^n3/(Km2^n3+P8()^n3)
   RBS2Removal() = 1/(RBS2()+EPS)
   RBS5Removal() = 1/(RBS5()+EPS)
   RBS9Removal() = 1/(RBS9()+EPS)
@@ -341,6 +342,7 @@ begin functions
   DHRemoval() = 1/(DH()+EPS)
   DZRemoval() = 1/(DZ()+EPS)
   DWRemoval() = 1/(DW()+EPS)
+  P8Removal() = 1/(P8()+EPS)
 end functions
 
 begin reaction rules
@@ -459,10 +461,27 @@ begin reaction rules
   RBS4R() -> RBS4() + PD4() C14 
   PD4() -> R() + P4() C15_4
 
+  #====================================================
+  #            Phage Assembly Equations
+  #====================================================
+  P1() + P4() + P11() -> 0 14*C16
+  0 -> As() C16*P1()*P4()*P11()
+
+  As() -> PI() C17*P7()*P9() 
+  P7() + P9() -> 0 C17*As() 
+  PI() + P5DNA() -> PE() C18
+  PE() -> PF() C19*PhageAssembly()
+  P8() -> 0  2700*C19*PE()*PhageAssembly()*P8Removal()
+  0-> P5() 1600*C19*PE()*PhageAssembly()
+  PF() -> Phage() + As() C20*P3()*P9()
+  P3() + P9() -> 0 5*C20*PF()
+
+
+
 
 end reaction rules
 
-simulate({method=>"ode",t_end=>3600,n_steps=>2000})
+simulate({method=>"ode",t_end=>3600,n_steps=>20000})
 writeMfile();
 
 

@@ -115,7 +115,7 @@ param_labels = { 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'Km1', 'n1', 'C8_A', 
 
 % set ODE integrator options
 opts = odeset( 'RelTol',   1e-8,   ...
-               'AbsTol',   0.0001,   ...
+               'AbsTol',   0.00001,   ...
                'Stats',    'off',  ...
                'BDF',      'off',    ...
                'MaxOrder', 5   );
@@ -297,6 +297,11 @@ function [val] = P5Sequestering(expressions, observables)
     val = ((observables(69)^expressions(9))/((expressions(8)^expressions(9))+(observables(69)^expressions(9))));
 end
 
+% function PhageAssembly
+function [val] = PhageAssembly(expressions, observables)
+    val = ((observables(72)^expressions(64))/((expressions(63)^expressions(64))+(observables(72)^expressions(64))));
+end
+
 % function RBS2Removal
 function [val] = RBS2Removal(expressions, observables)
     val = (1/(observables(35)+expressions(65)));
@@ -370,6 +375,11 @@ end
 % function DWRemoval
 function [val] = DWRemoval(expressions, observables)
     val = (1/(observables(14)+expressions(65)));
+end
+
+% function P8Removal
+function [val] = P8Removal(expressions, observables)
+    val = (1/(observables(72)+expressions(65)));
 end
 
 % function rateLaw__1
@@ -482,13 +492,53 @@ function [val] = rateLaw__25(expressions, observables)
     val = (expressions(32)*P5InhibitionP1(expressions,observables));
 end
 
+% function rateLaw__27
+function [val] = rateLaw__27(expressions, observables)
+    val = (((expressions(58)*observables(65))*observables(68))*observables(75));
+end
+
+% function rateLaw__28
+function [val] = rateLaw__28(expressions, observables)
+    val = ((expressions(59)*observables(71))*observables(73));
+end
+
+% function rateLaw__29
+function [val] = rateLaw__29(expressions, observables)
+    val = (expressions(59)*observables(77));
+end
+
+% function rateLaw__30
+function [val] = rateLaw__30(expressions, observables)
+    val = (expressions(61)*PhageAssembly(expressions,observables));
+end
+
+% function rateLaw__31
+function [val] = rateLaw__31(expressions, observables)
+    val = ((((2700*expressions(61))*observables(79))*PhageAssembly(expressions,observables))*P8Removal(expressions,observables));
+end
+
+% function rateLaw__32
+function [val] = rateLaw__32(expressions, observables)
+    val = (((1600*expressions(61))*observables(79))*PhageAssembly(expressions,observables));
+end
+
+% function rateLaw__33
+function [val] = rateLaw__33(expressions, observables)
+    val = ((expressions(62)*observables(67))*observables(73));
+end
+
+% function rateLaw__34
+function [val] = rateLaw__34(expressions, observables)
+    val = ((5*expressions(62))*observables(80));
+end
+
 
 
 
 % Calculate expressions
 function [ expressions ] = calc_expressions ( parameters )
 
-    expressions = zeros(1,68);
+    expressions = zeros(1,69);
     expressions(1) = parameters(1);
     expressions(2) = parameters(2);
     expressions(3) = parameters(3);
@@ -557,6 +607,7 @@ function [ expressions ] = calc_expressions ( parameters )
     expressions(66) = (0.7*expressions(24));
     expressions(67) = (0.7*expressions(25));
     expressions(68) = (0.7*expressions(27));
+    expressions(69) = (14*expressions(58));
    
 end
 
@@ -726,6 +777,16 @@ function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
     ratelaws(69) = expressions(35)*species(42)*species(3);
     ratelaws(70) = expressions(42)*species(48);
     ratelaws(71) = expressions(46)*species(58);
+    ratelaws(72) = (14*expressions(58))*species(65)*species(68)*species(75);
+    ratelaws(73) = rateLaw__27(expressions,observables);
+    ratelaws(74) = rateLaw__28(expressions,observables)*species(77);
+    ratelaws(75) = rateLaw__29(expressions,observables)*species(71)*species(73);
+    ratelaws(76) = expressions(60)*species(78)*species(6);
+    ratelaws(77) = rateLaw__30(expressions,observables)*species(79);
+    ratelaws(78) = rateLaw__31(expressions,observables)*species(72);
+    ratelaws(79) = rateLaw__32(expressions,observables);
+    ratelaws(80) = rateLaw__33(expressions,observables)*species(80);
+    ratelaws(81) = rateLaw__34(expressions,observables)*species(67)*species(73);
 
 end
 
@@ -747,7 +808,7 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(3) = -ratelaws(42) +ratelaws(44) -ratelaws(45) +ratelaws(47) -ratelaws(48) +ratelaws(50) -ratelaws(52) +ratelaws(53) -ratelaws(54) +ratelaws(56) -ratelaws(57) +ratelaws(59) -ratelaws(60) +ratelaws(62) -ratelaws(63) +ratelaws(65) -ratelaws(66) +ratelaws(68) -ratelaws(69) +ratelaws(71);
     Dspecies(4) = -ratelaws(1) +ratelaws(6) -ratelaws(9);
     Dspecies(5) = ratelaws(1) -ratelaws(2);
-    Dspecies(6) = ratelaws(9);
+    Dspecies(6) = ratelaws(9) -ratelaws(76);
     Dspecies(7) = ratelaws(2) -ratelaws(3) +ratelaws(4) +ratelaws(6);
     Dspecies(8) = ratelaws(3) -ratelaws(4) -ratelaws(5);
     Dspecies(9) = ratelaws(5) -ratelaws(6);
@@ -806,23 +867,23 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(62) = 0.0;
     Dspecies(63) = ratelaws(46) -ratelaws(47);
     Dspecies(64) = ratelaws(67) -ratelaws(68);
-    Dspecies(65) = ratelaws(65);
+    Dspecies(65) = ratelaws(65) -ratelaws(72);
     Dspecies(66) = -ratelaws(3) +ratelaws(4) +ratelaws(6) -ratelaws(7) +ratelaws(8) +ratelaws(44);
-    Dspecies(67) = ratelaws(59);
-    Dspecies(68) = ratelaws(71);
-    Dspecies(69) = -ratelaws(10) +ratelaws(50);
+    Dspecies(67) = ratelaws(59) -ratelaws(81);
+    Dspecies(68) = ratelaws(71) -ratelaws(72);
+    Dspecies(69) = -ratelaws(10) +ratelaws(50) +ratelaws(79);
     Dspecies(70) = ratelaws(62);
-    Dspecies(71) = ratelaws(51);
-    Dspecies(72) = ratelaws(56);
-    Dspecies(73) = ratelaws(53);
+    Dspecies(71) = ratelaws(51) -ratelaws(75);
+    Dspecies(72) = ratelaws(56) -ratelaws(78);
+    Dspecies(73) = ratelaws(53) -ratelaws(75) -ratelaws(81);
     Dspecies(74) = -ratelaws(7) +ratelaws(8) +ratelaws(47);
-    Dspecies(75) = ratelaws(68);
+    Dspecies(75) = ratelaws(68) -ratelaws(72);
     Dspecies(76) = ratelaws(7) -ratelaws(8);
-    Dspecies(77) = 0.0;
-    Dspecies(78) = 0.0;
-    Dspecies(79) = 0.0;
-    Dspecies(80) = 0.0;
-    Dspecies(81) = 0.0;
+    Dspecies(77) = ratelaws(73) -ratelaws(74) +ratelaws(80);
+    Dspecies(78) = ratelaws(74) -ratelaws(76);
+    Dspecies(79) = ratelaws(76) -ratelaws(77);
+    Dspecies(80) = ratelaws(77) -ratelaws(80);
+    Dspecies(81) = ratelaws(80);
 
 end
 

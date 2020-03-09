@@ -16,6 +16,7 @@ PlotActivelyTranscribed = 1;
 PlotFreeRBSSites = 1 ;
 PlotmRNA = 1;
 PlotViralRegulatoryProteins = 1; 
+PlotPhage = 1; 
 %==========================================================================
 %        Running the Model and Plotting [Using Default Parameters]
 %==========================================================================
@@ -24,10 +25,13 @@ global param_labels observable_labels observables_out timepoints
 [param_labels,observable_labels] = GetParamNameAndLabels("Model.m");
 
 LengthToSimulation = 1*60*60; %In Seconds 
-timepoints = linspace(0,LengthToSimulation,1000)';
+timepoints = linspace(0,LengthToSimulation,10000)';
 [err, timepoints, species_out, observables_out] = Model(timepoints); 
 close all 
 ViralDNA = ["ssDNA","ssPDNA","RF1","RF2","P5DNA"];
+PlotGroup("Viral DNA",ViralDNA,PlotViralDNA)
+
+ViralDNA = ["RF1","RF2","RF2DP3"];
 PlotGroup("Viral DNA",ViralDNA,PlotViralDNA)
 
 PlotGroup("Host Resources","DP3",PlotHostResources)
@@ -52,7 +56,7 @@ PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 mRNA = ["Z","Y","W"];
 PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 
-regulatoryProteins = ["P2","P10","P5","P2P10"];
+regulatoryProteins = ["P2","P10","P2P10"];
 PlotGroup("Viral Proteins",regulatoryProteins,PlotViralRegulatoryProteins)
 
 regulatoryProteins = ["P8","P7","P9","P3","P6"];
@@ -60,6 +64,12 @@ PlotGroup("Viral Proteins",regulatoryProteins,PlotViralRegulatoryProteins)
 
 regulatoryProteins = ["P1","P4","P11"];
 PlotGroup("Viral Proteins",regulatoryProteins,PlotViralRegulatoryProteins)
+
+regulatoryProteins = ["As","PI","PE","PF"];
+PlotGroup("Assembly Proteins",regulatoryProteins,PlotPhage)
+
+regulatoryProteins = ["Phage"];
+PlotGroup("Phage",regulatoryProteins,PlotPhage)
 
 %==========================================================================
 %Plotting function that accepts a list of species names and plots the list
