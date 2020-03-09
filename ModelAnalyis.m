@@ -8,15 +8,15 @@ close all;
 %==========================================================================
 %Setting the value to 1 will plot the group, otherwise it will not be
 %plotted 
-PlotHostResources = 0; 
-PlotPromoterSites = 0; 
-PlotViralDNA = 1; 
-PlotOccupiedPromoterSites = 0;
-PlotActivelyTranscribed = 0; 
-PlotFreeRBSSites = 1 ;
-PlotmRNA = 0;
-PlotViralRegulatoryProteins = 0; 
-PlotPhage = 1; 
+PlotHostResources            = 0; 
+PlotPromoterSites            = 0; 
+PlotViralDNA                 = 0; 
+PlotOccupiedPromoterSites    = 0;
+PlotActivelyTranscribed      = 0; 
+PlotFreeRBSSites             = 0;
+PlotmRNA                     = 0;
+PlotViralRegulatoryProteins  = 1; 
+PlotPhage                    = 0; 
 %==========================================================================
 %        Running the Model and Plotting [Using Default Parameters]
 %==========================================================================
@@ -50,7 +50,11 @@ PlotGroup("Actively Transcribed mRNA",ActivelyTranscribedPromoter,PlotActivelyTr
 FreeRBSSites = ["RBS2","RBS5","RBS9","RBS8"];
 PlotGroup("Free Ribosome Binding Sites",FreeRBSSites,PlotFreeRBSSites)
 
-mRNA = ["A","B","D","E","F","G","H"];
+mRNA = ["A","B"]%,"D","E","F","G","H"];
+PlotGroup("mRNA Strands",mRNA,PlotmRNA)
+mRNA = ["D","E","F"]%,"D","E","F","G","H"];
+PlotGroup("mRNA Strands",mRNA,PlotmRNA)
+mRNA = ["G","H"]%,"D","E","F","G","H"];
 PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 
 mRNA = ["Z","Y","W"];
@@ -87,10 +91,10 @@ function PlotGroup(GroupType,SpeciesList,ShowPlot)
             hold on 
             for i = 1:length(idx)
                 IndexToPlot = idx(i);
-                plot(timepoints,observables_out(:,IndexToPlot),'DisplayName',observable_labels{IndexToPlot},"linewidth",4);
+                plot(timepoints/60.0,observables_out(:,IndexToPlot),'DisplayName',observable_labels{IndexToPlot},"linewidth",4);
             end
             legend
-            xlabel("Time [Seconds]",'FontSize',20)
+            xlabel("Time [Minutes]",'FontSize',20)
             ylabel("Number of Molecules",'FontSize',20) 
             title(GroupType,'FontSize',20)
             grid()
