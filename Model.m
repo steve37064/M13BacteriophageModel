@@ -115,7 +115,7 @@ param_labels = { 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'Km1', 'n1', 'C8_A', 
 
 % set ODE integrator options
 opts = odeset( 'RelTol',   1e-8,   ...
-               'AbsTol',   0.00001,   ...
+               'AbsTol',   1e-8,   ...
                'Stats',    'off',  ...
                'BDF',      'off',    ...
                'MaxOrder', 5   );
@@ -474,7 +474,7 @@ end
 
 % function rateLaw__22
 function [val] = rateLaw__22(expressions, observables)
-    val = (expressions(36)*P5InhibitionP5(expressions,observables));
+    val = ((0.1*expressions(36))*P5InhibitionP5(expressions,observables));
 end
 
 % function rateLaw__23
