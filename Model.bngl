@@ -1,8 +1,8 @@
 begin parameters
   C1     0.1          #Units: [(Molecules*Second)^{-1}] ---- DNA Polymerase III Binding Rate to ssDNA and dsDNA
-  C2     0.117        #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
+  C2     0.125        #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
   C3     1.0          #Units: [(Molecules*Second)^{-1}] ---- P2 Nicking RF1 DNA to Form RF2 DNA
-  C4     1.0E2        #Units: (Second)^{-1}] --------------  P2 Dissociation to RF2 DNA
+  C4     1.0E3        #Units: (Second)^{-1}] --------------  P2 Dissociation to RF2 DNA
   C5     1            #Units: [(Molecules*Second)^{-1}] ---- P2/P10 Association Constant
   C6     1E-15        #Units: (Second)^{-1}] --------------  P2/P10 Dissociation Constant
   C7     1E-3         #Units: [(Molecules*Second)^{-1}] ---- Rate of P5 Sequestering ssDNA       
@@ -11,14 +11,14 @@ begin parameters
   C8_A   6E-3         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site A
   C8_B   1E-2         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site B
   C8_H   6.5E-2       #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site H
-  C8_Z   2E-3         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site Z
-  C8_W   2E-4         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site W
+  C8_Z   2E-4         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site Z
+  C8_W   2.25E-3      #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site W
   C9     1.34         #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
   C10_A  3.6E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
   C10_B  7.2E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA B
   C10_H  2.5E-1       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA H
-  C10_Z  5.5E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA W
-  C10_W  4.3E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA Z
+  C10_W  5.5E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA W
+  C10_Z  4.3E-2       #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA Z
   C11    0.60         #Units: [Unitless] ------------------- Efficiency of Rho-Dependent Terminator Distal to P3
   C12_A  2.0E-2       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
   C12_B  5.8E-2       #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA B
@@ -217,13 +217,13 @@ begin species
   PD11()       0 #Units: [Molecules]
   P1()         0 #Units: [Molecules]
   P2()         0 #Units: [Molecules]
-  P3()         0 #Units: [Molecules]
+  P3()         5 #Units: [Molecules]
   P4()         0 #Units: [Molecules]
   P5()         0 #Units: [Molecules]
-  P6()         0 #Units: [Molecules]
-  P7()         0 #Units: [Molecules]
-  P8()         0 #Units: [Molecules]
-  P9()         0 #Units: [Molecules]
+  P6()         5 #Units: [Molecules]
+  P7()         5 #Units: [Molecules]
+  P8()      2700 #Units: [Molecules]
+  P9()         5 #Units: [Molecules]
   P10()        0 #Units: [Molecules]
   P11()        0 #Units: [Molecules]
   P2P10()      0 #Units: [Molecules]
@@ -369,7 +369,7 @@ begin reaction rules
 
   P2() + P10() <-> P2P10() C5,C6
   ssDNA() -> P5DNA() C7*P5()*P5Sequestering()
-  P5()-> 0 C7*ssDNA()*P5Sequestering()
+  P5()-> 0 1600*C7*ssDNA()*P5Sequestering()
   #====================================================
   #            Transcription Equations
   #====================================================
@@ -430,7 +430,7 @@ begin reaction rules
   PD10() -> R() + P10() C15_10
 
   RBS5() + R() -> RBS5R() C13_5*P5InhibitionP5()
-  RBS2R() -> RBS2() + PD5() C14 
+  RBS5R() -> RBS5() + PD5() C14 
   PD5() -> R() + P5() C15_5
   0 -> P7() 0.10*C15_5*PD5()
 

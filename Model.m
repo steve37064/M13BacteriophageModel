@@ -61,7 +61,7 @@ observables_out = [];
 
 % setup default parameters, if necessary
 if ( isempty(parameters) )
-   parameters = [ 0.1, 0.117, 1.0, 1.0E2, 1, 1E-15, 1E-3, 1100, 1.0, 6E-3, 1E-2, 6.5E-2, 2E-3, 2E-4, 1.34, 3.6E-2, 7.2E-2, 2.5E-1, 5.5E-2, 4.3E-2, 0.60, 2.0E-2, 5.8E-2, 5.8E-2, 4.6E-3, 1.9E-3, 1.4E-3, 1.2E-3, 1.9E-3, 1.9E-3, 1.9E-3, 1.60, 10.8, 8.00, 4.60, 20.0, 0.80, 4.40, 1.60, 1.08, 4.00, 0.25, 4.8E-2, 4.1E-2, 3.7E-2, 3.8E-2, 4.3E-1, 2.5E-1, 8.9E-1, 2.4E-1, 3.1E-1, 80, 1.5E-4, 4, 1.0E-2, 2.6E-5, 1.0, 0.1, 0.1, 0.1, 1.2E-3, 0.1, 3000, 40, 1E-6 ];
+   parameters = [ 0.1, 0.125, 1.0, 1.0E3, 1, 1E-15, 1E-3, 1100, 1.0, 6E-3, 1E-2, 6.5E-2, 2E-4, 2.25E-3, 1.34, 3.6E-2, 7.2E-2, 2.5E-1, 5.5E-2, 4.3E-2, 0.60, 2.0E-2, 5.8E-2, 5.8E-2, 4.6E-3, 1.9E-3, 1.4E-3, 1.2E-3, 1.9E-3, 1.9E-3, 1.9E-3, 1.60, 10.8, 8.00, 4.60, 20.0, 0.80, 4.40, 1.60, 1.08, 4.00, 0.25, 4.8E-2, 4.1E-2, 3.7E-2, 3.8E-2, 4.3E-1, 2.5E-1, 8.9E-1, 2.4E-1, 3.1E-1, 80, 1.5E-4, 4, 1.0E-2, 2.6E-5, 1.0, 0.1, 0.1, 0.1, 1.2E-3, 0.1, 3000, 40, 1E-6 ];
 end
 % check that parameters has proper dimensions
 if (  size(parameters,1) ~= 1  ||  size(parameters,2) ~= 65  )
@@ -104,7 +104,7 @@ if ( size(suppress_plot,1) ~= 1  ||  size(suppress_plot,2) ~= 1 )
 end
 
 % define parameter labels (this is for the user's reference!)
-param_labels = { 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'Km1', 'n1', 'C8_A', 'C8_B', 'C8_H', 'C8_Z', 'C8_W', 'C9', 'C10_A', 'C10_B', 'C10_H', 'C10_Z', 'C10_W', 'C11', 'C12_A', 'C12_B', 'C12_D', 'C12_E', 'C12_F', 'C12_G', 'C12_H', 'C12_W', 'C12_Y', 'C12_Z', 'C13_1', 'C13_2', 'C13_3', 'C13_4', 'C13_5', 'C13_6', 'C13_8', 'C13_9', 'C13_10', 'C13_11', 'C14', 'C15_1', 'C15_2', 'C15_3', 'C15_4', 'C15_5', 'C15_6', 'C15_8', 'C15_10', 'C15_11', 'EF1', 'EF2', 'EF3', 'EF5', 'EF10', 'n2', 'C16', 'C17', 'C18', 'C19', 'C20', 'Km2', 'n3', 'EPS' };
+param_labels = { 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'Km1', 'n1', 'C8_A', 'C8_B', 'C8_H', 'C8_Z', 'C8_W', 'C9', 'C10_A', 'C10_B', 'C10_H', 'C10_W', 'C10_Z', 'C11', 'C12_A', 'C12_B', 'C12_D', 'C12_E', 'C12_F', 'C12_G', 'C12_H', 'C12_W', 'C12_Y', 'C12_Z', 'C13_1', 'C13_2', 'C13_3', 'C13_4', 'C13_5', 'C13_6', 'C13_8', 'C13_9', 'C13_10', 'C13_11', 'C14', 'C15_1', 'C15_2', 'C15_3', 'C15_4', 'C15_5', 'C15_6', 'C15_8', 'C15_10', 'C15_11', 'EF1', 'EF2', 'EF3', 'EF5', 'EF10', 'n2', 'C16', 'C17', 'C18', 'C19', 'C20', 'Km2', 'n3', 'EPS' };
 
 
 
@@ -247,13 +247,13 @@ function [species_init] = initialize_species( params )
     species_init(64) = 0;
     species_init(65) = 0;
     species_init(66) = 0;
-    species_init(67) = 0;
+    species_init(67) = 5;
     species_init(68) = 0;
     species_init(69) = 0;
-    species_init(70) = 0;
-    species_init(71) = 0;
-    species_init(72) = 0;
-    species_init(73) = 0;
+    species_init(70) = 5;
+    species_init(71) = 5;
+    species_init(72) = 2700;
+    species_init(73) = 5;
     species_init(74) = 0;
     species_init(75) = 0;
     species_init(76) = 0;
@@ -394,17 +394,17 @@ end
 
 % function rateLaw__3
 function [val] = rateLaw__3(expressions, observables)
-    val = ((expressions(7)*observables(4))*P5Sequestering(expressions,observables));
+    val = (((1600*expressions(7))*observables(4))*P5Sequestering(expressions,observables));
 end
 
 % function rateLaw__4
 function [val] = rateLaw__4(expressions, observables)
-    val = ((expressions(21)*expressions(19))*observables(23));
+    val = ((expressions(21)*expressions(20))*observables(23));
 end
 
 % function rateLaw__5
 function [val] = rateLaw__5(expressions, observables)
-    val = (((1-expressions(21))*expressions(19))*observables(23));
+    val = (((1-expressions(21))*expressions(20))*observables(23));
 end
 
 % function rateLaw__6
@@ -729,10 +729,10 @@ function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
     ratelaws(21) = expressions(16)*species(20);
     ratelaws(22) = expressions(17)*species(21);
     ratelaws(23) = expressions(18)*species(22);
-    ratelaws(24) = expressions(19)*species(23);
+    ratelaws(24) = expressions(20)*species(23);
     ratelaws(25) = rateLaw__4(expressions,observables);
     ratelaws(26) = rateLaw__5(expressions,observables);
-    ratelaws(27) = expressions(20)*species(24);
+    ratelaws(27) = expressions(19)*species(24);
     ratelaws(28) = rateLaw__6(expressions,observables)*species(25)*species(35);
     ratelaws(29) = rateLaw__7(expressions,observables)*species(26)*species(36);
     ratelaws(30) = (0.7*expressions(24))*species(27);
@@ -754,7 +754,7 @@ function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
     ratelaws(46) = expressions(42)*species(53);
     ratelaws(47) = expressions(50)*species(63);
     ratelaws(48) = rateLaw__22(expressions,observables)*species(37)*species(3);
-    ratelaws(49) = expressions(42)*species(46);
+    ratelaws(49) = expressions(42)*species(49);
     ratelaws(50) = expressions(47)*species(59);
     ratelaws(51) = rateLaw__23(expressions,observables);
     ratelaws(52) = expressions(39)*species(38)*species(3);
@@ -837,9 +837,9 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(32) = ratelaws(27) -ratelaws(39);
     Dspecies(33) = ratelaws(26) -ratelaws(40);
     Dspecies(34) = ratelaws(25) -ratelaws(41);
-    Dspecies(35) = ratelaws(21) -ratelaws(28) -ratelaws(42) +ratelaws(43) +ratelaws(49);
+    Dspecies(35) = ratelaws(21) -ratelaws(28) -ratelaws(42) +ratelaws(43);
     Dspecies(36) = ratelaws(22) -ratelaws(29) -ratelaws(45) +ratelaws(46);
-    Dspecies(37) = ratelaws(21) +ratelaws(22) -ratelaws(31) -ratelaws(33) -ratelaws(34) -ratelaws(35) -ratelaws(48);
+    Dspecies(37) = ratelaws(21) +ratelaws(22) -ratelaws(31) -ratelaws(33) -ratelaws(34) -ratelaws(35) -ratelaws(48) +ratelaws(49);
     Dspecies(38) = ratelaws(21) +ratelaws(22) +ratelaws(23) -ratelaws(31) -ratelaws(33) -ratelaws(35) -ratelaws(37) -ratelaws(38) -ratelaws(52) +ratelaws(53);
     Dspecies(39) = ratelaws(21) +ratelaws(22) +ratelaws(23) -ratelaws(31) -ratelaws(33) -ratelaws(35) -ratelaws(37) -ratelaws(38) -ratelaws(54) +ratelaws(55);
     Dspecies(40) = ratelaws(26) -ratelaws(40) -ratelaws(63) +ratelaws(64);
@@ -848,10 +848,10 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(43) = ratelaws(24) -ratelaws(40) -ratelaws(41) -ratelaws(60) +ratelaws(61);
     Dspecies(44) = ratelaws(26) -ratelaws(40) -ratelaws(66) +ratelaws(67);
     Dspecies(45) = ratelaws(63) -ratelaws(64);
-    Dspecies(46) = ratelaws(42) -ratelaws(43) -ratelaws(49);
+    Dspecies(46) = ratelaws(42) -ratelaws(43);
     Dspecies(47) = ratelaws(57) -ratelaws(58);
     Dspecies(48) = ratelaws(69) -ratelaws(70);
-    Dspecies(49) = ratelaws(48);
+    Dspecies(49) = ratelaws(48) -ratelaws(49);
     Dspecies(50) = ratelaws(60) -ratelaws(61);
     Dspecies(51) = ratelaws(54) -ratelaws(55);
     Dspecies(52) = ratelaws(52) -ratelaws(53);

@@ -8,14 +8,14 @@ close all;
 %==========================================================================
 %Setting the value to 1 will plot the group, otherwise it will not be
 %plotted 
-PlotHostResources = 1; 
-PlotPromoterSites = 1; 
+PlotHostResources = 0; 
+PlotPromoterSites = 0; 
 PlotViralDNA = 1; 
-PlotOccupiedPromoterSites = 1;
-PlotActivelyTranscribed = 1; 
+PlotOccupiedPromoterSites = 0;
+PlotActivelyTranscribed = 0; 
 PlotFreeRBSSites = 1 ;
-PlotmRNA = 1;
-PlotViralRegulatoryProteins = 1; 
+PlotmRNA = 0;
+PlotViralRegulatoryProteins = 0; 
 PlotPhage = 1; 
 %==========================================================================
 %        Running the Model and Plotting [Using Default Parameters]
@@ -25,7 +25,7 @@ global param_labels observable_labels observables_out timepoints
 [param_labels,observable_labels] = GetParamNameAndLabels("Model.m");
 
 LengthToSimulation = 1*60*60; %In Seconds 
-timepoints = linspace(0,LengthToSimulation,10000)';
+timepoints = linspace(0,LengthToSimulation,50000)';
 [err, timepoints, species_out, observables_out] = Model(timepoints); 
 close all 
 ViralDNA = ["ssDNA","ssPDNA","RF1","RF2","P5DNA"];
@@ -71,6 +71,8 @@ PlotGroup("Assembly Proteins",regulatoryProteins,PlotPhage)
 regulatoryProteins = ["Phage"];
 PlotGroup("Phage",regulatoryProteins,PlotPhage)
 
+regulatoryProteins = ["P5DNA","P5"];
+PlotGroup("Phage",regulatoryProteins,PlotPhage)
 %==========================================================================
 %Plotting function that accepts a list of species names and plots the list
 %on a single graph. 
