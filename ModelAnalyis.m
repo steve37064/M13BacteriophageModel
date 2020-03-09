@@ -53,7 +53,13 @@ mRNA = ["Z","Y","W"];
 PlotGroup("mRNA Strands",mRNA,PlotmRNA)
 
 regulatoryProteins = ["P2","P10","P5"];
-PlotGroup("mRNA Strands",regulatoryProteins,PlotViralRegulatoryProteins)
+PlotGroup("Viral Proteins",regulatoryProteins,PlotViralRegulatoryProteins)
+
+regulatoryProteins = ["P8","P7","P9","P3","P6"];
+PlotGroup("Viral Proteins",regulatoryProteins,PlotViralRegulatoryProteins)
+
+regulatoryProteins = ["P1","P4","P11"];
+PlotGroup("Viral Proteins",regulatoryProteins,PlotViralRegulatoryProteins)
 
 %==========================================================================
 %Plotting function that accepts a list of species names and plots the list

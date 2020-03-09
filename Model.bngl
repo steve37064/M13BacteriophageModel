@@ -423,6 +423,34 @@ begin reaction rules
   RBS5() + R() -> RBS5R() C13_5*P5InhibitionP5()
   RBS2R() -> RBS2() + PD5() C14 
   PD5() -> R() + P5() C15_5
+  0 -> P7() C15_5*PD5()
+
+  RBS9() + R() -> RBS9R() C13_9
+  RBS9R() -> RBS9() + R() + P9() C14 
+
+  RBS8() + R() -> RBS8R() C13_8
+  RBS8R() -> RBS8() + PD8() C14 
+  PD8() -> R() + P8() C15_8
+
+  RBS3() + R() -> RBS3R() C13_3*P5InhibitionP3()
+  RBS3R() -> RBS3() + PD3() C14 
+  PD3() -> R() + P3() C15_3
+
+  RBS6() + R() -> RBS6R() C13_6
+  RBS6R() -> RBS6() + PD6() C14 
+  PD6() -> R() + P6() C15_6
+
+  RBS1() + R() -> RBS1R() C13_1*P5InhibitionP1()
+  RBS1R() -> RBS1() + PD1() C14 
+  PD1() -> R() + P1() C15_1
+
+  RBS11() + R() -> RBS11R() C13_11
+  RBS11R() -> RBS11() + PD11() C14 
+  PD11() -> R() + P11() C15_11
+
+  RBS4() + R() -> RBS4R() C13_4
+  RBS4R() -> RBS4() + PD4() C14 
+  PD4() -> R() + P4() C15_4
 
 
 end reaction rules
