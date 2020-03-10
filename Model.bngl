@@ -474,7 +474,7 @@ begin reaction rules
   P8() -> 0  2700*C19*PE()*PhageAssembly()*P8Removal()
   0-> P5() 1600*C19*PE()*PhageAssembly()
   PF() -> Phage() + As() C20*P3()*P9()
-  P3() + P9() -> 0 5*C20*PF()
+  P3() + P6() -> 0 5*C20*PF()
 
 
 

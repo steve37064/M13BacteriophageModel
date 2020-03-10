@@ -115,7 +115,7 @@ param_labels = { 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'Km1', 'n1', 'C8_A', 
 
 % set ODE integrator options
 opts = odeset( 'RelTol',   1e-8,   ...
-               'AbsTol',   1e-8,   ...
+               'AbsTol',   0.0001,   ...
                'Stats',    'off',  ...
                'BDF',      'off',    ...
                'MaxOrder', 5   );
@@ -786,7 +786,7 @@ function [ ratelaws ] = calc_ratelaws ( species, expressions, observables )
     ratelaws(78) = rateLaw__31(expressions,observables)*species(72);
     ratelaws(79) = rateLaw__32(expressions,observables);
     ratelaws(80) = rateLaw__33(expressions,observables)*species(80);
-    ratelaws(81) = rateLaw__34(expressions,observables)*species(67)*species(73);
+    ratelaws(81) = rateLaw__34(expressions,observables)*species(67)*species(70);
 
 end
 
@@ -872,10 +872,10 @@ function [ Dspecies ] = calc_species_deriv ( time, species, expressions )
     Dspecies(67) = ratelaws(59) -ratelaws(81);
     Dspecies(68) = ratelaws(71) -ratelaws(72);
     Dspecies(69) = -ratelaws(10) +ratelaws(50) +ratelaws(79);
-    Dspecies(70) = ratelaws(62);
+    Dspecies(70) = ratelaws(62) -ratelaws(81);
     Dspecies(71) = ratelaws(51) -ratelaws(75);
     Dspecies(72) = ratelaws(56) -ratelaws(78);
-    Dspecies(73) = ratelaws(53) -ratelaws(75) -ratelaws(81);
+    Dspecies(73) = ratelaws(53) -ratelaws(75);
     Dspecies(74) = -ratelaws(7) +ratelaws(8) +ratelaws(47);
     Dspecies(75) = ratelaws(68) -ratelaws(72);
     Dspecies(76) = ratelaws(7) -ratelaws(8);
