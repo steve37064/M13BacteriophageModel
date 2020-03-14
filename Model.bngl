@@ -14,22 +14,22 @@ begin parameters
   C8_Z   2E-4         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site Z
   C8_W   2.25E-3      #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site W
   C9     1.34         #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
-  C10_A  0.036216     #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
-  C10_B  0.070526     #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA B
-  C10_H  0.24815      #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA H
-  C10_W  0.054918     #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA W
-  C10_Z  0.043226     #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA Z
+C10_A 0.02992407324698526
+C10_B 0.06448508180943215
+C10_H 0.21069182389937108
+C10_W 0.04890510948905109
+C10_Z 0.04085365853658537
   C11    0.60         #Units: [Unitless] ------------------- Efficiency of Rho-Dependent Terminator Distal to P3
-  C12_A  0.020387     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
-  C12_B  0.0057762    #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA B
-  C12_D  0.0057763    #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
-  C12_E  0.004621     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
-  C12_F  0.00192542   #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA F
-  C12_G  0.00144402   #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA G
-  C12_H  0.0011552    #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA H
-  C12_W  0.0019254    #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA W
-  C12_Y  0.0019254    #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Y
-  C12_Z  0.0019254    #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Z
+C12_A 0.04319428083002623
+C12_B 0.005570583189214258
+C12_D 0.0030651780185426995
+C12_E 0.0030651780185426995
+C12_F 0.0030651780185426995
+C12_G 0.0016272116424786232
+C12_H 0.0016272116424786232
+C12_W 0.009800798738483376
+C12_Y 0.15563992341981353
+C12_Z 0.015538343829505741
   C13_1  1.60         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P1 start codon
   C13_2  10.8         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P2 start codon
   C13_3  8.00         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P3 start codon
@@ -391,33 +391,28 @@ begin reaction rules
 
   #The actively transcribing RNAP will produce transcript A and all of the 
   #ribosome binding sites needed for translation 
-  ELA() -> RNAP() + A() + RBS2() + RBS5() + RBS9() + RBS8() C10_A
-  ELB() -> RNAP() + B() + RBS10() + RBS5() + RBS9() + RBS8() C10_B
-  ELH() -> RNAP() + H() + RBS9() + RBS8() C10_H
-  ELZ() -> RNAP() + RBS3() + RBS6()  C10_Z
-  0     -> Z() C11*C10_Z*ELZ() 
-  0     -> Y() + RBS1() + RBS11() (1-C11)*C10_Z*ELZ() 
-  ELW() -> RNAP() + W() + RBS4() C10_W
+ELA() -> RNAP() + A() + RBS2() + RBS10() + RBS5() + RBS9() + RBS8() C10_A
+ELB() -> RNAP() + B() + RBS10() + RBS5() + RBS9() + RBS8() C10_B
+ELH() -> RNAP() + H() + RBS9() + RBS8() C10_H
+ELZ() -> RNAP() + RBS3() + RBS6() C10_Z
+0    -> Z() C11*C10_Z*ELZ()
+0    -> Y() + RBS1() + RBS11() (1-C11)*C10_Z*ELZ()
+ELW() -> RNAP() + W() + RBS4() C10_W
 
 
   #====================================================
   #            mRNA Degragation Equations
   #====================================================
-  A() +RBS2()   -> D() C12_A*RBS2Removal()
-  B() + RBS10() -> D() C12_B*RBS10Removal()
-  D()    -> E()   0.7*C12_D 
-  D() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_D*RBS5Removal()*RBS9Removal()*RBS8Removal()
-  E()    -> F()   0.7*C12_E
-  E() + RBS5() + RBS9() + RBS8()  -> 0   0.3*C12_E*RBS5Removal()*RBS9Removal()*RBS8Removal()
-  F() + RBS5() -> G() 0.7*C12_F*RBS5Removal()
-  F() + RBS5() + RBS9() + RBS8()  -> 0 0.3*C12_F*RBS5Removal()*RBS9Removal()*RBS8Removal()
-  G() -> H() 0.7*C12_G
-  G() + RBS9() + RBS8() -> 0 0.3*C12_G*RBS9Removal()*RBS8Removal()
-  H() + RBS9() + RBS8() -> 0 C12_H*RBS9Removal()*RBS8Removal()
-
-  W() + RBS4() -> 0 C12_W*RBS4Removal()
-  Y() + RBS6() + RBS3() + RBS11() + RBS1() -> 0 C12_Y*RBS3Removal()*RBS6Removal()*RBS1Removal()*RBS11Removal()
-  Z() + RBS6() + RBS3() -> 0 C12_Z*RBS3Removal()*RBS6Removal()
+A() + RBS2() -> D() C12_A*RBS2Removal()
+B() + RBS10() -> D() C12_B*RBS10Removal()
+D()   -> E() 0.7*C12_D
+D() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_D*RBS5Removal()*RBS9Removal()*RBS8Removal()E()   -> F() 0.7*C12_E
+E() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_E*RBS5Removal()*RBS9Removal()*RBS8Removal()F() + RBS5() -> G() 0.7*C12_F*RBS5Removal()
+F() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_F*RBS5Removal()*RBS9Removal()*RBS8Removal()G()   -> H() 0.7*C12_G
+G() + RBS9() + RBS8() -> 0 0.3*C12_G*RBS9Removal()*RBS8Removal()H() + RBS9() + RBS8() -> 0 0.3*C12_H*RBS9Removal()*RBS8Removal()
+W() + RBS4() -> 0 C12_W*RBS4Removal()
+Y() + RBS3() + RBS6() + RBS1() + RBS11() -> 0 C12_Y*RBS3Removal()*RBS6Removal()*RBS1Removal()*RBS11Removal()
+Z() + RBS3() + RBS6() -> 0 C12_Z*RBS3Removal()*RBS6Removal()
   #====================================================
   #              Translation Equations
   #====================================================
@@ -483,6 +478,3 @@ end reaction rules
 
 simulate({method=>"ode",t_end=>3600,n_steps=>2000})
 writeMfile();
-
-
-
