@@ -16,7 +16,7 @@ begin parameters
   C9     1.34         #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
   C10_A   0.03643   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
   C10_B   0.06775   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA B
-  C10_H   0.25   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA H
+  C10_H   0.21069   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA H
   C10_W   0.05492   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA W
   C10_Z   0.04214   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA Z
   C11    0.60         #Units: [Unitless] ------------------- Efficiency of Rho-Dependent Terminator Distal to P3
@@ -25,11 +25,11 @@ begin parameters
   C12_D   0.00307     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
   C12_E   0.00307     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
   C12_F   0.00307     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA F
-  C12_G   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA G
-  C12_H   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA H
-  C12_W   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA W
-  C12_Y   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Y
-  C12_Z   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Z
+  C12_G   0.00177     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA G
+  C12_H   0.00177     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA H
+  C12_W   0.00177     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA W
+  C12_Y   0.00177     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Y
+  C12_Z   0.00177     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Z
   C13_1  1.60         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P1 start codon
   C13_2  10.8         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P2 start codon
   C13_3  8.00         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P3 start codon
@@ -391,9 +391,9 @@ begin reaction rules
 
   #The actively transcribing RNAP will produce transcript A and all of the 
   #ribosome binding sites needed for translation 
-  ELA() -> RNAP() + A() + RBS2() + RBS5() + RBS9() + RBS8() C10_A
-  ELB() -> RNAP() + B() + RBS10() + RBS5() + RBS9() + RBS8() C10_B
-  ELH() -> RNAP() + H() + RBS9() + RBS8() C10_H
+  ELA() -> RNAP() + A() + RBS2() + RBS8() + RBS9() + RBS5() C10_A
+  ELB() -> RNAP() + B() + RBS10() + RBS8() + RBS9() + RBS5() C10_B
+  ELH() -> RNAP() + H() + RBS9() + RBS5() C10_H
 ELZ() -> RNAP() + RBS3() + RBS6() C10_Z
 0    -> Z() C11*C10_Z*ELZ()
 0    -> Y() + RBS1() + RBS11() (1-C11)*C10_Z*ELZ()
@@ -406,14 +406,14 @@ ELZ() -> RNAP() + RBS3() + RBS6() C10_Z
 A() + RBS2() -> D() C12_A*RBS2Removal()
 B() + RBS10() -> D() C12_B*RBS10Removal()
 D()   -> E() 0.7*C12_D
-  D() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_D*RBS5Removal()*RBS9Removal()*RBS8Removal()
+  D() + RBS8() + RBS9() + RBS5() -> 0 0.3*C12_D*RBS8Removal()*RBS9Removal()*RBS5Removal()
 E()   -> F() 0.7*C12_E
-  E() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_E*RBS5Removal()*RBS9Removal()*RBS8Removal()
-F() + RBS5() -> G() 0.7*C12_F*RBS5Removal()
-  F() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_F*RBS5Removal()*RBS9Removal()*RBS8Removal()
+  E() + RBS8() + RBS9() + RBS5() -> 0 0.3*C12_E*RBS8Removal()*RBS9Removal()*RBS5Removal()
+F() + RBS8() -> G() 0.7*C12_F*RBS8Removal()
+  F() + RBS8() + RBS9() + RBS5() -> 0 0.3*C12_F*RBS8Removal()*RBS9Removal()*RBS5Removal()
 G()   -> H() 0.7*C12_G
-  G() + RBS9() + RBS8() -> 0 0.3*C12_G*RBS9Removal()*RBS8Removal()
-  H() + RBS9() + RBS8() -> 0 C12_H*RBS9Removal()*RBS8Removal()
+  G() + RBS9() + RBS5() -> 0 0.3*C12_G*RBS9Removal()*RBS5Removal()
+  H() + RBS9() + RBS5() -> 0 C12_H*RBS9Removal()*RBS5Removal()
 
 W() + RBS4() -> 0 C12_W*RBS4Removal()
 Y() + RBS3() + RBS6() + RBS1() + RBS11() -> 0 C12_Y*RBS3Removal()*RBS6Removal()*RBS1Removal()*RBS11Removal()
