@@ -44,7 +44,7 @@ for Analyte = ListOfAnalytesToPlot
 
     OrginalAnalyte = GetSimulatedData(Analyte,OrginalModelObservables,OrginalModelInfo);
     figure 
-    plot(timepointsMinutes,OrginalAnalyte,"DisplayName","Orginal","LineWidth",4)
+    plot(timepointsMinutes,OrginalAnalyte,"--","DisplayName","Orginal","LineWidth",4)
     hold on 
     for i = 1:length(GeneratedModels)
         NextAnalytesToPlot = GetSimulatedData(Analyte,DataStore{i},ModelInfoStore{i});
@@ -52,10 +52,12 @@ for Analyte = ListOfAnalytesToPlot
         ModelToRun = ModelToRun{1};
         plot(timepointsMinutes,NextAnalytesToPlot,"DisplayName",ModelToRun,"LineWidth",4)
     end 
-    legend('Interpreter', 'none',"FontSize",20)
+    %legend('Interpreter', 'none',"FontSize",20)
     grid
     xlabel("Time [Minutes]","FontSize",20)
     ylabel(Analyte,"FontSize",20)
+    SaveName = "Graphs/04_17_2020___1___IntialPass/"+Analyte+".png";
+    saveas(gca,SaveName)
 end 
 
 
