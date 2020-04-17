@@ -481,7 +481,7 @@ Z() + RBS2() + RBS6() -> 0 C12_Z*RBS2Removal()*RBS6Removal()
 
 end reaction rules
 
-simulate({method=>"ode",AbsTol=>1E-8,t_end=>3600,n_steps=>2000})
+simulate({method=>"ode",t_end=>3600,n_steps=>2000})
 writeMfile();
 
 
