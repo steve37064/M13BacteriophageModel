@@ -36,7 +36,9 @@ def updateDegradationRate(mRNA,species,lengths):
   rate = '  C12_'+ mRNA+ '   '+ str(rate)+'     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA '+mRNA+'\n'
   return rate
 
-def createModel(input_file,swap1=0,swap2=0):
+def createModel(input_file,swap1=0,swap2=0,output_file=''):
+  if output_file == '': 
+    output_file = input_file
   with open(input_file) as file:  
     model = file.readlines() 
   A=[2,5,7,9,8]
@@ -153,7 +155,7 @@ def createModel(input_file,swap1=0,swap2=0):
   #do Z:
   model[419]='Z() + ' +' + '.join(["RBS" + str(i)+'()' for i in Z])+' -> 0 C12_Z*'+ '*'.join(["RBS" + str(i)+ 'Removal()' for i in Z])+'\n'
   #print('Z() + ' +' + '.join(["RBS" + str(i)+'()' for i in Z])+' -> 0 C12_Z*'+ '*'.join(["RBS" + str(i)+ 'Removal()' for i in Z]))
-  f= open(input_file,"w+")
+  f= open(output_file,"w+")
   for i in range(len(model)):
     f.write(model[i])
   f.close() 
