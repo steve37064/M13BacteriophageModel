@@ -27,3 +27,5 @@ for i_swap,j_swap in combinations(ProteinSwaps,2):
     os.system("rm *.gdat")
     os.system("rm *.net")
     os.system("mv  "+Name+".m "+ Folder+"MatlabVersions/" +"." )
+
+os.system("perl -pi -w -e 's/   0.0001,   .../   1e-8,   .../g;' "+Folder+"MatlabVersions/*.m")
