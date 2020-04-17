@@ -40,14 +40,18 @@ timepointsMinutes = timepoints./60;
 ListOfAnalytesToPlot = ["Phage","P1","P2","P3","P4","P5","P6","P7","P8"...
                         ,"P9","P10","P11"];
 
+Samples = zeros(length(GeneratedModels)+1,length(ListOfAnalytesToPlot));
+ColAnalyte = 0;
 for Analyte = ListOfAnalytesToPlot
-
+    ColAnalyte = ColAnalyte + 1; 
     OrginalAnalyte = GetSimulatedData(Analyte,OrginalModelObservables,OrginalModelInfo);
+    Samples(1,ColAnalyte) = OrginalAnalyte(end);
     figure 
     plot(timepointsMinutes,OrginalAnalyte,"--","DisplayName","Orginal","LineWidth",4)
     hold on 
     for i = 1:length(GeneratedModels)
         NextAnalytesToPlot = GetSimulatedData(Analyte,DataStore{i},ModelInfoStore{i});
+        Samples(i+1,ColAnalyte) = NextAnalytesToPlot(end);
         ModelToRun = split(GeneratedModels{i},".");
         ModelToRun = ModelToRun{1};
         plot(timepointsMinutes,NextAnalytesToPlot,"DisplayName",ModelToRun,"LineWidth",4)
@@ -59,6 +63,12 @@ for Analyte = ListOfAnalytesToPlot
     SaveName = "Graphs/04_17_2020___1___IntialPass/"+Analyte+".png";
     saveas(gca,SaveName)
 end 
+
+rowNames = {'Orginal' GeneratedModels{:}};
+Table2Store = array2table(Samples,'VariableNames',ListOfAnalytesToPlot,"RowNames",rowNames);
+writetable(Table2Store,"FinalValues.csv",'WriteRowNames',true)
+
+
 
 
 function [Data2Plot] = GetSimulatedData(Analyte,Observables,ModelInfo)
@@ -91,3 +101,5 @@ function [ModelInfo] = getValues(model)
     ModelInfo = containers.Map(["param_labels", "parameters", "observable_labels"],...
                                 {param_labels, parameters,  observable_labels}  );
 end 
+
+
