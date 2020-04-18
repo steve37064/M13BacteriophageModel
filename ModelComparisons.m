@@ -60,8 +60,9 @@ for Analyte = ListOfAnalytesToPlot
     grid
     xlabel("Time [Minutes]","FontSize",20)
     ylabel(Analyte,"FontSize",20)
-    SaveName = "Graphs/04_17_2020___1___IntialPass/"+Analyte+".png";
-    saveas(gca,SaveName)
+    %legend
+    %SaveName = "Graphs/04_17_2020___1___IntialPass/"+Analyte+".png";
+    %saveas(gca,SaveName)
 end 
 
 rowNames = {'Orginal' GeneratedModels{:}};
