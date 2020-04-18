@@ -1,0 +1,488 @@
+begin parameters
+  C1     0.1          #Units: [(Molecules*Second)^{-1}] ---- DNA Polymerase III Binding Rate to ssDNA and dsDNA
+  C2     0.125        #Units: [(Second)^{-1}] -------------- DNA Polymerase III Elongation Constant
+  C3     1.0          #Units: [(Molecules*Second)^{-1}] ---- P2 Nicking RF1 DNA to Form RF2 DNA
+  C4     1.0E3        #Units: (Second)^{-1}] --------------  P2 Dissociation to RF2 DNA
+  C5     1            #Units: [(Molecules*Second)^{-1}] ---- P2/P10 Association Constant
+  C6     9.5454e-16   #Units: (Second)^{-1}] --------------  P2/P10 Dissociation Constant
+  C7     1E-3         #Units: [(Molecules*Second)^{-1}] ---- Rate of P5 Sequestering ssDNA       
+  Km1    1100         #Units: [Molecules] ------------------ Threshold for P5 seqestering ssDNA
+  n1     1.0          #Units: [Unitless] ------------------- Hill Coefficent for P5DNA formation 
+  C8_A   6E-3         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site A
+  C8_B   1E-2         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site B
+  C8_H   6.5E-3       #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site H
+  C8_Z   2E-4         #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site Z
+  C8_W   2.25E-3      #Units: [(Molecules*Second)^{-1}] ---- RNAP Binding to Promoter Site W
+  C9     1.34         #Units: [(Second)^{-1}] -------------- RNAP Clearing the Promoter Site
+  C10_A   0.06844   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA A
+  C10_B   0.06775   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA B
+  C10_H   0.25   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA H
+  C10_W   0.05492   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA W
+  C10_Z   0.02735   #Units: [(Second)^{-1}] -------------- RNAP Elongation of mRNA Z
+  C11    0.60         #Units: [Unitless] ------------------- Efficiency of Rho-Dependent Terminator Distal to P3
+  C12_A   0.00548     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA A
+  C12_B   0.00557     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA B
+  C12_D   0.00307     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA D
+  C12_E   0.00307     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA E
+  C12_F   0.00307     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA F
+  C12_G   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA G
+  C12_H   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA H
+  C12_W   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA W
+  C12_Y   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Y
+  C12_Z   0.00163     #Units: [(Second)^{-1}] -------------- Degradation Rate of mRNA Z
+  C13_1  1.60         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P1 start codon
+  C13_2  10.8         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P2 start codon
+  C13_3  8.00         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P3 start codon
+  C13_4  4.60         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P4 start codon
+  C13_5  20.0         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P5 start codon
+  C13_6  0.80         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P6 start codon
+  C13_8  4.40         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P8 start codon
+  C13_9  1.60         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P9 start codon
+  C13_10 1.08         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P10 start codon
+  C13_11 4.00         #Units: [(Molecules*Second)^{-1}] ---- Ribosome binding to P11 start codon
+  C14    0.25         #Units: [(Second)^{-1}] -------------- Rate of ribosome clearing the promoter site
+  C15_1  0.048443     #Units: [(Second)^{-1}] -------------- Rate of P1 formation once Ribosme is bound to mRNA 
+  C15_2  0.040896     #Units: [(Second)^{-1}] -------------- Rate of P2 formation once Ribosme is bound to mRNA 
+  C15_3  0.037267     #Units: [(Second)^{-1}] -------------- Rate of P3 formation once Ribosme is bound to mRNA 
+  C15_4  0.038286     #Units: [(Second)^{-1}] -------------- Rate of P4 formation once Ribosme is bound to mRNA 
+  C15_5  0.43299      #Units: [(Second)^{-1}] -------------- Rate of P5 formation once Ribosme is bound to mRNA 
+  C15_6  0.2515       #Units: [(Second)^{-1}] -------------- Rate of P6 formation once Ribosme is bound to mRNA 
+  C15_8  0.89362      #Units: [(Second)^{-1}] -------------- Rate of P8 formation once Ribosme is bound to mRNA 
+  C15_10 0.23729      #Units: [(Second)^{-1}] -------------- Rate of P10 formation once Ribosme is bound to mRNA 
+  C15_11 0.30657      #Units: [(Second)^{-1}] -------------- Rate of P11 formation once Ribosme is bound to mRNA 
+  EF1    80           #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P1 Translation
+  EF2    1.5E-4       #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P2 Translation
+  EF3    4            #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P3 Translation
+  EF5    1.0E-2       #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P5 Translation
+  EF10   2.6E-5       #Units: [Unitless] ------------------- Efficiency of P5 inhibiting P10 Translation
+  n2     1.0          #Units: [Unitless] ------------------- Hill coefficient for P5 inhibiting translation
+  C16    0.1          #Units: [(Molecules^{2}*Second)^{-1}]- Assembly Site Formation
+  C17    0.1          #Units: [(Molecules*Second)^{-1}] ---- PI Formation
+  C18    0.1          #Units: [(Molecules*Second)^{-1}] ---- PE Formation
+  C19    1.23E-3      #Units: [(Second)^{-1}] -------------- Phage Elongation/P8 Addition
+  C20    0.1          #Units: [(Molecules*Second)^{-1}] ---- Phage Detaching from Cell Membrane
+  Km2    3000         #Units: [Molecules] ------------------ Number of P8 Molecules Needed for Elongation to Occur
+  n3     40           #Units: [Unitless] ------------------- Hill Coefficient
+  EPS    1E-6
+end parameters
+
+begin molecule types
+  DP3()      #Host Resource: DNA Polymerase 3 
+  RNAP()     #Host Resource: RNA Polymerase 
+  R()        #Host Resource: Ribosomes
+  ssDNA()    #M13 single-stranded DNA 
+  ssPDNA()   #ssDNA/DP3 binding complex 
+  RF1()      #Viral doubld stranded DNA in replicative form 1  
+  RF2()      #Viral doubld stranded DNA in replicative form 2
+  P5DNA()    #ssDNA sequestered by 1600 P5 molecules 
+  RF2DP3()   #Viral doubld stranded DNA bound to DNA polymerase
+  DA()       #Transcriptional Promoter site A on dsDNA
+  DB()       #Transcriptional Promoter site B on dsDNA
+  DH()       #Transcriptional Promoter site H on dsDNA  
+  DZ()       #Transcriptional Promoter site Z on dsDNA  
+  DW()       #Transcriptional Promoter site W on dsDNA  
+  EA()       #Transcriptional Promoter site A occupied by RNAP
+  EB()       #Transcriptional Promoter site B occupied by RNAP
+  EH()       #Transcriptional Promoter site H occupied by RNAP
+  EZ()       #Transcriptional Promoter site Z occupied by RNAP
+  EW()       #Transcriptional Promoter site W occupied by RNAP
+  ELA()      #RNAP actively transcribing mRNA A but not occupying the promoter site
+  ELB()      #RNAP actively transcribing mRNA B but not occupying the promoter site
+  ELH()      #RNAP actively transcribing mRNA H but not occupying the promoter site
+  ELZ()      #RNAP actively transcribing mRNA Z but not occupying the promoter site
+  ELW()      #RNAP actively transcribing mRNA W but not occupying the promoter site
+  A()        #mRNA transcript labeled A. Contains information for P2, P5, P7, P9, P8
+  B()        #mRNA transcript labeled B. Contains information for P10, P5, P7, P9, P8
+  D()        #mRNA transcript labeled D. Contains information for P5, P7, P9, P8
+  E()        #mRNA transcript labeled E. Contains information for P5, P7, P9, P8
+  F()        #mRNA transcript labeled F. Contains information for P5, P7, P9, P8
+  G()        #mRNA transcript labeled G. Contains information for P9, P8
+  H()        #mRNA transcript labeled H. Contains information for P9, P8
+  W()        #mRNA transcript labeled W. Contains information for P4
+  Y()        #mRNA transcript labeled Y. Contains information for P3,P6,P1,P11
+  Z()        #mRNA transcript labeled Z. Contains information for P3,P6
+  RBS2()     #Free ribsome binding site to make viral protein P2
+  RBS10()     #Free ribsome binding site to make viral protein P10
+  RBS5()     #Free ribsome binding site to make viral protein P5
+  RBS9()     #Free ribsome binding site to make viral protein P9
+  RBS8()     #Free ribsome binding site to make viral protein P8
+  RBS1()     #Free ribsome binding site to make viral protein P1
+  RBS3()     #Free ribsome binding site to make viral protein P3
+  RBS4()     #Free ribsome binding site to make viral protein P4
+  RBS6()     #Free ribsome binding site to make viral protein P6
+  RBS11()    #Free ribsome binding site to make viral protein P11
+  RBS1R()    #Ribosome binding site 1 occupied by a ribosome
+  RBS2R()    #Ribosome binding site 2 occupied by a ribosome
+  RBS3R()    #Ribosome binding site 3 occupied by a ribosome
+  RBS4R()    #Ribosome binding site 4 occupied by a ribosome
+  RBS5R()    #Ribosome binding site 5 occupied by a ribosome
+  RBS6R()    #Ribosome binding site 6 occupied by a ribosome
+  RBS8R()    #Ribosome binding site 8 occupied by a ribosome
+  RBS9R()    #Ribosome binding site 9 occupied by a ribosome
+  RBS10R()   #Ribosome binding site 10 occupied by a ribosome
+  RBS11R()   #Ribosome binding site 11 occupied by a ribosome
+  PD1()      #Ribsome actively creating P1 but not occupying the promoter site 
+  PD2()      #Ribsome actively creating P2 but not occupying the promoter site 
+  PD3()      #Ribsome actively creating P3 but not occupying the promoter site 
+  PD4()      #Ribsome actively creating P4 but not occupying the promoter site 
+  PD5()      #Ribsome actively creating P5 but not occupying the promoter site 
+  PD6()      #Ribsome actively creating P6 but not occupying the promoter site 
+  PD8()      #Ribsome actively creating P8 but not occupying the promoter site 
+  PD9()      #Ribsome actively creating P9 but not occupying the promoter site 
+  PD10()     #Ribsome actively creating P10 but not occupying the promoter site 
+  PD11()     #Ribsome actively creating P11 but not occupying the promoter site 
+  P1()       #Viral protein P1
+  P2()       #Viral protein P2 
+  P3()       #Viral protein P3 
+  P4()       #Viral protein P4 
+  P5()       #Viral protein P5 
+  P6()       #Viral protein P6 
+  P7()       #Viral protein P7 
+  P8()       #Viral protein P8 
+  P9()       #Viral protein P9 
+  P10()      #Viral protein P10
+  P11()      #Viral protein P11
+  P2P10()    #Viral Protein P2/P10 Binding 
+  As()
+  PI()
+  PE()
+  PF()
+  Phage()
+end molecule types
+
+begin species
+  DP3()      3.0 #Units: [Molecules]
+  RNAP()  1280.0 #Units: [Molecules]
+  R()     7880.0 #Units: [Molecules]
+  ssDNA()    1.0 #Units: [Molecules]
+  ssPDNA()     0 #Units: [Molecules]
+  P5DNA()      0 
+  RF1()        0 #Units: [Molecules]
+  RF2()        0 #Units: [Molecules]
+  RF2DP3()     0 #Units: [Molecules]
+  DA()         0 #Units: [Molecules]
+  DB()         0 #Units: [Molecules]
+  DH()         0 #Units: [Molecules]
+  DZ()         0 #Units: [Molecules]
+  DW()         0 #Units: [Molecules]
+  EA()         0 #Units: [Molecules]
+  EB()         0 #Units: [Molecules]
+  EH()         0 #Units: [Molecules]
+  EZ()         0 #Units: [Molecules]
+  EW()         0 #Units: [Molecules]
+  ELA()        0 #Units: [Molecules]
+  ELB()        0 #Units: [Molecules]
+  ELH()        0 #Units: [Molecules]
+  ELZ()        0 #Units: [Molecules]
+  ELW()        0 #Units: [Molecules]
+  A()          0 #Units: [Molecules]
+  B()          0 #Units: [Molecules]
+  D()          0 #Units: [Molecules]
+  E()          0 #Units: [Molecules]
+  F()          0 #Units: [Molecules]
+  G()          0 #Units: [Molecules]
+  H()          0 #Units: [Molecules]
+  W()          0 #Units: [Molecules]
+  Y()          0 #Units: [Molecules]
+  Z()          0 #Units: [Molecules]
+  RBS2()       0 #Units: [Molecules]
+  RBS10()      0 #Units: [Molecules]
+  RBS5()       0 #Units: [Molecules]
+  RBS9()       0 #Units: [Molecules]
+  RBS8()       0 #Units: [Molecules]
+  RBS1()       0 #Units: [Molecules]
+  RBS3()       0 #Units: [Molecules]
+  RBS4()       0 #Units: [Molecules]
+  RBS6()       0 #Units: [Molecules]
+  RBS11()      0 #Units: [Molecules]
+  RBS1R()      0 #Units: [Molecules]
+  RBS2R()      0 #Units: [Molecules]
+  RBS3R()      0 #Units: [Molecules]
+  RBS4R()      0 #Units: [Molecules]
+  RBS5R()      0 #Units: [Molecules]
+  RBS6R()      0 #Units: [Molecules]
+  RBS8R()      0 #Units: [Molecules]
+  RBS9R()      0 #Units: [Molecules]
+  RBS10R()     0 #Units: [Molecules]
+  RBS11R()     0 #Units: [Molecules]
+  PD1()        0 #Units: [Molecules]
+  PD2()        0 #Units: [Molecules]
+  PD3()        0 #Units: [Molecules]
+  PD4()        0 #Units: [Molecules]
+  PD5()        0 #Units: [Molecules]
+  PD6()        0 #Units: [Molecules]
+  PD8()        0 #Units: [Molecules]
+  PD9()        0 #Units: [Molecules]
+  PD10()       0 #Units: [Molecules]
+  PD11()       0 #Units: [Molecules]
+  P1()         0 #Units: [Molecules]
+  P2()         0 #Units: [Molecules]
+  P3()         5 #Units: [Molecules]
+  P4()         0 #Units: [Molecules]
+  P5()         0 #Units: [Molecules]
+  P6()         5 #Units: [Molecules]
+  P7()         5 #Units: [Molecules]
+  P8()      2700 #Units: [Molecules]
+  P9()         5 #Units: [Molecules]
+  P10()        0 #Units: [Molecules]
+  P11()        0 #Units: [Molecules]
+  P2P10()      0 #Units: [Molecules]
+  As()         0
+  PI()         0
+  PE()         0
+  PF()         0
+  Phage()      0
+end species
+
+begin observables
+  Species DP3      DP3()
+  Species RNAP     RNAP()
+  Species R        R()
+  Species ssDNA    ssDNA()
+  Species ssPDNA   ssPDNA()
+  Species RF1      RF1()
+  Species RF2      RF2()
+  Species RF2DP3   RF2DP3()
+  Species P5DNA    P5DNA()
+  Species DA       DA()
+  Species DB       DB()
+  Species DH       DH()
+  Species DZ       DZ()
+  Species DW       DW()
+  Species EA       EA()
+  Species EB       EB()
+  Species EH       EH()
+  Species EZ       EZ()
+  Species EW       EW()
+  Species ELA      ELA()
+  Species ELB      ELB()
+  Species ELH      ELH()
+  Species ELZ      ELZ()
+  Species ELW      ELW()
+  Species A        A()
+  Species B        B()
+  Species D        D()
+  Species E        E()
+  Species F        F()
+  Species G        G()
+  Species H        H()
+  Species W        W()
+  Species Y        Y()
+  Species Z        Z()
+  Species RBS2     RBS2()
+  Species RBS10    RBS10()
+  Species RBS5     RBS5()
+  Species RBS9     RBS9()
+  Species RBS8     RBS8()
+  Species RBS1     RBS1()      
+  Species RBS3     RBS3()       
+  Species RBS4     RBS4()       
+  Species RBS6     RBS6()       
+  Species RBS11    RBS11()     
+  Species RBS1R    RBS1R()
+  Species RBS2R    RBS2R()
+  Species RBS3R    RBS3R()
+  Species RBS4R    RBS4R()
+  Species RBS5R    RBS5R()
+  Species RBS6R    RBS6R()
+  Species RBS8R    RBS8R()
+  Species RBS9R    RBS9R()
+  Species RBS10R   RBS10R()
+  Species RBS11R   RBS11R()      
+  Species PD1      PD1() 
+  Species PD2      PD2() 
+  Species PD3      PD3() 
+  Species PD4      PD4() 
+  Species PD5      PD5() 
+  Species PD6      PD6() 
+  Species PD8      PD8() 
+  Species PD9      PD9() 
+  Species PD10     PD10() 
+  Species PD11     PD11() 
+  Species P1       P1()
+  Species P2       P2()
+  Species P3       P3()
+  Species P4       P4()
+  Species P5       P5()
+  Species P6       P6()
+  Species P7       P7()
+  Species P8       P8()
+  Species P9       P9()
+  Species P10      P10()
+  Species P11      P11()
+  Species P2P10    P2P10()
+  Species As       As()
+  Species PI       PI()
+  Species PE       PE()
+  Species PF       PF()
+  Species Phage    Phage()
+
+end observables
+
+begin functions
+	P5InhibitionP2() = 1/(1 + (P5()/(EF2*(RBS2()+1)))^n2) 
+  P5InhibitionP10() = 1/(1 + (P5()/(EF10*(RBS10()+1)))^n2) 
+  P5InhibitionP5() = 1/(1 + (P5()/(EF5*(RBS5()+1)))^n2) 
+  P5InhibitionP3() = 1/(1 + (P5()/(EF3*(RBS3()+1)))^n2) 
+  P5InhibitionP1() = 1/(1 + (P5()/(EF1*(RBS1()+1)))^n2) 
+  P5Sequestering() = P5()^n1/(Km1^n1+P5()^n1)
+  PhageAssembly() = P8()^n3/(Km2^n3+P8()^n3)
+  RBS2Removal() = 1/(RBS2()+EPS)
+  RBS5Removal() = 1/(RBS5()+EPS)
+  RBS9Removal() = 1/(RBS9()+EPS)
+  RBS8Removal() = 1/(RBS8()+EPS)
+  RBS10Removal() = 1/(RBS10()+EPS)
+  RBS3Removal() = 1/(RBS3()+EPS)
+  RBS6Removal() = 1/(RBS6()+EPS)
+  RBS1Removal() = 1/(RBS1()+EPS)
+  RBS11Removal() = 1/(RBS11()+EPS)
+  RBS4Removal() = 1/(RBS4()+EPS)
+  DARemoval() = 1/(DA()+EPS)
+  DBRemoval() = 1/(DB()+EPS)
+  DHRemoval() = 1/(DH()+EPS)
+  DZRemoval() = 1/(DZ()+EPS)
+  DWRemoval() = 1/(DW()+EPS)
+  P8Removal() = 1/(P8()+EPS)
+end functions
+
+begin reaction rules
+  #====================================================
+  #            Replication Equations
+  #====================================================
+  #DNA Polymerase binding to single stranded DNA to form 
+  #a complex of ssDNA and DNA Polymerase 
+  ssDNA() + DP3() -> ssPDNA() C1
+
+  #The ssPDNA (ssDNA/DP3 complex) will create a double-stranded 
+  #form of viral DNA called RF1, and contains transcriptional promoter
+  #sites DA, DB, DH, DZ, and DW (Please see paper for more information)
+  ssPDNA() -> RF1() + DP3() + DA() + DB() + DH() + DZ() + DW() C2 
+
+  #P2 can "nick" the RF1 DNA to form a relaxed form called RF2 
+  RF1() + P2() <-> RF2() C3, C4 
+
+  #DNA Polymerase can bind to RF2 to intiate the rolling circle mechanism 
+  RF2() + DP3() + DA() + DB() + DH() + DZ() + DW() -> RF2DP3() C1*DARemoval()*DBRemoval()*DHRemoval()*DZRemoval()*DWRemoval()
+
+  #DNA polymerase that is bound to RF2 and replicating the DNA 
+  RF2DP3() -> P2() + DP3() + RF1() + ssDNA() + DA() + DB() + DH() + DZ() + DW() C2
+
+  P2() + P10() <-> P2P10() C5,C6
+  ssDNA() -> P5DNA() C7*P5()*P5Sequestering()
+  P5()-> 0 1600*C7*ssDNA()*P5Sequestering()
+  #====================================================
+  #            Transcription Equations
+  #====================================================
+  #Rate of RNA polymerase binding to the promoter site DA 
+  #on viral dsDNA 
+  DA() + RNAP() -> EA C8_A
+  DB() + RNAP() -> EB C8_B
+  DH() + RNAP() -> EH C8_H
+  DZ() + RNAP() -> EZ C8_Z
+  DW() + RNAP() -> EW C8_W
+
+  #Rate of RNAP clearing the DA promoter site to regenerate the 
+  #site but not the mRNA 
+  EA() -> DA() + ELA() C9
+  EB() -> DB() + ELB() C9
+  EH() -> DH() + ELH() C9
+  EZ() -> DZ() + ELZ() C9
+  EW() -> DW() + ELW() C9
+
+  #The actively transcribing RNAP will produce transcript A and all of the 
+  #ribosome binding sites needed for translation 
+  ELA() -> RNAP() + A() + RBS6() + RBS5() + RBS9() + RBS8() C10_A
+  ELB() -> RNAP() + B() + RBS10() + RBS5() + RBS9() + RBS8() C10_B
+  ELH() -> RNAP() + H() + RBS9() + RBS8() C10_H
+ELZ() -> RNAP() + RBS3() + RBS2() C10_Z
+0    -> Z() C11*C10_Z*ELZ()
+0    -> Y() + RBS1() + RBS11() (1-C11)*C10_Z*ELZ()
+  ELW() -> RNAP() + W() + RBS4() C10_W
+
+
+  #====================================================
+  #            mRNA Degragation Equations
+  #====================================================
+A() + RBS6() -> D() C12_A*RBS6Removal()
+B() + RBS10() -> D() C12_B*RBS10Removal()
+D()   -> E() 0.7*C12_D
+  D() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_D*RBS5Removal()*RBS9Removal()*RBS8Removal()
+E()   -> F() 0.7*C12_E
+  E() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_E*RBS5Removal()*RBS9Removal()*RBS8Removal()
+F() + RBS5() -> G() 0.7*C12_F*RBS5Removal()
+  F() + RBS5() + RBS9() + RBS8() -> 0 0.3*C12_F*RBS5Removal()*RBS9Removal()*RBS8Removal()
+G()   -> H() 0.7*C12_G
+  G() + RBS9() + RBS8() -> 0 0.3*C12_G*RBS9Removal()*RBS8Removal()
+  H() + RBS9() + RBS8() -> 0 C12_H*RBS9Removal()*RBS8Removal()
+
+W() + RBS4() -> 0 C12_W*RBS4Removal()
+Y() + RBS3() + RBS2() + RBS1() + RBS11() -> 0 C12_Y*RBS3Removal()*RBS2Removal()*RBS1Removal()*RBS11Removal()
+Z() + RBS3() + RBS2() -> 0 C12_Z*RBS3Removal()*RBS2Removal()
+  #====================================================
+  #              Translation Equations
+  #====================================================
+  RBS2() + R() -> RBS2R() C13_2*P5InhibitionP2()
+  RBS2R() -> RBS2() + PD2() C14 
+  PD2() -> R() + P2() C15_2
+
+  RBS10() + R() -> RBS10R() C13_10*P5InhibitionP10()
+  RBS10R() -> RBS10() + PD10() C14 
+  PD10() -> R() + P10() C15_10
+
+  RBS5() + R() -> RBS5R() C13_5*P5InhibitionP5()
+  RBS5R() -> RBS5() + PD5() C14 
+  PD5() -> R() + P5() C15_5
+  0 -> P7() 0.10*C15_5*PD5()
+
+  RBS9() + R() -> RBS9R() C13_9
+  RBS9R() -> RBS9() + R() + P9() C14 
+
+  RBS8() + R() -> RBS8R() C13_8
+  RBS8R() -> RBS8() + PD8() C14 
+  PD8() -> R() + P8() C15_8
+
+  RBS3() + R() -> RBS3R() C13_3*P5InhibitionP3()
+  RBS3R() -> RBS3() + PD3() C14 
+  PD3() -> R() + P3() C15_3
+
+  RBS6() + R() -> RBS6R() C13_6
+  RBS6R() -> RBS6() + PD6() C14 
+  PD6() -> R() + P6() C15_6
+
+  RBS1() + R() -> RBS1R() C13_1*P5InhibitionP1()
+  RBS1R() -> RBS1() + PD1() C14 
+  PD1() -> R() + P1() C15_1
+
+  RBS11() + R() -> RBS11R() C13_11
+  RBS11R() -> RBS11() + PD11() C14 
+  PD11() -> R() + P11() C15_11
+
+  RBS4() + R() -> RBS4R() C13_4
+  RBS4R() -> RBS4() + PD4() C14 
+  PD4() -> R() + P4() C15_4
+
+  #====================================================
+  #            Phage Assembly Equations
+  #====================================================
+  P1() + P4() + P11() -> 0 14*C16
+  0 -> As() C16*P1()*P4()*P11()
+
+  As() -> PI() C17*P7()*P9() 
+  P7() + P9() -> 0 C17*As() 
+  PI() + P5DNA() -> PE() C18
+  PE() -> PF() C19*PhageAssembly()
+  P8() -> 0  2700*C19*PE()*PhageAssembly()*P8Removal()
+  0-> P5() 1600*C19*PE()*PhageAssembly()
+  PF() -> Phage() + As() C20*P3()*P9()
+  P3() + P6() -> 0 5*C20*PF()
+
+
+
+
+end reaction rules
+
+simulate({method=>"ode",t_end=>3600,n_steps=>2000})
+writeMfile();
+
+
+
