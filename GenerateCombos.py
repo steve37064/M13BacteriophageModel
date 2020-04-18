@@ -19,7 +19,7 @@ os.system("mv  "+Name+".m "+ Folder+"MatlabVersions/" +"." )
 
 ProteinSwaps = np.arange(1,12)
 for i_swap,j_swap in combinations(ProteinSwaps,2): 
-    if ( i_swap not in [1,11,2,10] ) and ( j_swap not in [1,11,2,10] ):
+    if ( i_swap not in [7] ) and ( j_swap not in [7] ):
         Name = "Swap_" + str(i_swap)+"_"+str(j_swap)
         BNGLOut = Folder+Name
         createModel(input_file,i_swap,j_swap,output_file=BNGLOut+".bngl")
