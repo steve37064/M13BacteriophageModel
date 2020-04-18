@@ -38,8 +38,8 @@ end
 %==========================================================================
 timepointsMinutes = timepoints./60;
 ListOfAnalytesToPlot = ["Phage","P1","P2","P3","P4","P5","P6","P7","P8"...
-                        ,"P9","P10","P11"];
-
+                        ,"P9","P10","P11","P2P10","As","PI","PE","PF"];
+                    
 Samples = zeros(length(GeneratedModels)+1,length(ListOfAnalytesToPlot));
 ColAnalyte = 0;
 for Analyte = ListOfAnalytesToPlot
