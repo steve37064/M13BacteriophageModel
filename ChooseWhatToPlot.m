@@ -1,10 +1,7 @@
 
 close all 
-GeneratedModels
-ListOfAnalytesToPlot = ["Phage","P1","P2","P3","P4","P5","P6","P7","P8"...
-                        ,"P9","P10","P11"];
                     
-PlotList = ["RemakeOrginal.m","Swap_3_5.m","Swap_4_9.m"]; 
+PlotList = ["Orginal","RemakeOrginal.m","Swap_10_11.m","Swap_1_10.m","Swap_1_11.m","Swap_1_3.m","Swap_1_6.m","Swap_1_8.m","Swap_2_10.m","Swap_3_10.m","Swap_3_11.m","Swap_3_4.m","Swap_3_6.m","Swap_3_8.m","Swap_4_8.m","Swap_6_10.m","Swap_6_11.m","Swap_6_8.m","Swap_8_9.m"];
 
 ShortList = ismember(GeneratedModels,PlotList);
 DataStoreShortList = DataStore(ShortList);
@@ -15,7 +12,7 @@ GeneratedModelsShortList = GeneratedModels(ShortList);
 %==========================================================================
 timepointsMinutes = timepoints./60;
 ListOfAnalytesToPlot = ["Phage","P1","P2","P3","P4","P5","P6","P7","P8"...
-                        ,"P9","P10","P11"];
+                        ,"P9","P10","P11","P2P10","As","PI","PE","PF"];
 
 ColAnalyte = 0;
 for Analyte = ListOfAnalytesToPlot
@@ -32,11 +29,11 @@ for Analyte = ListOfAnalytesToPlot
         ModelToRun = ModelToRun{1};
         plot(timepointsMinutes,NextAnalytesToPlot,"DisplayName",ModelToRun,"LineWidth",4)
     end 
-    legend('Interpreter', 'none',"FontSize",20)
+    %legend('Interpreter', 'none',"FontSize",20)
     grid
     xlabel("Time [Minutes]","FontSize",20)
     ylabel(Analyte,"FontSize",20)
-    %SaveName = "Graphs/04_18_2020___1___RemoveSwaps/"+Analyte+".png";
+    %SaveName = "Graphs/04_20_2020___1___Cluster1_W_Orginal/"+Analyte+".png";
     %saveas(gca,SaveName)
 end 
 
