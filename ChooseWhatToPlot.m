@@ -2,12 +2,13 @@ MainOutputFolder = "../../../Box/PhD/Spring_2020_Classes/Cell_and_Systems/CellSy
 CurrentTime = clock;
 DateDir = CurrentTime(1)+"_"+CurrentTime(2)+"_"+CurrentTime(3)+"___";
 TimeDir = CurrentTime(4)+"_"+CurrentTime(5)+"_"+floor(CurrentTime(6))+"___"; 
-PersonalLabel = "Avoid7_UpdateLegend_Log10"; 
+PersonalLabel = "ClusterByPhage_Factor10"; 
 %PersonalLabel = "Exclude_2_10_1_11_UpdateLegend_Log10";
 
 OutputDirectory = MainOutputFolder+DateDir+TimeDir+PersonalLabel;
 
-Log10Plot = true; 
+Log10Plot = false; 
+PlotOrginalOnEveryPlot = false;
 Status = mkdir(OutputDirectory);
 
 %Clustering 1 
@@ -29,6 +30,16 @@ PlotListList = {
 %    ["Swap_3_5.m","Swap_3_9.m","Swap_4_9.m","Swap_6_9.m"],
 %    ["Swap_5_6.m"]
 %    };
+
+
+PlotListList = {
+ ["Swap_1_2.m","Swap_2_11.m","Swap_9_10.m","Swap_1_5.m","Swap_8_10.m","Swap_5_10.m"], ... %No Phage 
+ ["Swap_8_11.m","Swap_1_8.m","Swap_3_8.m","Swap_5_11.m"], ... %0<Phage<10 
+ ["Swap_6_8.m","Swap_3_5.m","Swap_3_9.m","Swap_4_9.m","Swap_5_6.m","Swap_4_8.m","Swap_1_9.m","Swap_2_6.m","Swap_4_5.m","Swap_2_8.m","Swap_2_3.m","Swap_2_5.m"], ... %10<Phage<100 
+ ["Swap_6_9.m","Swap_5_8.m","Swap_5_9.m","Swap_9_11.m","Swap_2_9.m","Swap_3_4.m","Swap_10_11.m","Swap_3_10.m","Swap_1_6.m","Swap_6_11.m","Swap_1_11.m","Swap_8_9.m","Swap_3_6.m","RemakeOrginal.m","Swap_1_3.m","Swap_3_11.m","Swap_4_11.m","Swap_4_10.m","Swap_1_4.m","Swap_4_6.m","Swap_6_10.m","Orginal","Swap_2_10.m","Swap_1_10.m","Swap_2_4.m"]... %100<Phage<1000 
+}
+TitleNames = ["No Phage Produced","0<Page<10","10<Page<100","100<Page<1000"]; 
+
 
 
          
@@ -53,10 +64,12 @@ for ClusterNum = 1:length(PlotListList)
         OrginalAnalyte = GetSimulatedData(Analyte,OrginalModelObservables,OrginalModelInfo);
         Samples(1,ColAnalyte) = OrginalAnalyte(end);
         figure 
-        if Log10Plot
-            plot(timepointsMinutes,log10(abs(OrginalAnalyte)),"--","DisplayName","Orginal","LineWidth",4)
-        else 
-            plot(timepointsMinutes,OrginalAnalyte,"--","DisplayName","Orginal","LineWidth",4)
+        if PlotOrginalOnEveryPlot
+            if Log10Plot
+                plot(timepointsMinutes,log10(abs(OrginalAnalyte)),"--","DisplayName","Orginal","LineWidth",4)
+            else 
+                plot(timepointsMinutes,OrginalAnalyte,"--","DisplayName","Orginal","LineWidth",4)
+            end 
         end 
         hold on 
         for i = 1:length(GeneratedModelsShortList)
@@ -79,6 +92,9 @@ for ClusterNum = 1:length(PlotListList)
         else 
             ylabel(Analyte,"FontSize",20)
             ylim([0 inf])
+        end 
+        if exist("TitleNames")
+            title(TitleNames(ClusterNum),"FontSize",20)
         end 
         SAVDIR = OutputDirectory + "/";
         Specific = "Cluster_"+num2str(ClusterNum-1) + "___" + Analyte + ".png";
