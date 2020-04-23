@@ -39,19 +39,41 @@ end
 timepointsMinutes = timepoints./60;
 ListOfAnalytesToPlot = ["Phage","P1","P2","P3","P4","P5","P6","P7","P8"...
                         ,"P9","P10","P11","P2P10","As","PI","PE","PF"];
-                    
-Samples = zeros(length(GeneratedModels)+1,length(ListOfAnalytesToPlot));
+        
+%===================================
+%Generating a DataType to record multiple timepoints 
+%===================================
+TimpointsToRecord = 1:60; 
+IndexToPull = zeros(1,length(TimpointsToRecord));
+j = 0;
+for FindIndex = TimpointsToRecord
+    j = j + 1; 
+    [~,I] = min(abs(timepointsMinutes - FindIndex));
+    IndexToPull(j) = I;
+end 
+
+FullSamples = {};
+for formation_of_I = TimpointsToRecord
+    FullSamples{formation_of_I} = zeros(length(GeneratedModels)+1,length(ListOfAnalytesToPlot)); 
+end 
+%===================================
+
 ColAnalyte = 0;
 for Analyte = ListOfAnalytesToPlot
     ColAnalyte = ColAnalyte + 1; 
     OrginalAnalyte = GetSimulatedData(Analyte,OrginalModelObservables,OrginalModelInfo);
-    Samples(1,ColAnalyte) = OrginalAnalyte(end);
+    for Time_Index = TimpointsToRecord
+        FullSamples{Time_Index}(1,ColAnalyte) = OrginalAnalyte(IndexToPull( Time_Index) );
+    end 
+    
     figure 
     plot(timepointsMinutes,OrginalAnalyte,"--","DisplayName","Orginal","LineWidth",4)
     hold on 
     for i = 1:length(GeneratedModels)
         NextAnalytesToPlot = GetSimulatedData(Analyte,DataStore{i},ModelInfoStore{i});
-        Samples(i+1,ColAnalyte) = NextAnalytesToPlot(end);
+        for Time_Index = TimpointsToRecord
+            FullSamples{Time_Index}(i+1,ColAnalyte) = NextAnalytesToPlot(IndexToPull( Time_Index) );
+        end 
         ModelToRun = split(GeneratedModels{i},".");
         ModelToRun = ModelToRun{1};
         plot(timepointsMinutes,NextAnalytesToPlot,"DisplayName",ModelToRun,"LineWidth",4)
@@ -61,13 +83,16 @@ for Analyte = ListOfAnalytesToPlot
     xlabel("Time [Minutes]","FontSize",20)
     ylabel(Analyte,"FontSize",20)
     %legend
-    SaveName = "Graphs/04_18_2020___1___RemoveSwaps/"+Analyte+".png";
-    saveas(gca,SaveName)
+    %SaveName = "Graphs/04_18_2020___1___RemoveSwaps/"+Analyte+".png";
+    %saveas(gca,SaveName)
 end 
 
 rowNames = {'Orginal' GeneratedModels{:}};
-Table2Store = array2table(Samples,'VariableNames',ListOfAnalytesToPlot,"RowNames",rowNames);
-writetable(Table2Store,"FinalValues.csv",'WriteRowNames',true)
+for Time_Index = TimpointsToRecord
+    Table2Store = array2table(FullSamples{Time_Index},'VariableNames',ListOfAnalytesToPlot,"RowNames",rowNames);
+    Folder = "CSV_SimulatedData/Timepoint_"+num2str(Time_Index)+".csv";
+    writetable(Table2Store,Folder,'WriteRowNames',true)
+end 
 
 
 
