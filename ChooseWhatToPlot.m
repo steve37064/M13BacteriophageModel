@@ -2,7 +2,7 @@ MainOutputFolder = "../../../Box/PhD/Spring_2020_Classes/Cell_and_Systems/CellSy
 CurrentTime = clock;
 DateDir = CurrentTime(1)+"_"+CurrentTime(2)+"_"+CurrentTime(3)+"___";
 TimeDir = CurrentTime(4)+"_"+CurrentTime(5)+"_"+floor(CurrentTime(6))+"___"; 
-PersonalLabel = "NewClustering_Exclude_2_10_1_11_Log"; 
+PersonalLabel = "Clustering_Log"; 
 %PersonalLabel = "Exclude_2_10_1_11_UpdateLegend_Log10";
 
 OutputDirectory = MainOutputFolder+DateDir+TimeDir+PersonalLabel;
@@ -33,6 +33,7 @@ PlotListList = {
 
 %Clustering 2 
 % excluding: [2, 10, 1, 11]
+if false 
 PlotListList = {
 % cluster number: 0
         ["Orginal","RemakeOrginal.m","Swap_3_4.m","Swap_3_6.m","Swap_3_8.m","Swap_4_8.m","Swap_6_8.m","Swap_8_9.m"],
@@ -45,7 +46,7 @@ PlotListList = {
 % cluster number: 4
         ["Swap_4_6.m","Swap_5_8.m"]
     };
-
+end 
 
 %PlotListList = {
 % ["Swap_1_2.m","Swap_2_11.m","Swap_9_10.m","Swap_1_5.m","Swap_8_10.m","Swap_5_10.m"], ... %No Phage 
@@ -114,6 +115,8 @@ for ClusterNum = 1:length(PlotListList)
         end 
         if exist("TitleNames")
             title(TitleNames(ClusterNum),"FontSize",20)
+        else
+            title("Cluster Number: " + num2str(ClusterNum),"FontSize",20)
         end 
         SAVDIR = OutputDirectory + "/";
         Specific = "Cluster_"+num2str(ClusterNum-1) + "___" + Analyte + ".png";
