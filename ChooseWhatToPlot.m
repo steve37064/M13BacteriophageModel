@@ -2,12 +2,12 @@ MainOutputFolder = "../../../Box/PhD/Spring_2020_Classes/Cell_and_Systems/CellSy
 CurrentTime = clock;
 DateDir = CurrentTime(1)+"_"+CurrentTime(2)+"_"+CurrentTime(3)+"___";
 TimeDir = CurrentTime(4)+"_"+CurrentTime(5)+"_"+floor(CurrentTime(6))+"___"; 
-PersonalLabel = "Clustering_Log"; 
+PersonalLabel = "CompareEachToOrginal"; 
 %PersonalLabel = "Exclude_2_10_1_11_UpdateLegend_Log10";
 
 OutputDirectory = MainOutputFolder+DateDir+TimeDir+PersonalLabel;
 
-Log10Plot = true; 
+Log10Plot = false; 
 PlotOrginalOnEveryPlot = false;
 Status = mkdir(OutputDirectory);
 
@@ -56,7 +56,16 @@ end
 %};
 %TitleNames = ["No Phage Produced","0<Page<10","10<Page<100","100<Page<1000"]; 
 
-
+if true 
+    PlotListList = {};
+    TitleNames = {};
+    for i = 2:length(GeneratedModels)
+        Orginal = string(GeneratedModels{1});
+        Next = string(GeneratedModels{i});
+        PlotListList{i-1} = [Orginal(1),Next(1) ];
+        TitleNames{i-1} = "Comparision To Orginal";
+    end
+end 
 
          
 for ClusterNum = 1:length(PlotListList)
@@ -103,7 +112,8 @@ for ClusterNum = 1:length(PlotListList)
                 plot(timepointsMinutes,NextAnalytesToPlot,LinstyleToPlot,"DisplayName",ModelToRun,"LineWidth",2)
             end 
         end 
-        legend('Location','NorthEastOutside','Interpreter', 'none',"FontSize",15)
+        %legend('Location','NorthEastOutside','Interpreter', 'none',"FontSize",15)
+        legend('Interpreter', 'none',"FontSize",15)
         grid
         xlabel("Time [Minutes]","FontSize",20)
         if Log10Plot
@@ -120,6 +130,7 @@ for ClusterNum = 1:length(PlotListList)
         end 
         SAVDIR = OutputDirectory + "/";
         Specific = "Cluster_"+num2str(ClusterNum-1) + "___" + Analyte + ".png";
+        Specific = PlotList{2} + "___" + Analyte + ".png";
         SaveName = SAVDIR+Specific;
         saveas(gca,SaveName)
     end 
