@@ -2,8 +2,8 @@ MainOutputFolder = "../../../Box/PhD/Spring_2020_Classes/Cell_and_Systems/CellSy
 CurrentTime = clock;
 DateDir = CurrentTime(1)+"_"+CurrentTime(2)+"_"+CurrentTime(3)+"___";
 TimeDir = CurrentTime(4)+"_"+CurrentTime(5)+"_"+floor(CurrentTime(6))+"___"; 
-PersonalLabel = "CompareEachToOrginal"; 
-%PersonalLabel = "Exclude_2_10_1_11_UpdateLegend_Log10";
+%PersonalLabel = "CompareEachToOrginal"; 
+PersonalLabel = "CompareEachToOrginal_Exclude_1_2_10_11";
 
 OutputDirectory = MainOutputFolder+DateDir+TimeDir+PersonalLabel;
 
@@ -31,6 +31,11 @@ PlotListList = {
        ["Swap_1_8.m","Swap_3_8.m","Swap_4_8.m","Swap_8_11.m"],
 };
 
+if false 
+PlotListList = { ["RemakeOrginal.m"] }; 
+TitleNames = ["Comparision from Orginal"];
+end 
+
 %Clustering 2 
 % excluding: [2, 10, 1, 11]
 if false 
@@ -56,12 +61,14 @@ end
 %};
 %TitleNames = ["No Phage Produced","0<Page<10","10<Page<100","100<Page<1000"]; 
 
-if true 
+if true  
     PlotListList = {};
     TitleNames = {};
-    for i = 2:length(GeneratedModels)
-        Orginal = string(GeneratedModels{1});
-        Next = string(GeneratedModels{i});
+    Exlcude_1_2_10_11 = {'RemakeOrginal.m','Swap_3_4.m','Swap_3_6.m','Swap_3_8.m','Swap_4_8.m','Swap_6_8.m','Swap_8_9.m','Swap_4_5.m','Swap_5_9.m','Swap_3_5.m','Swap_3_9.m','Swap_4_9.m','Swap_6_9.m','Swap_5_6.m','Swap_4_6.m','Swap_5_8.m'};
+    TitleNames = {};
+    for i = 2:length(Exlcude_1_2_10_11)
+        Orginal = string(Exlcude_1_2_10_11{1});
+        Next = string(Exlcude_1_2_10_11{i});
         PlotListList{i-1} = [Orginal(1),Next(1) ];
         TitleNames{i-1} = "Comparision To Orginal";
     end
@@ -81,7 +88,9 @@ for ClusterNum = 1:length(PlotListList)
     %==========================================================================
     timepointsMinutes = timepoints./60;
     ListOfAnalytesToPlot = ["Phage","P1","P2","P3","P4","P5","P6","P7","P8"...
-                            ,"P9","P10","P11","P2P10","As","PI","PE","PF"];
+                            ,"P9","P10","P11","P2P10","As","PI","PE","PF",...
+                             "ssDNA","ssPDNA", "RF1","RF2","RF2DP3","P5DNA" ];
+    ListOfAnalytesToPlot = [ "DP3", "RNAP", "R", "ssDNA", "ssPDNA", "RF1", "RF2", "RF2DP3", "P5DNA", "DA", "DB", "DH", "DZ", "DW", "EA", "EB", "EH", "EZ", "EW", "ELA", "ELB", "ELH", "ELZ", "ELW", "A", "B", "D", "E", "F", "G", "H", "W", "Y", "Z", "RBS2", "RBS10", "RBS5", "RBS9", "RBS8", "RBS1", "RBS3", "RBS4", "RBS6", "RBS11", "RBS1R", "RBS2R", "RBS3R", "RBS4R", "RBS5R", "RBS6R", "RBS8R", "RBS9R", "RBS10R", "RBS11R", "PD1", "PD2", "PD3", "PD4", "PD5", "PD6", "PD8", "PD9", "PD10", "PD11", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P2P10", "As", "PI", "PE", "PF", "Phage"];
 
     ColAnalyte = 0;
     for Analyte = ListOfAnalytesToPlot
@@ -126,10 +135,10 @@ for ClusterNum = 1:length(PlotListList)
         if exist("TitleNames")
             title(TitleNames(ClusterNum),"FontSize",20)
         else
-            title("Cluster Number: " + num2str(ClusterNum),"FontSize",20)
+            title("Cluster Number: " + num2str(ClusterNum-1),"FontSize",20)
         end 
         SAVDIR = OutputDirectory + "/";
-        Specific = "Cluster_"+num2str(ClusterNum-1) + "___" + Analyte + ".png";
+        %Specific = "Cluster_"+num2str(ClusterNum-1) + "___" + Analyte + ".png";
         Specific = PlotList{2} + "___" + Analyte + ".png";
         SaveName = SAVDIR+Specific;
         saveas(gca,SaveName)
