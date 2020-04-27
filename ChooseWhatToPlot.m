@@ -3,7 +3,7 @@ CurrentTime = clock;
 DateDir = CurrentTime(1)+"_"+CurrentTime(2)+"_"+CurrentTime(3)+"___";
 TimeDir = CurrentTime(4)+"_"+CurrentTime(5)+"_"+floor(CurrentTime(6))+"___"; 
 %PersonalLabel = "CompareEachToOrginal"; 
-PersonalLabel = "CompareEachToOrginal_Exclude_1_2_10_11";
+PersonalLabel = "ClusterComparison_Exclude_1_2_10_11";
 
 OutputDirectory = MainOutputFolder+DateDir+TimeDir+PersonalLabel;
 
@@ -38,7 +38,7 @@ end
 
 %Clustering 2 
 % excluding: [2, 10, 1, 11]
-if false 
+if true 
 PlotListList = {
 % cluster number: 0
         ["Orginal","RemakeOrginal.m","Swap_3_4.m","Swap_3_6.m","Swap_3_8.m","Swap_4_8.m","Swap_6_8.m","Swap_8_9.m"],
@@ -61,7 +61,7 @@ end
 %};
 %TitleNames = ["No Phage Produced","0<Page<10","10<Page<100","100<Page<1000"]; 
 
-if true  
+if false  
     PlotListList = {};
     TitleNames = {};
     Exlcude_1_2_10_11 = {'RemakeOrginal.m','Swap_3_4.m','Swap_3_6.m','Swap_3_8.m','Swap_4_8.m','Swap_6_8.m','Swap_8_9.m','Swap_4_5.m','Swap_5_9.m','Swap_3_5.m','Swap_3_9.m','Swap_4_9.m','Swap_6_9.m','Swap_5_6.m','Swap_4_6.m','Swap_5_8.m'};
@@ -121,8 +121,8 @@ for ClusterNum = 1:length(PlotListList)
                 plot(timepointsMinutes,NextAnalytesToPlot,LinstyleToPlot,"DisplayName",ModelToRun,"LineWidth",2)
             end 
         end 
-        %legend('Location','NorthEastOutside','Interpreter', 'none',"FontSize",15)
-        legend('Interpreter', 'none',"FontSize",15)
+        legend('Location','NorthEastOutside','Interpreter', 'none',"FontSize",15)
+        %legend('Interpreter', 'none',"FontSize",15)
         grid
         xlabel("Time [Minutes]","FontSize",20)
         if Log10Plot
@@ -138,8 +138,8 @@ for ClusterNum = 1:length(PlotListList)
             title("Cluster Number: " + num2str(ClusterNum-1),"FontSize",20)
         end 
         SAVDIR = OutputDirectory + "/";
-        %Specific = "Cluster_"+num2str(ClusterNum-1) + "___" + Analyte + ".png";
-        Specific = PlotList{2} + "___" + Analyte + ".png";
+        Specific = "Cluster_"+num2str(ClusterNum-1) + "___" + Analyte + ".png";
+        %Specific = PlotList{2} + "___" + Analyte + ".png";
         SaveName = SAVDIR+Specific;
         saveas(gca,SaveName)
     end 
