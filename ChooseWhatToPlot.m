@@ -1,9 +1,12 @@
 MainOutputFolder = "../../../Box/PhD/Spring_2020_Classes/Cell_and_Systems/CellSystemsProject/Graphs/";
+%MainOutputFolder = "TestingGraphs/";
 CurrentTime = clock;
 DateDir = CurrentTime(1)+"_"+CurrentTime(2)+"_"+CurrentTime(3)+"___";
 TimeDir = CurrentTime(4)+"_"+CurrentTime(5)+"_"+floor(CurrentTime(6))+"___"; 
-%PersonalLabel = "CompareEachToOrginal"; 
+PersonalLabel = "CompareEachToOrginal_Exclude_1_2_10_11"; 
 PersonalLabel = "ClusterComparison_Exclude_1_2_10_11";
+PersonalLabel = "CompareToOrginalRemade";
+%PersonalLabel = "DirecComparisionForReport";
 
 OutputDirectory = MainOutputFolder+DateDir+TimeDir+PersonalLabel;
 
@@ -14,7 +17,7 @@ Status = mkdir(OutputDirectory);
 %Clustering 1 
 PlotListList = {
     % cluster number: 0
-       ["Orginal","RemakeOrginal.m","Swap_10_11.m","Swap_1_10.m","Swap_1_11.m","Swap_1_3.m","Swap_1_6.m","Swap_2_10.m","Swap_3_10.m","Swap_3_11.m","Swap_3_4.m","Swap_3_6.m","Swap_6_10.m","Swap_6_11.m","Swap_6_8.m","Swap_8_9.m"],
+       ["Orginal","Remake_Original.m","Swap_10_11.m","Swap_1_10.m","Swap_1_11.m","Swap_1_3.m","Swap_1_6.m","Swap_2_10.m","Swap_3_10.m","Swap_3_11.m","Swap_3_4.m","Swap_3_6.m","Swap_6_10.m","Swap_6_11.m","Swap_6_8.m","Swap_8_9.m"],
 % cluster number: 1
        ["Swap_1_2.m","Swap_2_11.m","Swap_2_3.m","Swap_2_6.m","Swap_5_10.m"],
 % cluster number: 2
@@ -31,17 +34,17 @@ PlotListList = {
        ["Swap_1_8.m","Swap_3_8.m","Swap_4_8.m","Swap_8_11.m"],
 };
 
-if false 
-PlotListList = { ["RemakeOrginal.m"] }; 
-TitleNames = ["Comparision from Orginal"];
+if false  
+PlotListList = { ["Remake_Original.m"] }; 
+TitleNames = ["Comparison to Original"];
 end 
 
 %Clustering 2 
 % excluding: [2, 10, 1, 11]
-if true 
+if false 
 PlotListList = {
 % cluster number: 0
-        ["Orginal","RemakeOrginal.m","Swap_3_4.m","Swap_3_6.m","Swap_3_8.m","Swap_4_8.m","Swap_6_8.m","Swap_8_9.m"],
+        ["Orginal","Remake_Original.m","Swap_3_4.m","Swap_3_6.m","Swap_3_8.m","Swap_4_8.m","Swap_6_8.m","Swap_8_9.m"],
 % cluster number: 1
         ["Swap_4_5.m","Swap_5_9.m"],
 % cluster number: 2
@@ -64,13 +67,14 @@ end
 if false  
     PlotListList = {};
     TitleNames = {};
-    Exlcude_1_2_10_11 = {'RemakeOrginal.m','Swap_3_4.m','Swap_3_6.m','Swap_3_8.m','Swap_4_8.m','Swap_6_8.m','Swap_8_9.m','Swap_4_5.m','Swap_5_9.m','Swap_3_5.m','Swap_3_9.m','Swap_4_9.m','Swap_6_9.m','Swap_5_6.m','Swap_4_6.m','Swap_5_8.m'};
+    Exlcude_1_2_10_11 = {'Remake_Original.m','Swap_3_4.m','Swap_3_6.m','Swap_3_8.m','Swap_4_8.m','Swap_6_8.m','Swap_8_9.m','Swap_4_5.m','Swap_5_9.m','Swap_3_5.m','Swap_3_9.m','Swap_4_9.m','Swap_6_9.m','Swap_5_6.m','Swap_4_6.m','Swap_5_8.m'};
+    %Exlcude_1_2_10_11 = {'RemakeOrginal.m','Swap_5_6.m'};
     TitleNames = {};
     for i = 2:length(Exlcude_1_2_10_11)
         Orginal = string(Exlcude_1_2_10_11{1});
         Next = string(Exlcude_1_2_10_11{i});
         PlotListList{i-1} = [Orginal(1),Next(1) ];
-        TitleNames{i-1} = "Comparision To Orginal";
+        TitleNames{i-1} = "Comparision To Original";
     end
 end 
 
@@ -100,10 +104,11 @@ for ClusterNum = 1:length(PlotListList)
         figure 
         ax = axes;
         ax.ColorOrder = linspecer(length(PlotList));
+        %ax.FontSize = 40; 
         chosenLinestyle = {'-.','-','--',':'};
         if PlotOrginalOnEveryPlot
             if Log10Plot
-                plot(timepointsMinutes,log10(abs(OrginalAnalyte)),"--","DisplayName","Orginal","LineWidth",4)
+                plot(timepointsMinutes,log10(abs(OrginalAnalyte)),"--","DisplayName","Original","LineWidth",4)
             else 
                 plot(timepointsMinutes,OrginalAnalyte,"--","DisplayName","Orginal","LineWidth",4)
             end 
@@ -115,27 +120,29 @@ for ClusterNum = 1:length(PlotListList)
             ModelToRun = split(GeneratedModelsShortList{i},".");
             ModelToRun = ModelToRun{1};
             LinstyleToPlot = chosenLinestyle{rem(i,4)+1};
+            lineWidth=2;
             if Log10Plot
-                plot(timepointsMinutes,log10(abs(NextAnalytesToPlot)),LinstyleToPlot,"DisplayName",ModelToRun,"LineWidth",2)
+                plot(timepointsMinutes,log10(abs(NextAnalytesToPlot)),LinstyleToPlot,"DisplayName",ModelToRun,"LineWidth",lineWidth)
             else 
-                plot(timepointsMinutes,NextAnalytesToPlot,LinstyleToPlot,"DisplayName",ModelToRun,"LineWidth",2)
+                plot(timepointsMinutes,NextAnalytesToPlot,LinstyleToPlot,"DisplayName",ModelToRun,"LineWidth",lineWidth)
             end 
         end 
-        legend('Location','NorthEastOutside','Interpreter', 'none',"FontSize",15)
-        %legend('Interpreter', 'none',"FontSize",15)
+        %legend('Location','NorthEastOutside','Interpreter', 'none',"FontSize",15)
+        otherFontSizes = 20;
+        legend('Interpreter', 'none',"FontSize",15)
         grid
-        xlabel("Time [Minutes]","FontSize",20)
+        xlabel("Time [Minutes]","FontSize",otherFontSizes)
         if Log10Plot
-            ylabel("Log_{10}("+Analyte+")","FontSize",20)
+            ylabel("Log_{10}("+Analyte+")","FontSize",otherFontSizes)
             ylim([0 inf])
         else 
-            ylabel(Analyte,"FontSize",20)
+            ylabel(Analyte,"FontSize",otherFontSizes)
             ylim([0 inf])
         end 
         if exist("TitleNames")
-            title(TitleNames(ClusterNum),"FontSize",20)
+            %title(TitleNames(ClusterNum),"FontSize",otherFontSizes)
         else
-            title("Cluster Number: " + num2str(ClusterNum-1),"FontSize",20)
+            title("Cluster Number: " + num2str(ClusterNum-1),"FontSize",otherFontSizes)
         end 
         SAVDIR = OutputDirectory + "/";
         Specific = "Cluster_"+num2str(ClusterNum-1) + "___" + Analyte + ".png";
