@@ -8,7 +8,7 @@ input_file = "Model.bngl"
 Folder = "GeneratedModels/"
 
 
-Name = "RemakeOrginal"
+Name = "Remake_Original"
 BNGLOut = Folder+Name
 createModel(input_file,output_file=BNGLOut+".bngl")
 os.system("perl /Applications/RuleBender.app/Contents/eclipse/BioNetGen-2.5.0/BNG2.pl "+BNGLOut+".bngl")
