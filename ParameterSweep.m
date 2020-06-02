@@ -5,11 +5,12 @@ close all;
 %Path to RuleBenderDistribution 
 %/Applications/RuleBender.app/Contents/eclipse/BioNetGen-2.5.0/include/ 
 
-
-
-num_of_samples = 50; 
-sigma = 1; 
 ModelName = "Model";
+[param_labels,parameters,observable_labels] = GetModelInformation(ModelName);
+
+ObservablesToPlot =["Phage","ssDNA","RF1","RF2","P1","P2","P3","P4","P5"];
+num_of_samples = 5000; 
+sigma = 1; 
 Save_Directory = "TempSaveDirectory";
 
 num_of_mutations_list = [1];
@@ -19,7 +20,6 @@ disp("Working on simulation with " + num2str(num_of_mutations) + " number of mut
 %==========================================================================
 %                          Generate Model Mutations 
 %==========================================================================
-[param_labels,parameters,observable_labels] = GetModelInformation(ModelName);
 
 
 Parameter_Mutations = repmat(parameters,num_of_samples,1) ; 
@@ -48,8 +48,8 @@ for i_SimulateModel = 1:num_of_samples
     %disp(i_SimulateModel)
 end 
 
-[~, ~, ~, orginal_observables] = Model( timepoints', [], Parameter_Mutations(i_SimulateModel,:), 1 );
-orginal_observables = orginal_observables(end,:);
+[~, ~, ~, orginal_observables] = Model( timepoints', [], [], 1 );
+orginal_observables_target = orginal_observables(end,:);
 
 
 DataObservation(FailedSimultions,:) = []; 
@@ -63,7 +63,7 @@ Parameter_Mutations(BadSimulations,:) = [];
 %==========================================================================
 %                          PCA Analysis 
 %==========================================================================
-G = (orginal_observables - DataObservation + 1)./(1 + orginal_observables);
+G = (orginal_observables_target - DataObservation + 1)./(1 + orginal_observables_target);
 G = DataObservation./(max(DataObservation)+1);
 
 [coefficents,score,~] = pca(G);
@@ -72,7 +72,7 @@ PC1 = score(:,1);
 PC2 = score(:,2);
 
 Phage = DataObservation(:,end);
-figure 
+figure(1)
 pcaFigure = scatter(PC1,PC2,[],Phage,'filled');
 colorbar
 xlabel("Principal Component 1","FontSize",20) 
@@ -96,7 +96,8 @@ disp("If you click multiple times before pressing enter, only the last click"+ .
 disp("Press enter twice to exit and save")
 while ReRun
     selectionNumber = selectionNumber+1;
-    [Coordinates] = ginput;
+    figure(1)
+    [Coordinates] = ginput(1);
 
     if isempty(Coordinates)
         ReRun = 0; 
@@ -112,7 +113,31 @@ while ReRun
         hold on 
         scatter(PC1(IDX),PC2(IDX),80)
         text(PC1(IDX),PC2(IDX),"\leftarrow "+num2str(selectionNumber))
+        drawnow
+        
+        %ObservablesToPlot
+        figure
+        sgtitle("Selected Plot Group: "+ num2str(selectionNumber),"FontSize",20)
+        [~, ~, ~, observables_out] = Model( timepoints', [], Parameter_Mutations(IDX,:), 1 );
+        gridToPlot =  ceil(sqrt(length(ObservablesToPlot))); 
+        i_Observables_counter = 0; 
+        for i_Observables = ObservablesToPlot
+            i_Observables_counter = i_Observables_counter+1;
+            if iscell(i_Observables)
+                i_Observables = i_Observables(1);
+            end 
+            [~,idx_Plot] = max(strcmp(i_Observables,observable_labels)); 
+            subplot(gridToPlot,gridToPlot,i_Observables_counter)
+            plot(timepoints./60,orginal_observables(:,idx_Plot),'DisplayName','Orginal','LineWidth',5)
+            hold on 
+            plot(timepoints./60,observables_out(:,idx_Plot),'DisplayName',"Point "+num2str(selectionNumber),'LineWidth',5)
+            legend()
+            xlabel("Time [Minutes]","FontSize",20)
+            ylabel(observable_labels{idx_Plot},"FontSize",20)
+            grid
+        end 
     end 
+    [~] = ginput(1);
 end 
 
 end 
