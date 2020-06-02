@@ -15,6 +15,8 @@ Save_Directory = "TempSaveDirectory";
 
 num_of_mutations_list = [1];
 
+PlotSelectedPoints = true; 
+
 for num_of_mutations = num_of_mutations_list
 disp("Working on simulation with " + num2str(num_of_mutations) + " number of mutations")
 %==========================================================================
@@ -115,29 +117,33 @@ while ReRun
         text(PC1(IDX),PC2(IDX),"\leftarrow "+num2str(selectionNumber))
         drawnow
         
-        %ObservablesToPlot
-        figure
-        sgtitle("Selected Plot Group: "+ num2str(selectionNumber),"FontSize",20)
-        [~, ~, ~, observables_out] = Model( timepoints', [], Parameter_Mutations(IDX,:), 1 );
-        gridToPlot =  ceil(sqrt(length(ObservablesToPlot))); 
-        i_Observables_counter = 0; 
-        for i_Observables = ObservablesToPlot
-            i_Observables_counter = i_Observables_counter+1;
-            if iscell(i_Observables)
-                i_Observables = i_Observables(1);
-            end 
-            [~,idx_Plot] = max(strcmp(i_Observables,observable_labels)); 
-            subplot(gridToPlot,gridToPlot,i_Observables_counter)
-            plot(timepoints./60,orginal_observables(:,idx_Plot),'DisplayName','Orginal','LineWidth',5)
-            hold on 
-            plot(timepoints./60,observables_out(:,idx_Plot),'DisplayName',"Point "+num2str(selectionNumber),'LineWidth',5)
-            legend()
-            xlabel("Time [Minutes]","FontSize",20)
-            ylabel(observable_labels{idx_Plot},"FontSize",20)
-            grid
+        disp(param_labels(LocationOfMutations(IDX,:)==1))
+        
+        if PlotSelectedPoints
+            %ObservablesToPlot
+            figure
+            sgtitle("Selected Plot Group: "+ num2str(selectionNumber),"FontSize",20)
+            [~, ~, ~, observables_out] = Model( timepoints', [], Parameter_Mutations(IDX,:), 1 );
+            gridToPlot =  ceil(sqrt(length(ObservablesToPlot))); 
+            i_Observables_counter = 0; 
+            for i_Observables = ObservablesToPlot
+                i_Observables_counter = i_Observables_counter+1;
+                if iscell(i_Observables)
+                    i_Observables = i_Observables(1);
+                end 
+                [~,idx_Plot] = max(strcmp(i_Observables,observable_labels)); 
+                subplot(gridToPlot,gridToPlot,i_Observables_counter)
+                plot(timepoints./60,orginal_observables(:,idx_Plot),'DisplayName','Orginal','LineWidth',5)
+                hold on 
+                plot(timepoints./60,observables_out(:,idx_Plot),'DisplayName',"Point "+num2str(selectionNumber),'LineWidth',5)
+                legend()
+                xlabel("Time [Minutes]","FontSize",20)
+                ylabel(observable_labels{idx_Plot},"FontSize",20)
+                grid
+            end
+            [~] = ginput(1);
         end 
     end 
-    [~] = ginput(1);
 end 
 
 end 
