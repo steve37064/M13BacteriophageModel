@@ -482,7 +482,10 @@ begin reaction rules
 end reaction rules
 
 simulate({method=>"ode",t_end=>3600,n_steps=>2000})
-writeMfile();
+#writeMfile();
+#Run this code in the command window in Matlab: 
+#mex  Model_cvode.c -I/Applications/RuleBender.app/Contents/eclipse/BioNetGen-2.5.0/include -L/Applications/RuleBender.app/Contents/eclipse/BioNetGen-2.5.0/lib -lsundials_cvode  -lsundials_nvecserial
+writeMexfile();
 
 
 
