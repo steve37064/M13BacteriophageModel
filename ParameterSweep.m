@@ -8,8 +8,9 @@ close all;
 ModelName = "Model";
 [param_labels,parameters,observable_labels] = GetModelInformation(ModelName);
 
-ObservablesToPlot =["Phage","ssDNA","RF1","RF2","P1","P2","P3","P4","P5"];
-num_of_samples = 5000; 
+ObservablesToPlot =["Phage","ssDNA","RF1","RF2","P1","P2","P3","P4","P5","P6","P7",...
+                    "P8","P9","10","P11","P2P10"];
+num_of_samples = 100; 
 sigma = 1; 
 Save_Directory = "TempSaveDirectory";
 
@@ -76,7 +77,8 @@ PC2 = score(:,2);
 Phage = DataObservation(:,end);
 figure(1)
 pcaFigure = scatter(PC1,PC2,[],Phage,'filled');
-colorbar
+pcaColorBar = colorbar;
+ylabel(pcaColorBar,"Phage","FontSize",20)
 xlabel("Principal Component 1","FontSize",20) 
 ylabel("Principal Component 2","FontSize",20)
 title("Number of Samples: " + num2str(num_of_samples) + ... 
@@ -117,12 +119,16 @@ while ReRun
         text(PC1(IDX),PC2(IDX),"\leftarrow "+num2str(selectionNumber))
         drawnow
         
-        disp(param_labels(LocationOfMutations(IDX,:)==1))
+        parmeters_UPdated = param_labels(LocationOfMutations(IDX,:)==1);
+        disp(parmeters_UPdated)
         
         if PlotSelectedPoints
             %ObservablesToPlot
             figure
-            sgtitle("Selected Plot Group: "+ num2str(selectionNumber),"FontSize",20)
+            sgtitle({ "Selected Plot Group: "+ num2str(selectionNumber); ...
+                       "Parameters Changed: " + strjoin(parmeters_UPdated,", ")},"FontSize",20,...
+                        'Interpreter', 'none')
+
             [~, ~, ~, observables_out] = Model( timepoints', [], Parameter_Mutations(IDX,:), 1 );
             gridToPlot =  ceil(sqrt(length(ObservablesToPlot))); 
             i_Observables_counter = 0; 
@@ -136,9 +142,11 @@ while ReRun
                 plot(timepoints./60,orginal_observables(:,idx_Plot),'DisplayName','Orginal','LineWidth',5)
                 hold on 
                 plot(timepoints./60,observables_out(:,idx_Plot),'DisplayName',"Point "+num2str(selectionNumber),'LineWidth',5)
-                legend()
-                xlabel("Time [Minutes]","FontSize",20)
-                ylabel(observable_labels{idx_Plot},"FontSize",20)
+                if i_Observables_counter == 1
+                    legend()
+                end 
+                xlabel("Time [Minutes]","FontSize",10)
+                ylabel(observable_labels{idx_Plot},"FontSize",10)
                 grid
             end
             [~] = ginput(1);
